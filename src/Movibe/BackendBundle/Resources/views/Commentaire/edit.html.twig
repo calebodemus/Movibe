@@ -1,0 +1,181 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{%  import "MovibeBackendBundle:Macro:functions.html.twig" as allFunctions %}
+
+{% block content %}
+    <style>
+        .carousel-inner > .item
+        {
+            height:500px ! important;
+        }
+    </style>
+
+    <div class="page-header">
+        <h1>COMMENTAIRE<small>Edition</small></h1>
+    </div>
+
+    <div class="row" id="powerwidgets">
+        <div class="col-md-12 bootstrap-grid">
+            <div class="powerwidget dark-red" data-widget-editbutton="false" data-widget-deletebutton="false">
+                <header>
+                    <h2>Sample widget<small>Clear</small></h2>
+                </header>
+                <div class="inner-spacer">
+                    <div class="user-profile">
+                        <div class="main-info">
+                            <div class="img-rounded img-responsive">
+                                {% if element.promotion is not empty %}
+                                    {{ allFunctions.img(asset(element.promotion.getWebPath('medium')), "image_promotion") }}
+                                {% else %}
+                                    <div style="text-align: center;">
+                                        {{ allFunctions.img("http://placehold.it/400x400", "Promotion photo") }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            {% if type == 'film' %}
+                                <h1>{{ element.titre }}</h1>
+                            {% elseif type == 'personne' %}
+                                <h1>{{ element.prenom }} {{ element.nom }}</h1>
+                            {% endif %}
+
+                        </div>
+                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                            </ol>
+                            <div class="carousel-inner" >
+                                <div class="item item1 active"> </div>
+                                <div class="item item2"></div>
+                                <div class="item item3"></div>
+                            </div>
+                            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span> </a>
+                            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span> </a>
+                        </div>
+                        <div class="user-profile-info">
+                            {{ form_start(edit_form,{'method':'POST','role':'form','attr':{'novalidate':'novalidate','class':'form-horizontal'} } ) }}
+                            <fieldset>
+                                <legend>Form Name</legend>
+                                <div class="form-group">
+                                    {{ form_label(edit_form.comment,'Commentaire',{'label_attr': {'class':'col-md-1 control-label'}}) }}
+                                    <div class="col-md-11">
+                                        {{ form_widget(edit_form.comment,{'id':'nom','attr': {'placeholder':'Commentaire', 'class':'form-control input-md'}} )}}
+                                    </div>
+                                    {{ form_errors(edit_form.comment) }}
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="well" style="max-width: 100%; margin: 0 auto 10px;">
+                            {{ form_widget(edit_form.submit,{'id':'submit','attr': {'class':'btn btn-primary btn-lg btn-block'}} )}}
+                        </div>
+                        {{ form_end(edit_form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-container">
+        <div class="top-buttons clearfix">
+            <h2 class="margin-0px pull-left">Commentaires</h2>
+            <span class="badge">{{ commentaires|length }}</span>
+        </div>
+        <div class="chat-container">
+            <div class="chat-pusher">
+                <div class="chat-content">
+                    <div class="nano">
+                        <div class="nano-content">
+                            <div class="chat-content-inner">
+                                <div class="clearfix">
+                                    <div class="chat-messages">
+                                        <ul>
+                                            {% set flag = 0 %}
+                                            {% for commentaire in commentaires %}
+                                                <div class="row">
+                                                    <div class="col-md-1 big-icons-buttons">
+                                                        <div class="big-icons-buttons">
+                                                            <div class="btn-group">
+                                                                <a class="btn btn-warning" href="{{ path('movibe_backend_commentaire_edit', { 'id': commentaire.id }) }}"><i class="fa fa-pencil"></i> Edit</a>
+                                                                <a class="btn btn-danger" href="#soc{{ commentaire.id }}" role="button" data-toggle="modal"><i class="fa fa-times"></i> Delete</a>
+                                                                <div id="soc{{ commentaire.id }}" class="modal" data-easein="tada" data-easeout="rollOut" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-sm">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                                <h4 class="modal-title">SUPPRESSION</h4>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <p>Voulez-vous supprimer ce commentaire?</p>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button class="btn btn-primary remove" data-dismiss="modal" aria-hidden="true" data-url="{{ path('movibe_backend_commentaire_delete', { 'id': commentaire.id }) }}">Oui</button>
+                                                                                <button class="btn btn-default cancel" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-11">
+                                                        {% set modulo = flag / 2 %}
+                                                        {% if modulo == 0 %}
+                                                        <li class="left clearfix"><div class="user-img pull-left"> <img src="http://placehold.it/150x150" alt="User Avatar" /> </div>
+                                                            {% else %}
+                                                        <li class="right clearfix"><span class="user-img pull-right"> <img src="http://placehold.it/150x150" alt="User Avatar" /> </span>
+                                                            {% endif %}
+                                                            <div class="chat-body clearfix">
+                                                                <div class="header"> <span class="name">{{ commentaire.user.username }}</span><span class="name"></span> <span class="badge"><i class="fa fa-clock-o"></i>{{ commentaire.dateCreation|localizeddate("medium","none")  }} {{ commentaire.dateCreation|localizeddate("none","medium")  }}</span></div>
+                                                                <p>{{ commentaire.comment }}</p>
+                                                            </div>
+                                                        </li>
+                                                    </div>
+                                                    {% set flag = flag + 1 %}
+                                                </div>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts 'bundles/movibebackend/js/vendors/animation/*' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".remove").click(function(e){
+                e.preventDefault();
+                var btn = $(this);
+                $.ajax({
+                    url:btn.attr('data-url'),
+                    dataType: "json"})
+                        .done(function(data){
+                            btn.parents('li').fadeOut(function(){
+                                $(this).remove();
+                            });
+                            $(".cancel").click();
+                            $("#message").append("<p class='callout callout-info'>Le commentaire sélectionnée a été supprimé</p>");
+                        });
+                return false;
+            })
+        });
+    </script>
+
+{% endblock %}
+
+

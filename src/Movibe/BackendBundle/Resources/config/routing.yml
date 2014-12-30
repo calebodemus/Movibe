@@ -1,0 +1,130 @@
+movibe_backend_homepage:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:Home:index }
+
+movibe_backend_resource_home:
+    resource: "@MovibeBackendBundle/Resources/config/routing/home.yml"
+    prefix:   /home
+
+movibe_backend_resource_metier:
+    resource: "@MovibeBackendBundle/Resources/config/routing/metier.yml"
+    prefix:   /metier
+
+movibe_backend_resource_societe:
+    resource: "@MovibeBackendBundle/Resources/config/routing/societe.yml"
+    prefix:   /societe
+
+movibe_backend_resource_genre:
+    resource: "@MovibeBackendBundle/Resources/config/routing/genre.yml"
+    prefix:   /genre
+
+movibe_backend_resource_pays:
+    resource: "@MovibeBackendBundle/Resources/config/routing/pays.yml"
+    prefix:   /pays
+
+movibe_backend_resource_typeFilm:
+    resource: "@MovibeBackendBundle/Resources/config/routing/typeFilm.yml"
+    prefix:   /typeFilm
+
+movibe_backend_resource_couleur:
+    resource: "@MovibeBackendBundle/Resources/config/routing/couleur.yml"
+    prefix:   /couleur
+
+movibe_backend_resource_langue:
+    resource: "@MovibeBackendBundle/Resources/config/routing/langue.yml"
+    prefix:   /langue
+
+movibe_backend_resource_region:
+    resource: "@MovibeBackendBundle/Resources/config/routing/region.yml"
+    prefix:   /region
+
+movibe_backend_resource_departement:
+    resource: "@MovibeBackendBundle/Resources/config/routing/departement.yml"
+    prefix:   /departement
+
+movibe_backend_resource_ville:
+    resource: "@MovibeBackendBundle/Resources/config/routing/ville.yml"
+    prefix:   /ville
+
+movibe_backend_resource_adresse:
+    resource: "@MovibeBackendBundle/Resources/config/routing/cinema.yml"
+    prefix:   /cinema
+
+movibe_backend_resource_horaire:
+    resource: "@MovibeBackendBundle/Resources/config/routing/horaire.yml"
+    prefix:   /horaire
+
+movibe_backend_resource_presse:
+    resource: "@MovibeBackendBundle/Resources/config/routing/presse.yml"
+    prefix:   /presse
+
+movibe_backend_resource_film:
+    resource: "@MovibeBackendBundle/Resources/config/routing/film.yml"
+    prefix:   /film
+
+movibe_backend_resource_personne:
+    resource: "@MovibeBackendBundle/Resources/config/routing/personne.yml"
+    prefix:   /personne
+
+movibe_backend_resource_typeMedia:
+    resource: "@MovibeBackendBundle/Resources/config/routing/typeMedia.yml"
+    prefix:   /typeMedia
+
+movibe_backend_resource_news:
+    resource: "@MovibeBackendBundle/Resources/config/routing/news.yml"
+    prefix:   /news
+
+movibe_backend_resource_user:
+    resource: "@MovibeBackendBundle/Resources/config/routing/user.yml"
+    prefix:   /user
+
+movibe_backend_resource_commentaire:
+    resource: "@MovibeBackendBundle/Resources/config/routing/commentaire.yml"
+    prefix:   /commentaire
+
+movibe_backend_resource_typeSeance:
+    resource: "@MovibeBackendBundle/Resources/config/routing/typeSeance.yml"
+    prefix:   /typeSeance
+
+movibe_backend_resource_seance:
+    resource: "@MovibeBackendBundle/Resources/config/routing/seance.yml"
+    prefix:   /seance
+
+movibe_backend_resource_seanceFilm:
+    resource: "@MovibeBackendBundle/Resources/config/routing/seanceFilm.yml"
+    prefix:   /seanceFilm
+
+movibe_backend_resource_seanceCinema:
+    resource: "@MovibeBackendBundle/Resources/config/routing/seanceCinema.yml"
+    prefix:   /seanceCinema
+
+movibe_backend_resource_boxOfficeDate:
+    resource: "@MovibeBackendBundle/Resources/config/routing/boxOfficeDate.yml"
+    prefix:   /boxOfficeDate
+
+movibe_backend_resource_boxOffice:
+    resource: "@MovibeBackendBundle/Resources/config/routing/boxOffice.yml"
+    prefix:   /boxOffice
+
+movibe_backend_resource_search:
+    resource: "@MovibeBackendBundle/Resources/config/routing/search.yml"
+    prefix:   /search
+
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+fos_user_change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /profile

@@ -1,0 +1,40 @@
+movibe_backend_genre:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:Genre:index }
+
+
+movibe_backend_genre_new:
+    path:     /genre_new
+    defaults: { _controller: MovibeBackendBundle:Genre:new }
+
+movibe_backend_genre_create:
+    path:     /genre_create
+    defaults: { _controller: MovibeBackendBundle:Genre:create }
+    requirements:
+        _method: POST
+
+movibe_backend_genre_show:
+    path:     /genre_show/{id}
+    defaults: { _controller: MovibeBackendBundle:Genre:show }
+    requirements:
+        id: \d+
+
+movibe_backend_genre_edit:
+    path:     /genre_edit/{id}
+    defaults: { _controller: MovibeBackendBundle:Genre:edit }
+    requirements:
+        id: \d+
+
+movibe_backend_genre_update:
+    path:     /genre_update/{id}
+    defaults: { _controller: MovibeBackendBundle:Genre:update }
+    requirements:
+        _method: POST
+        id: \d+
+
+movibe_backend_genre_delete:
+    path:     /genre_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:Genre:delete }
+    requirements:
+        _method: GET|DELETE
+        id: \d+

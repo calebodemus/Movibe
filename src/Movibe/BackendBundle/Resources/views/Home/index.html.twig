@@ -1,0 +1,702 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{% block content %}
+    <!--Jumbotron-->
+    <div class="jumbotron jumbotron6">
+        <h1>Bienvenue sur <strong>MOVIBE</strong></h1>
+        <p class="lead">BACKOFFICE &#8212; Administration </p>
+    </div>
+    <!--/Jumbotron-->
+
+
+    <!-- Widget Row Start grid -->
+    <div class="row" id="powerwidgets">
+        <div class="col-md-12 bootstrap-grid">
+
+            <!-- New widget -->
+            <div class="powerwidget powerwidget-as-portlet-white" id="social" data-widget-editbutton="false">
+                <header>
+                    <h2>Sorties de la semaine<small>Démarrage (nombre d'entrées)</small></h2>
+                </header>
+                <div class="inner-spacer">
+                    <div class="row">
+                        <!--Row-->
+                        <ul class="tiny-stats">
+                            {% for sortieDemarrage in sortiesDemarrage %}
+                            <li class="col-md-2 col-sm-4 col-xs-6">
+                                <div class="statistic clearfix">
+                                    <div class="easy-pie-chart-container"><span class="chart" id="easy1" data-percent="{{ sortieDemarrage.percent }}"> <span class="percent"></span> <i class="entypo-video"></i></span></div>
+                                    <h5>{{ sortieDemarrage.titre }}</h5>
+                                    <h6>Entrée: {{ sortieDemarrage.entree }}</h6>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <!--/Row-->
+                </div>
+            </div>
+            <!-- End Widget -->
+        </div>
+        <!-- /Inner Row Col-md-12 -->
+
+        <div class="col-md-12 bootstrap-grid">
+
+            <!-- New widget -->
+            <div class="powerwidget powerwidget-as-portlet-white" id="social" data-widget-editbutton="false">
+                <header>
+                    <h2>BOX OFFICE<small>3 mois glissant</small></h2>
+                </header>
+                <div class="inner-spacer">
+                    <div class="flotchart-container">
+                        <div id="placeholderY" class="flotchart-placeholder"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Widget -->
+
+        </div>
+        <!-- /Inner Row Col-md-12 -->
+
+
+
+        <div class="col-md-12 bootstrap-grid">
+
+            <!-- New widget -->
+
+            <div class="powerwidget powerwidget-as-portlet-white">
+                <header>
+                    <h2>BOX OFFICE<small>par genre</small></h2>
+                </header>
+                <div>
+                    <div class="powerwidget-editbox">
+                        <div>
+                            <label>Title:</label>
+                            <input class="form-control" type="text" />
+                        </div>
+                        <div>
+                            <label>Styles:</label>
+                            <span data-widget-setstyle="pink" class="pink-btn"></span> <span data-widget-setstyle="blue" class="blue-btn"></span> <span data-widget-setstyle="dark-blue" class="dark-blue-btn"></span> <span data-widget-setstyle="green" class="green-btn"></span> <span data-widget-setstyle="green-alt" class="green-alt-btn"></span> <span data-widget-setstyle="green-acid" class="green-acid-btn"></span> <span data-widget-setstyle="yellow" class="yellow-btn"></span> <span data-widget-setstyle="purple" class="purple-btn"></span> <span data-widget-setstyle="cold-grey" class="cold-grey-btn"></span> <span data-widget-setstyle="dark-cold-grey" class="dark-cold-grey-btn"></span> <span data-widget-setstyle="orange" class="orange-btn"></span> <span data-widget-setstyle="red" class="red-btn"></span> <span data-widget-setstyle="dark-red" class="dark-red-btn"></span> <span data-widget-setstyle="black" class="black-btn"></span> </div>
+                    </div>
+                    <div class="inner-spacer">
+                        <div class="row">
+                            <!--Row-->
+
+                            <div class="col-md-12">
+                                <div class="flotchart-container  margin-negative-top-10px">
+                                    <div id="placeholderX" class="flotchart-placeholder"></div>
+                                </div>
+                                <div class="row margin-bottom-10px">
+                                    <ul class="countries-demo" id="choiceX">
+                                        {% for allGenre in allGenres %}
+                                        <li class="col-md-2 col-sm-4">
+                                            <h3>{{ allGenre.nom }}<span class="label bg-marine"><i class="fa fa-caret-up"></i> 22%</span></h3>
+                                            <div class="orb-form">
+                                                <label class="toggle" for="id{{ allGenre.nom }}">
+                                                    <input name={{ allGenre.nom }} checked id="id{{ allGenre.nom }}" type="checkbox">
+                                                    Uncheck to hide
+                                                    </input>
+                                                    <i></i></label>
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <!--/Row-->
+
+                            </div>
+                            <!--/Col-md-12-->
+                        </div>
+                        <!--/Row-->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- End .powerwidget -->
+        <div class="col-md-12 bootstrap-grid">
+            <!-- New widget-->
+            <div class="powerwidget cold-grey" data-widget-editbutton="false">
+                <header>
+                    <h2>Calendar<small>Events</small></h2>
+                </header>
+                <div class="inner-spacer">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div id='calendar2'></div>
+                        </div>
+                        <div class="col-md-4">
+
+                            <!--Calendar-->
+                            <div class="calendar-day-block">
+                                <div class="day-block">
+                                    <p class="week-day">Saturday</p>
+                                    <p class="day">28</p>
+                                    <p class="month-year">June 2014</p>
+                                    <div class="btn-group">
+                                        <button class="btn btn-default btn-sm"><i class="fa fa-plus-circle"></i> Add Event</button>
+                                        <button class="btn btn-default btn-sm"><i class="fa fa-gift"></i> Birthdays</button>
+                                    </div>
+                                </div>
+                                <form action="" id="data-pickers" class="orb-form bg-blue">
+                                    <fieldset>
+                                        <section>
+                                            <div id="inline"></div>
+                                        </section>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <!--/calendar-day-block-->
+
+                            <div class="weather-block bg-blue">
+                                <div class="weather-current-city">
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-6 col-xs-6"><span class="current-city">London, GB <span class="badge bg-blue"><i class="fa fa-clock-o"></i> GMT+1</span></span><span class="current-temp">22&deg;C</span><span class="current-day">Saturday, 28 June</span></div>
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <span class="current-day-icon">
+                                                <canvas id="clear-day" width="120" height="120"></canvas>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <ul class="days">
+                                        <li class="col-md-3 col-sm-3 col-xs-3"><strong>Tue</strong>
+                                            <canvas id="snow" width="50" height="50"></canvas>
+                                            <span>19&deg;</span></li>
+                                        <li class="col-md-3 col-sm-3 col-xs-3"><strong>Fri</strong>
+                                            <canvas id="rain" width="50" height="50"></canvas>
+                                            <span>17&deg;</span></li>
+                                        <li class="col-md-3 col-sm-3 col-xs-3"><strong>Sat</strong>
+                                            <canvas id="sleet" width="50" height="50"></canvas>
+                                            <span>23&deg;</span></li>
+                                        <li class="col-md-3 col-sm-3 col-xs-3"><strong>Sun</strong>
+                                            <canvas id="fog" width="50" height="50"></canvas>
+                                            <span>21&deg;</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Widget -->
+        </div>
+
+
+        <div class="col-md-6 bootstrap-grid">
+            <!-- New widget -->
+            <div class="powerwidget powerwidget-as-portlet-green" id="chartjsgraphs-index-1" data-widget-editbutton="false">
+                <header>
+                    <h2>CATEGORIES</h2>
+                </header>
+                <div class="inner-spacer">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <canvas id="chartjs-doughnutX" height="170" width="170"></canvas>
+                            <h1 class="colossal"><i class="fa fa-film"></i>{{ nbTotalFilm }} films<i class="fa fa-film"></i></h1>
+                        </div>
+                        {% set idx = 0 %}
+                        {% for inventaireNbFilmByGenre in inventaireNbFilmByGenres %}
+                        <div class="col-md-6 col-sm-6 col-xs-6 text-center">
+                            <h3 class="text-white margin-0px margin-top inventaireGenre" data-color="{{ tabClassColor[idx] }}">{{ inventaireNbFilmByGenre.nombre }}</h3>
+                            <span class="label {{ tabClassColor[idx] }}"><strong>{{ inventaireNbFilmByGenre.nom }}</strong> <i class="fa fa-chevron-circle-up"></i></span> </div>
+                            {% set idx = idx + 1 %}
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 bootstrap-grid">
+            <!-- New widget -->
+            <div class="powerwidget blue" data-widget-editbutton="false">
+                <header>
+                    <h2>Cinemas<small>Les plus fréquentés</small></h2>
+                </header>
+                <div class="inner-spacer">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover margin-0px airtable">
+                            <thead>
+                            <tr>
+                                <th colspan="2">Ville</th>
+                                <th >Cinema</th>
+                                <th >Part</th>
+                                <th >Dinamic</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><span class="num">1</span></td>
+                                <td><h5>Paris</h5>
+                                    <small><i class="fa fa-clock-o"></i> Région parisienne</small> <span class="badge">12:20</span></td>
+                                <td><h5>UGC Les Gobelins<small class="text-muted">3 avenue des gobelins</small></h5>
+                                    <small><strong>589871 <span class="text-green">(567113)</span></strong> <i class="fa fa-caret-down"></i></small></td>
+                                <td class="text-center"><span class="table-sparkline-pie2">1,3,2,5,3</span></td>
+                                <td class="text-center"><span class="table-sparkline-lines">5,6,7,9,9,5,3,2,2,4,6,7</span></td>
+                            </tr>
+                            <tr>
+                                <td ><span class="num">2</span></td>
+                                <td><h5>China</h5>
+                                    <small><i class="fa fa-clock-o"></i> Last Update</small> <span class="badge">12:21</span></td>
+                                <td><h5>Google<small class="text-muted">Google Analytics</small></h5>
+                                    <small><strong>82871 <span class="text-green">(99143)</span></strong> <i class="fa fa-caret-up"></i></small></td>
+                                <td class="text-center"><span class="table-sparkline-pie2">3,3,2,1,5</span></td>
+                                <td class="text-center"><span class="table-sparkline-lines">9,3,3,2,4,5,6,2,8,4,9,0</span></td>
+                            </tr>
+                            <tr>
+                                <td ><span class="num">3</span></td>
+                                <td><h5>Germany</h5>
+                                    <small><i class="fa fa-clock-o"></i> Last Update</small> <span class="badge">12:22</span></td>
+                                <td><h5>Google<small class="text-muted">Google Analytics</small></h5>
+                                    <small><strong>589666 <span class="text-red">(542313)</span></strong> <i class="fa fa-caret-down"></i></small></td>
+                                <td class="text-center"><span class="table-sparkline-pie2">1,3,2,3,1</span></td>
+                                <td class="text-center"><span class="table-sparkline-lines">5,6,7,9,9,5,3,2,8,4,6,7</span></td>
+                            </tr>
+                            <tr>
+                                <td ><span class="num">4</span></td>
+                                <td><h5>Russian Federation</h5>
+                                    <small><i class="fa fa-clock-o"></i> Last Update</small> <span class="badge">12:23</span></td>
+                                <td><h5>Google<small class="text-muted">Google Analytics</small></h5>
+                                    <small><strong>589788 <span class="text-green">(508113)</span></strong> <i class="fa fa-caret-down"></i></small></td>
+                                <td class="text-center"><span class="table-sparkline-pie2">4,3,2,2,5</span></td>
+                                <td class="text-center"><span class="table-sparkline-lines">5,6,7,9,9,5,3,9,2,4,6,7</span></td>
+                            </tr>
+                            <tr>
+                                <td ><span class="num">5</span></td>
+                                <td><h5>India</h5>
+                                    <small><i class="fa fa-clock-o"></i> Last Update</small> <span class="badge">12:24</span></td>
+                                <td><h5>Google<small class="text-muted">Google Analytics</small></h5>
+                                    <small><strong>589871 <span class="text-blue">(567113)</span></strong> <i class="fa fa-caret-down"></i></small></td>
+                                <td class="text-center"><span class="table-sparkline-pie2">3,3,2,5,7</span></td>
+                                <td class="text-center"><span class="table-sparkline-lines">5,6,7,9,9,5,3,2,2,4,6,7</span></td>
+                            </tr>
+                            <tr>
+                                <td ><span class="num">6</span></td>
+                                <td><h5>Antarctica</h5>
+                                    <small><i class="fa fa-clock-o"></i> Last Update</small> <span class="badge">12:25</span></td>
+                                <td><h5>Google<small class="text-muted">Google Analytics</small></h5>
+                                    <small><strong>589871 <span class="text-green">(567113)</span></strong> <i class="fa fa-caret-up"></i></small></td>
+                                <td class="text-center"><span class="table-sparkline-pie2">2,3,2,2,6</span></td>
+                                <td class="text-center"><span class="table-sparkline-lines">5,6,7,2,4,5,1,2,8,4,6,9</span></td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th colspan="2">Country</th>
+                                <th>Source</th>
+                                <th>Part</th>
+                                <th>Dynamic</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- End Widget -->
+        </div>
+
+        <div class="col-md-12 bootstrap-grid">
+            <div class="row">
+                <!-- New widget -->
+                <div class="col-md-6">
+                    <div class="powerwidget powerwidget-as-portlet powerwidget-as-portlet-cold-grey" data-widget-editbutton="false">
+                        <header>
+                            <h2>Média<small>le dernier inséré</small></h2>
+                        </header>
+                        <div class="inner-spacer nopadding">
+                            <div class="vidz" style="text-align: center">
+                                {{ lastMedia.url|raw }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /New widget -->
+
+                <!-- New widget -->
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="powerwidget powerwidget-as-portlet powerwidget-as-portlet-blue" id="widget2" data-widget-editbutton="false">
+                                <header> </header>
+                                <div class="inner-spacer nopadding">
+                                    <div>
+                                        <blockquote>
+                                            <p>{{ lastCommentaire.comment }}</p>
+                                            <footer>Posté par <cite title="Source Title">{{ lastCommentaire.user.username }}</cite></footer>
+                                        </blockquote>
+                                    </div>
+                                    <ul class="portlet-bottom-block">
+                                        <li class="col-md-6 col-sm-6 col-xs-6"><strong>{{ lastCommentaire.user.commentaires|length }}</strong><small>Commentaires</small></li>
+                                        <li class="col-md-6 col-sm-6 col-xs-6"><strong>{{ lastCommentaire.dateCreation|date('Y-m-d') }}</strong><small>Posté le</small></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /New widget -->
+            </div>
+
+        </div>
+        <!-- /Inner Row Col-md-12 -->
+
+
+    </div>
+    <!-- /Widgets Row End Grid-->
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <!--GMaps-->
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+    {% javascripts 'bundles/movibebackend/js/vendors/gmap/jquery.gmap.js'
+                   'bundles/movibebackend/js/vendors/easypie/*'
+                   'bundles/movibebackend/js/vendors/easing/*'
+                   'bundles/movibebackend/js/vendors/nanoscroller/*'
+                   'bundles/movibebackend/js/vendors/fullcalendar/*'
+                   'bundles/movibebackend/js/vendors/fullcalendar/lang/fr.js'
+                   'bundles/movibebackend/js/vendors/sparkline/*'
+                   'bundles/movibebackend/js/vendors/horisontal/*'
+                   'bundles/movibebackend/js/vendors/classie/*'
+                   'bundles/movibebackend/js/vendors/flotchart/jquery.flot.min.js'
+                   'bundles/movibebackend/js/vendors/flotchart/jquery.flot.resize.min.js'
+                   'bundles/movibebackend/js/vendors/flotchart/jquery.flot.axislabels.js'
+                   'bundles/movibebackend/js/vendors/flotchart/jquery.flot-tooltip.js'
+                   'bundles/movibebackend/js/vendors/chartjs/*'
+                   'bundles/movibebackend/js/vendors/powerwidgets/powerwidgets.min.js'
+                   'bundles/movibebackend/js/vendors/skycons/*'
+                   'bundles/movibebackend/js/vendors/fitvids/*' %}
+         <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var tabColor = {
+                "bg-pink": "#f87aa0",
+                "bg-blue": "#5bc0de",
+                "bg-dark-blue": "#3b8dbd",
+                "bg-green": "#82b964",
+                "bg-green-alt": "#58b868",
+                "bg-acid-green": "#ccd600",
+                "bg-yellow": "#f4cc13",
+                "bg-yellow-muted": "#fffbdb",
+                "bg-purple": "#a7609a",
+                "bg-grey": "#888",
+                "bg-cold-grey": "#595f66",
+                "bg-dark-cold-grey": "#454b52",
+                "bg-orange": "#f0ad4e",
+                "bg-red": "#d24d33",
+                "bg-dark-red": "#993838",
+                "bg-black": "#000",
+                "bg-marine": "#00a9ae"
+            };
+            var doughnutDataX = new Array();
+            var i=0;
+
+            $(".inventaireGenre").each(function(i){
+                var classColor = $(this).attr("data-color");
+                var nombre = $(this).html();
+
+                var color = tabColor[classColor];
+
+                doughnutDataX[i] = {
+                    value: nombre,
+                    color: color
+                }
+
+            });
+
+            var doughnutoptionsX = {
+                segmentShowStroke: false,
+                percentageInnerCutout: 40
+            };
+
+            if ($('#chartjs-doughnutX').length > 0) {
+                new Chart(document.getElementById("chartjs-doughnutX").getContext("2d")).Doughnut(doughnutDataX, doughnutoptionsX);
+            }
+
+            $.ajax({
+                url:'{{ path('movibe_backend_homepage_stat') }}',
+                data:'',
+                dataType: "json"})
+                    .done(function(data){
+                        var statGenre = data.statGenre;
+                        var statBoxOfficeFilm = data.statBoxOfficeFilm;
+
+                        //var resultats = data.resultat;
+
+                        chartGenre(statGenre);
+                        chartFilm(statBoxOfficeFilm);
+
+                        function chartGenre(resultats) {
+                            var datasets = {};
+
+                            if (typeof(resultats) != "undefined" && resultats !== null) {
+                                var i = 0;
+                                var mois = ["JAN", "FEV", "MAR", "AVR", "MAI", "JUN", "JUL", "AOU", "SEP", "OCT", "NOV", "DEC"];
+
+                                while (resultats[i] !== undefined) {
+                                    var resultat = resultats[i];
+                                    if (i == 0) {
+                                        var categorie = resultat.nom;
+                                        var tabElements = new Array();
+                                    }
+
+                                    var month = parseInt(resultat.mois) - 1;
+                                    month = mois[month];
+
+                                    if (categorie != resultat.nom) {
+                                        var element = {"label": resultat.nom, "data": tabElements};
+                                        datasets[resultat.nom] = element;
+                                        categorie = resultat.nom;
+                                        tabElements = new Array();
+                                    }
+                                    tabElements[tabElements.length] = [resultat.mois, resultat.entree];
+                                    i++;
+                                }
+                                var element = {"label": resultat.nom, "data": tabElements};
+                                datasets[resultat.nom] = element;
+
+                                var zx = 0;
+                                $.each(datasets, function (key, val) {
+                                    val.color = zx;
+                                    ++zx;
+                                });
+
+                                // insert checkboxes
+                                var choiceContainer = $("#choiceX");
+
+
+                                choiceContainer.find("input").click(plotAccordingToChoices);
+
+                                function plotAccordingToChoices() {
+
+                                    var data = [];
+
+                                    choiceContainer.find("input:checked").each(function () {
+                                        var key = $(this).attr("name");
+                                        if (key && datasets[key]) {
+                                            data.push(datasets[key]);
+                                        }
+                                    });
+
+                                    if (data.length > 0) {
+                                        $.plot("#placeholderX", data, {
+
+
+                                            series: {
+                                                lines: {
+                                                    show: true,
+                                                    lineWidth: 7,
+                                                    fill: true,
+                                                    fillColor: {
+                                                        colors: [{
+                                                            opacity: 1
+                                                        }, {
+                                                            opacity: 1
+                                                        }]
+                                                    }
+                                                },
+
+                                                points: {
+                                                    show: true,
+                                                    fillColor: "#595f66",
+                                                    lineWidth: 3,
+                                                    radius: 5
+                                                },
+                                                shadowSize: 0,
+                                                stack: true
+                                            },
+
+                                            colors: ["#33383d", "#454b52", "#5bc0de", "#82b964", "#ccd600", "#f4cc13", "#8960a7", "#454b52", "#d24d33", "#f0ad4e"],
+
+                                            grid: {
+                                                hoverable: true,
+                                                clickable: true,
+                                                color: '#555',
+                                                borderWidth: 0
+                                            },
+
+                                            legend: {
+
+                                                noColumns: 3,
+                                                margin: -15,
+                                                backgroundColor: '#fff',
+                                                backgroundOpacity: 1
+                                            },
+
+                                            yaxis: {
+                                                show: true,
+                                                min: 0,
+                                                font: {
+                                                    color: "#ddd",
+                                                    size: 11,
+                                                    family: "Open Sans, sans-serif"
+                                                }
+                                            },
+                                            xaxis: {
+
+                                                ticks: [
+                                                    [1, "JAN"],
+                                                    [2, "FEB"],
+                                                    [3, "MAR"],
+                                                    [4, "APR"],
+                                                    [5, "MAY"],
+                                                    [6, "JUN"],
+                                                    [7, "JUL"],
+                                                    [8, "AUG"],
+                                                    [9, "SEP"],
+                                                    [10, "OCT"],
+                                                    [11, "NOV"],
+                                                    [12, "DEC"]
+                                                ],
+                                                font: {
+                                                    color: "#ddd",
+                                                    size: 11,
+                                                    family: "Open Sans, sans-serif"
+                                                }
+                                            },
+                                            tooltip: true,
+                                            tooltipOpts: {
+                                                content: "%y"
+                                            }
+
+                                        });
+                                    }
+                                }
+
+                                plotAccordingToChoices();
+
+                            }
+                        }
+
+                        function chartFilm(resultats)
+                        {
+                            if (typeof(resultats) != "undefined" && resultats !== null) {
+                                var i = 0;
+                                var j = 0;
+                                var k = 0;
+                                var tabDate = new Array();
+                                var tabElements = new Array();
+                                var tabElement = new Array();
+                                var tabFilm = new Array();
+
+                                while (resultats[i] !== undefined) {
+                                    var resultat = resultats[i];
+
+                                    if (i == 0) {
+                                        var titre = resultat.titre;
+                                    }
+
+                                    if (titre != resultat.titre) {
+                                        tabElement['data'] = tabFilm;
+                                        tabElement['label'] = titre;
+                                        tabElements[k] = tabElement;
+                                        titre = resultat.titre;
+                                        tabFilm = new Array();
+                                        tabElement = new Array();
+                                        j=0;
+                                        k++;
+                                    }
+                                    tabFilm[j] = [resultat.id, resultat.entree];
+                                    var ind = parseInt(resultat.id);
+
+                                    tabDate[ind] = [ind, resultat.date];
+                                    i++;
+                                    j++;
+                                }
+
+                                tabElement['data'] = tabFilm;
+                                tabElement['label'] = titre;
+                                tabElements[k] = tabElement;
+
+                                $.plot($("#placeholderY"),
+                                    tabElements, {
+                                    series: {
+                                        lines: {
+                                            show: true,
+                                            lineWidth: 7,
+                                            fill: true,
+                                            fillColor: "rgba(255,255,255, 0.2)"
+                                        },
+
+                                        points: {
+                                            show: true,
+                                            fillColor: "#fff",
+                                            lineWidth: 3,
+                                            radius: 5
+                                        },
+                                        shadowSize: 0,
+                                        stack: true
+                                    },
+
+
+                                    tooltip: true,
+                                    tooltipOpts: {
+                                        content: "%y Entrées"
+                                    },
+
+                                    grid: {
+                                        hoverable: true,
+                                        clickable: true,
+
+                                        borderWidth: 0
+                                    },
+
+                                    legend: {
+                                        noColumns: 3,
+                                        margin: -10,
+                                        color: '#555',
+                                        backgroundColor: '#fff',
+                                        backgroundOpacity: 1,
+                                        position: "nw"
+                                    },
+
+
+                                    colors: ["#47639e", "#55acee", "#cb2027", "#333", "#a0c3ff", "#597da3"],
+                                    xaxis: {
+                                        color: "rgba(0,0,0,.1)",
+                                        ticks: tabDate,
+                                        font: {
+                                            color: "#8b8f94",
+                                            size: 11,
+                                            family: "Open Sans, sans-serif"
+                                        }
+                                    },
+                                    yaxis: {
+                                        color: "rgba(255,255,255,0.4)",
+                                        ticks: 5,
+                                        show: false,
+                                        tickDecimals: 0,
+                                        font: {
+                                            color: "#fff",
+                                            size: 11
+                                        }
+                                    }
+                                });
+
+                            }
+                        }
+                    });
+
+            var icons = new Skycons({"color": "#fff"}),
+                    list = [
+                        "clear-day", "clear-night", "partly-cloudy-day",
+                        "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
+                        "fog"
+                    ],
+                    i;
+
+            for (i = list.length; i--;)
+                icons.set(list[i], list[i]);
+
+            icons.play();
+        });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+movibe_backend_typeMedia:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:TypeMedia:index }
+
+
+movibe_backend_typeMedia_new:
+    path:     /typeMedia_new
+    defaults: { _controller: MovibeBackendBundle:TypeMedia:new }
+
+movibe_backend_typeMedia_create:
+    path:     /typeMedia_create
+    defaults: { _controller: MovibeBackendBundle:TypeMedia:create }
+    requirements:
+        _method: POST
+
+movibe_backend_typeMedia_show:
+    path:     /typeMedia_show/{id}
+    defaults: { _controller: MovibeBackendBundle:TypeMedia:show }
+    requirements:
+        id: \d+
+
+movibe_backend_typeMedia_edit:
+    path:     /typeMedia_edit/{id}
+    defaults: { _controller: MovibeBackendBundle:TypeMedia:edit }
+    requirements:
+        id: \d+
+
+movibe_backend_typeMedia_update:
+    path:     /typeMedia_update/{id}
+    defaults: { _controller: MovibeBackendBundle:TypeMedia:update }
+    requirements:
+        _method: POST
+        id: \d+
+
+movibe_backend_typeMedia_delete:
+    path:     /typeMedia_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:TypeMedia:delete }
+    requirements:
+        _method: GET|DELETE
+        id: \d+

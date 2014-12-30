@@ -1,0 +1,28 @@
+movibe_backend_boxOfficeDate_new:
+    path:     /boxOfficeDate_new
+    defaults: { _controller: MovibeBackendBundle:BoxOfficeDate:new }
+    requirements:
+        _method: GET
+
+movibe_backend_boxOfficeDate_create:
+    path:     /boxOfficeDate_create/{date}
+    defaults: { _controller: MovibeBackendBundle:BoxOfficeDate:create }
+    requirements:
+        _method: POST
+
+
+movibe_backend_boxOfficeDate_showBoxOffices:
+    path:     /boxOfficeDate_showBoxOffices/{date}
+    defaults: { _controller: MovibeBackendBundle:BoxOfficeDate:showBoxOffices }
+    requirements:
+        _method: GET
+
+movibe_backend_boxOfficeDate_delete:
+    path:     /boxOfficeDate_delete/{date}
+    defaults: { _controller: MovibeBackendBundle:BoxOfficeDate:delete }
+    requirements:
+        _method: GET|DELETE
+
+
+
+

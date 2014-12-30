@@ -1,0 +1,110 @@
+<?php
+
+namespace Movibe\BackendBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+/**
+ * FilmSociete
+ *
+ * @ORM\Table(name="film_societe_metier")
+ * @ORM\Entity(repositoryClass="Movibe\BackendBundle\Entity\FilmSocieteMetierRepository")
+ * @UniqueEntity(fields={"film","societe","metier"},message="Cette société est déjà enregistrée pour ce métier dans le film sélectionné.")
+ */
+class FilmSocieteMetier
+{
+    /**
+     *
+     * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="Movibe\BackendBundle\Entity\Film", inversedBy="filmSocietes")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $film;
+
+    /**
+     *
+     * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="Movibe\BackendBundle\Entity\Societe", inversedBy="filmSocieteMetiers")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $societe;
+
+    /**
+     *
+     * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="Movibe\BackendBundle\Entity\Metier", inversedBy="filmSocieteMetiers")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $metier;
+
+
+    /**
+     * Set film
+     *
+     * @param \Movibe\BackendBundle\Entity\Film $film
+     * @return FilmSocieteMetier
+     */
+    public function setFilm(\Movibe\BackendBundle\Entity\Film $film)
+    {
+        $this->film = $film;
+
+        return $this;
+    }
+
+    /**
+     * Get film
+     *
+     * @return \Movibe\BackendBundle\Entity\Film 
+     */
+    public function getFilm()
+    {
+        return $this->film;
+    }
+
+    /**
+     * Set metier
+     *
+     * @param \Movibe\BackendBundle\Entity\Metier $metier
+     * @return FilmSocieteMetier
+     */
+    public function setMetier(\Movibe\BackendBundle\Entity\Metier $metier)
+    {
+        $this->metier = $metier;
+
+        return $this;
+    }
+
+    /**
+     * Get metier
+     *
+     * @return \Movibe\BackendBundle\Entity\Metier 
+     */
+    public function getMetier()
+    {
+        return $this->metier;
+    }
+
+    /**
+     * Set societe
+     *
+     * @param \Movibe\BackendBundle\Entity\Societe $societe
+     * @return FilmSocieteMetier
+     */
+    public function setSociete(\Movibe\BackendBundle\Entity\Societe $societe)
+    {
+        $this->societe = $societe;
+
+        return $this;
+    }
+
+    /**
+     * Get societe
+     *
+     * @return \Movibe\BackendBundle\Entity\Societe 
+     */
+    public function getSociete()
+    {
+        return $this->societe;
+    }
+}

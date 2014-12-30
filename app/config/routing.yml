@@ -1,0 +1,4 @@
+movibe_backend:
+    resource: "@MovibeBackendBundle/Resources/config/routing.yml"
+    prefix:   /
+

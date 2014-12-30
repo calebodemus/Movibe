@@ -1,0 +1,209 @@
+<?php
+
+namespace Movibe\BackendBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * News
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Movibe\BackendBundle\Entity\NewsRepository")
+ */
+class News
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="titre", type="string", length=255)
+     */
+    private $titre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=10240)
+     */
+    private $description;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateCreation", type="datetime")
+     */
+    private $dateCreation;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="Movibe\BackendBundle\Entity\Film", inversedBy="listNews")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $film;
+
+    /**
+     *
+     * @ORM\ManyToMany(targetEntity="Movibe\BackendBundle\Entity\Personne", inversedBy="listNews")
+     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinTable(name="news_personne")
+     */
+    private $personnes;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="Movibe\BackendBundle\Entity\Image", inversedBy="listNews")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $image;
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set titre
+     *
+     * @param string $titre
+     * @return News
+     */
+    public function setTitre($titre)
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
+
+    /**
+     * Get titre
+     *
+     * @return string 
+     */
+    public function getTitre()
+    {
+        return $this->titre;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return News
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set dateCreation
+     *
+     * @param \DateTime $dateCreation
+     * @return News
+     */
+    public function setDateCreation($dateCreation)
+    {
+        $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * Get dateCreation
+     *
+     * @return \DateTime 
+     */
+    public function getDateCreation()
+    {
+        return $this->dateCreation;
+    }
+
+    /**
+     * Set film
+     *
+     * @param \Movibe\BackendBundle\Entity\Film $film
+     * @return News
+     */
+    public function setFilm(\Movibe\BackendBundle\Entity\Film $film = null)
+    {
+        $this->film = $film;
+
+        return $this;
+    }
+
+    /**
+     * Get film
+     *
+     * @return \Movibe\BackendBundle\Entity\Film 
+     */
+    public function getFilm()
+    {
+        return $this->film;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->personnes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add personnes
+     *
+     * @param \Movibe\BackendBundle\Entity\Personne $personnes
+     * @return News
+     */
+    public function addPersonne(\Movibe\BackendBundle\Entity\Personne $personnes)
+    {
+        $this->personnes[] = $personnes;
+
+        return $this;
+    }
+
+    /**
+     * Remove personnes
+     *
+     * @param \Movibe\BackendBundle\Entity\Personne $personnes
+     */
+    public function removePersonne(\Movibe\BackendBundle\Entity\Personne $personnes)
+    {
+        $this->personnes->removeElement($personnes);
+    }
+
+    /**
+     * Get personnes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPersonnes()
+    {
+        return $this->personnes;
+    }
+}

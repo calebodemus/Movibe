@@ -1,0 +1,42 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{% block content %}
+
+    <div class="page-header">
+        <h1>NEWS<small>Affichage</small></h1>
+    </div>
+
+    <div class="row" id="powerwidgets">
+        <div class="col-md-12 bootstrap-grid">
+            <div class="powerwidget dark-red" data-widget-editbutton="false" data-widget-deletebutton="false">
+                <header>
+                    <h2>Sample widget<small>Clear</small></h2>
+                </header>
+                <div class="inner-spacer">
+                    <h1>{{ news.titre }}</h1>
+                    {{ news.description|raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="big-icons-buttons">
+        <a class="btn btn-primary" href="{{ path('movibe_backend_news_search') }}"><i class="fa fa-search"></i> Ajout dans une autre entité</a>
+        <div class="btn-group">
+            {% if news.film %}
+                <a class="btn btn-primary" href="{{ path('movibe_backend_news_new', { 'type': 'film', 'idt': news.film.id }) }}"><i class="fa fa-plus"></i> Ajout</a>
+            {% else %}
+                {% for personne in news.personnes %}
+                    <a class="btn btn-primary" href="{{ path('movibe_backend_news_new', { 'type': 'personne', 'idt': personne.id }) }}"><i class="fa fa-plus"></i> Ajout</a>
+                {% endfor %}
+            {% endif %}
+            <a class="btn btn-warning" href="{{ path('movibe_backend_news_edit', { 'id': news.id }) }}"><i class="fa fa-pencil"></i> Edit</a>
+            <a class="btn btn-danger" href="{{ path('movibe_backend_news_delete', { 'id': news.id }) }}"><i class="fa fa-times"></i> Delete</a>
+        </div>
+        <a class="btn btn-info" href="{{ path('movibe_backend_news') }}"><i class="fa fa-mail-reply"></i>Retour à la liste</a>
+    </div>
+
+
+{% endblock %}
+
+

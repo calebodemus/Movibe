@@ -1,0 +1,40 @@
+movibe_backend_presse:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:Presse:index }
+
+
+movibe_backend_presse_new:
+    path:     /presse_new
+    defaults: { _controller: MovibeBackendBundle:Presse:new }
+
+movibe_backend_presse_create:
+    path:     /presse_create
+    defaults: { _controller: MovibeBackendBundle:Presse:create }
+    requirements:
+        _method: POST
+
+movibe_backend_presse_show:
+    path:     /presse_show/{id}
+    defaults: { _controller: MovibeBackendBundle:Presse:show }
+    requirements:
+        id: \d+
+
+movibe_backend_presse_edit:
+    path:     /presse_edit/{id}
+    defaults: { _controller: MovibeBackendBundle:Presse:edit }
+    requirements:
+        id: \d+
+
+movibe_backend_presse_update:
+    path:     /presse_update/{id}
+    defaults: { _controller: MovibeBackendBundle:Presse:update }
+    requirements:
+        _method: POST
+        id: \d+
+
+movibe_backend_presse_delete:
+    path:     /presse_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:Presse:delete }
+    requirements:
+        _method: GET|DELETE
+        id: \d+

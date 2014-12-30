@@ -1,0 +1,40 @@
+movibe_backend_departement:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:Departement:index }
+
+
+movibe_backend_departement_new:
+    path:     /departement_new
+    defaults: { _controller: MovibeBackendBundle:Departement:new }
+
+movibe_backend_departement_create:
+    path:     /departement_create
+    defaults: { _controller: MovibeBackendBundle:Departement:create }
+    requirements:
+        _method: POST
+
+movibe_backend_departement_show:
+    path:     /departement_show/{id}
+    defaults: { _controller: MovibeBackendBundle:Departement:show }
+    requirements:
+        id: \d+
+
+movibe_backend_departement_edit:
+    path:     /departement_edit/{id}
+    defaults: { _controller: MovibeBackendBundle:Departement:edit }
+    requirements:
+        id: \d+
+
+movibe_backend_departement_update:
+    path:     /departement_update/{id}
+    defaults: { _controller: MovibeBackendBundle:Departement:update }
+    requirements:
+        _method: POST
+        id: \d+
+
+movibe_backend_departement_delete:
+    path:     /departement_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:Departement:delete }
+    requirements:
+        _method: GET|DELETE
+        id: \d+

@@ -1,0 +1,37 @@
+<?php
+
+namespace Movibe\BackendBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * BoxOfficeDate
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Movibe\BackendBundle\Entity\BoxOfficeDateRepository")
+ */
+class BoxOfficeDate
+{
+    /**
+     * @var \DateTime
+     * @ORM\Id
+     * @ORM\Column(name="dateBox", type="date")
+     */
+    private $dateBox;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="Movibe\BackendBundle\Entity\BoxOffice", mappedBy="dateBox",cascade={"remove"})
+     */
+    private $boxOffices;
+
+    /**
+     * Get date
+     *
+     * @return \DateTime 
+     */
+    public function getDateBox()
+    {
+        return $this->dateBox;
+    }
+}

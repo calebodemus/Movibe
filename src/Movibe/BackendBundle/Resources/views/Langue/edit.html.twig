@@ -1,0 +1,48 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{% block content %}
+
+    <div class="page-header">
+        <h1>LANGUES<small>Edition</small></h1>
+    </div>
+
+    <div class="row" id="powerwidgets">
+        <div class="col-md-12 bootstrap-grid">
+            <div class="powerwidget dark-red" data-widget-editbutton="false" data-widget-deletebutton="false">
+                <header>
+                    <h2>Sample widget<small>Clear</small></h2>
+                </header>
+                <div class="inner-spacer">
+                    {{ form_start(edit_form,{'method':'POST','role':'form','attr':{'novalidate':'novalidate','class':'form-horizontal'} } ) }}
+                    <fieldset>
+                        <legend>Form Name</legend>
+                        <div class="form-group">
+                            {{ form_label(edit_form.nom,null,{'label_attr': {'class':'col-md-3 control-label'}}) }}
+                            <div class="col-md-4">
+                                {{ form_widget(edit_form.nom,{'id':'nom','attr': {'placeholder':'Nom', 'class':'form-control input-md'}} )}}
+                            </div>
+                            {{ form_errors(edit_form.nom) }}
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-4">
+                                {{ form_widget(edit_form.submit,{'attr': {'class':'btn btn-primary'}} )}}
+                            </div>
+                        </div>
+                    </fieldset>
+                    {{ form_end(edit_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="big-icons-buttons">
+        <a class="btn btn-info" href="{{ path('movibe_backend_langue') }}"><i class="fa fa-mail-reply"></i>Retour à la liste</a>
+    </div>
+
+
+{% endblock %}
+
+
+

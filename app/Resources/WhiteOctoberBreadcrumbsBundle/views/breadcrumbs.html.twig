@@ -1,0 +1,18 @@
+{% if wo_breadcrumbs()|length %}
+  {% spaceless %}
+    <ul id="{{ listId }}" class="{{ listClass }} clearfix" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      {% for b in breadcrumbs %}
+        <li
+            {% if loop.last %}
+                class="active">{{ b.text | raw }}
+            {% else %}
+                >
+                <a href="{{ b.url }}" itemprop="url">
+                    {{- b.text | raw}}
+                </a>
+            {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endspaceless %}
+{% endif %}

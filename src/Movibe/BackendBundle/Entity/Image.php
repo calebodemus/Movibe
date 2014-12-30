@@ -1,0 +1,502 @@
+<?php
+
+namespace Movibe\BackendBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+/**
+ * Image
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Movibe\BackendBundle\Entity\ImageRepository")
+ * @ORM\HasLifecycleCallbacks
+ */
+class Image
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=255)
+     */
+    private $nom;
+
+    private $oldNom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="folder", type="string", length=255)
+     */
+    private $folder;
+    private $path;
+
+    private $thumbnail = array('small' => array(200,200), 'medium' => array(400,400), 'large' => array(600,600));
+
+    /**
+     *  @Assert\Image(
+     * mimeTypes = {
+     * "image/jpeg",
+     * "image/jpg",
+     * "image/JPG",
+     * "image/png"
+     * },
+     * mimeTypesMessage = "Merci de choisir un format valide (*.jpeg, *.jpg, *.png)"
+     * )
+     * @Assert\File(
+     * maxSize = "2000k",
+     * maxSizeMessage = "Votre image ne doit pas dépasser 2000ko"
+     * )
+     */
+    private $file;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="Movibe\BackendBundle\Entity\Film", inversedBy="images", cascade={"persist"})
+     */
+    private $film;
+
+    /**
+     *
+     * @ORM\ManyToMany(targetEntity="Movibe\BackendBundle\Entity\Personne", inversedBy="images", cascade={"persist"})
+     * @ORM\JoinTable(name="image_personne")
+     */
+    private $personnes;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="promotion", type="boolean")
+     */
+    private $promotion;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="affiche", type="boolean")
+     */
+    private $affiche;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="Movibe\BackendBundle\Entity\News", mappedBy="film")
+     */
+    private $listNews;
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nom
+     *
+     * @param string $nom
+     * @return Image
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * Get nom
+     *
+     * @return string
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    public function setFile(UploadedFile $file)
+    {
+        $this->file = $file;
+        return $this;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setOldNom($nom)
+    {
+        $this->oldNom = $nom;
+        return $this;
+    }
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        if (null === $this->file)
+        {
+            return false;
+        }
+
+        ///////////////////////////////////////////////
+        // cheat pour modif image
+        if (null !== $this->oldNom)
+        {
+            if (file_exists($this->getAbsoluOldPath()))
+            {
+                unlink($this->getAbsoluOldPath());
+            }
+
+            foreach ($this->thumbnail as $key => $value)
+            {
+                $file = $this->getUploadRootDir() . '/' . $this->getId() . '-' . $key . '-' . $this->oldNom;
+                if (file_exists($file))
+                {
+                    unlink($file);
+                }
+            }
+        }
+        ///////////////////////////////////////////////
+
+        $this->nom = $this->getId() . '-' . $this->file->getClientOriginalName();
+        $this->file->move($this->getUploadRootDir(),$this->nom);
+
+        // IMAGINE
+        $this->nom = $this->file->getClientOriginalName();
+
+        foreach ($this->thumbnail as $key => $value){
+
+            $thumb = $value;
+
+            $imagine = new \Imagine\Gd\Imagine();
+
+            $imagine->open($this->getAbsoluPath())
+                ->thumbnail(new\Imagine\Image\Box($value[0],$value[1]))
+                ->save(
+                    $this->getUploadDir() . '/'. $this->getId() . '-'. $key .'-' . $this->nom, array('quality' => 80)
+                );
+        }
+
+
+        $this->file = null;
+
+    }
+
+    public function getUploadRootDir()
+    {
+        return __DIR__ . '/../../../../web/' . $this->getUploadDir();
+    }
+
+    public function getUploadDir()
+    {
+        return 'upload/' . $this->folder;
+    }
+
+    public function getWebPath($thumbnail = null)
+    {
+        if (null === $this->nom)
+        {
+            return null;
+        }
+        else
+        {
+            $nom = $this->nom;
+            if ($thumbnail)
+            {
+                $tmpthumbnail = $this->getId() . '-' . $thumbnail . '-' . $nom;
+                if (file_exists($this->getUploadDir() . '/' . $tmpthumbnail))
+                {
+                    $nom = $tmpthumbnail;
+                }
+                else
+                {
+                    $nom = $this->getId() . '-' . $nom;
+                }
+            }
+            else
+            {
+                $nom = $this->getId() . '-' . $nom;
+            }
+            return $this->getUploadDir() . '/' . $nom;
+        }
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->file)
+        {
+            $this->nom = $this->file->getClientOriginalName();
+        }
+    }
+
+    /**
+     * @ORM\PreRemove()
+     */
+    public function removeFile()
+    {
+        foreach ($this->thumbnail as $key => $value)
+        {
+            $file = $this->getUploadRootDir() . '/' . $this->getId() . '-' . $key . '-' . $this->nom;
+            if (file_exists($file))
+            {
+                unlink($file);
+            }
+        }
+
+        $file = $this->getAbsoluPath();
+
+        if (file_exists($file))
+        {
+            unlink($file);
+        }
+
+    }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeDir()
+    {
+        if (is_dir($this->getUploadRootDir())) {
+            $handle=opendir($this->getUploadRootDir());
+            $cpt=0;
+            while ($file = readdir($handle)) {
+                $cpt++;
+                break;
+            }
+            closedir($handle);
+
+            if ($cpt == 0)
+            {
+                rmdir($this->getUploadRootDir());
+            }
+        }
+    }
+
+    public function getAbsoluPath()
+    {
+        if (null === $this->nom)
+        {
+            return null;
+        }
+        else
+        {
+            return $this->getUploadRootDir() . '/' . $this->getId() . '-' . $this->nom;
+        }
+    }
+
+    public function getAbsoluOldPath()
+    {
+        if (null === $this->oldNom)
+        {
+            return null;
+        }
+        else
+        {
+            return $this->getUploadRootDir() . '/' . $this->getId() . '-' . $this->oldNom;
+        }
+    }
+
+
+    public function getFolder()
+    {
+        return $this->folder;
+    }
+
+    public function setFolder($folder)
+    {
+        $this->folder = $folder;
+        return $this;
+    }
+
+
+
+    /**
+     * Set film
+     * @param \Movibe\BackendBundle\Entity\Film $film
+     * @return Image
+     */
+    public function setFilm(\Movibe\BackendBundle\Entity\Film $film = null)
+    {
+        $this->film = $film;
+
+        return $this;
+    }
+
+    /**
+     * Get film
+     *
+     * @return \Movibe\BackendBundle\Entity\Film 
+     */
+    public function getFilm()
+    {
+        return $this->film;
+    }
+
+    /**
+     * Set promotion
+     *
+     * @param boolean $promotion
+     * @return Image
+     */
+    public function setPromotion($promotion)
+    {
+        $this->promotion = $promotion;
+
+        return $this;
+    }
+
+    /**
+     * Get promotion
+     *
+     * @return boolean 
+     */
+    public function getPromotion()
+    {
+        return $this->promotion;
+    }
+
+    /**
+     * Set affiche
+     *
+     * @param boolean $affiche
+     * @return Image
+     */
+    public function setAffiche($affiche)
+    {
+        $this->affiche = $affiche;
+
+        return $this;
+    }
+
+    /**
+     * Get affiche
+     *
+     * @return boolean 
+     */
+    public function getAffiche()
+    {
+        return $this->affiche;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->personnes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add personnes
+     *
+     * @param \Movibe\BackendBundle\Entity\Personne $personnes
+     * @return Image
+     */
+    public function addPersonne(\Movibe\BackendBundle\Entity\Personne $personnes)
+    {
+        $this->personnes[] = $personnes;
+
+        return $this;
+    }
+
+    /**
+     * Remove personnes
+     *
+     * @param \Movibe\BackendBundle\Entity\Personne $personnes
+     */
+    public function removePersonne(\Movibe\BackendBundle\Entity\Personne $personnes)
+    {
+        $this->personnes->removeElement($personnes);
+    }
+
+    /**
+     * Get personnes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPersonnes()
+    {
+        return $this->personnes;
+    }
+
+    public function verifPersonne(\Movibe\BackendBundle\Entity\Personne $check)
+    {
+        foreach ($this->personnes as $personne)
+        {
+            if ($personne === $check)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function setPath($thumbnail = null)
+    {
+       $this->path = $this->getWebPath($thumbnail);
+    }
+
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    public function __toString()
+    {
+        return $this->path;
+    }
+
+
+    /**
+     * Add listNews
+     *
+     * @param \Movibe\BackendBundle\Entity\News $listNews
+     * @return Image
+     */
+    public function addListNews(\Movibe\BackendBundle\Entity\News $listNews)
+    {
+        $this->listNews[] = $listNews;
+
+        return $this;
+    }
+
+    /**
+     * Remove listNews
+     *
+     * @param \Movibe\BackendBundle\Entity\News $listNews
+     */
+    public function removeListNews(\Movibe\BackendBundle\Entity\News $listNews)
+    {
+        $this->listNews->removeElement($listNews);
+    }
+
+    /**
+     * Get listNews
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getListNews()
+    {
+        return $this->listNews;
+    }
+}

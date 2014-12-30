@@ -1,0 +1,47 @@
+movibe_backend_news:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:News:index }
+
+movibe_backend_news_new:
+    path:     /news_new/{type}/{idt}
+    defaults: { _controller: MovibeBackendBundle:News:new }
+    requirements:
+        id: \d+
+
+movibe_backend_news_create:
+    path:     /news_create/{type}/{idt}
+    defaults: { _controller: MovibeBackendBundle:News:create }
+    requirements:
+        _method: POST
+        id: \d+
+
+movibe_backend_news_show:
+    path:     /news_show/{id}
+    defaults: { _controller: MovibeBackendBundle:News:show }
+    requirements:
+        id: \d+
+
+movibe_backend_news_edit:
+    path:     /news_edit/{id}
+    defaults: { _controller: MovibeBackendBundle:News:edit }
+    requirements:
+
+movibe_backend_news_update:
+    path:     /news_update/{id}
+    defaults: { _controller: MovibeBackendBundle:News:update }
+    requirements:
+        _method: POST
+        id: \d+
+
+movibe_backend_news_delete:
+    path:     /news_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:News:delete }
+    requirements:
+        _method: GET|DELETE
+        id: \d+
+
+movibe_backend_news_search:
+    path:     /news_search
+    defaults: { _controller: MovibeBackendBundle:News:search }
+
+

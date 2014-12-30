@@ -1,0 +1,233 @@
+<?php
+
+namespace Movibe\BackendBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * Personnalite
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Movibe\BackendBundle\Entity\PersonnaliteRepository")
+ */
+class Personnalite
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prenom", type="string", length=255)
+     */
+    private $prenom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=255)
+     */
+    private $nom;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_naissance", type="datetime")
+     */
+    private $dateNaissance;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ville_origine", type="string", length=255)
+     */
+    private $villeOrigine;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="pays_origine", type="integer")
+     */
+    private $paysOrigine;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="nationalite", type="integer")
+     */
+    private $nationalite;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="biographie", type="string", length=10240)
+     */
+    private $biographie;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="sexe", type="boolean")
+     */
+    private $sexe;
+
+
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set prenom
+     *
+     * @param string $prenom
+     * @return Personnalite
+     */
+    public function setPrenom($prenom)
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    /**
+     * Get prenom
+     *
+     * @return string 
+     */
+    public function getPrenom()
+    {
+        return $this->prenom;
+    }
+
+    /**
+     * Set nom
+     *
+     * @param string $nom
+     * @return Personnalite
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * Get nom
+     *
+     * @return string 
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * Set dateNaissance
+     *
+     * @param \DateTime $dateNaissance
+     * @return Personnalite
+     */
+    public function setDateNaissance($dateNaissance)
+    {
+        $this->dateNaissance = $dateNaissance;
+
+        return $this;
+    }
+
+    /**
+     * Get dateNaissance
+     *
+     * @return \DateTime 
+     */
+    public function getDateNaissance()
+    {
+        return $this->dateNaissance;
+    }
+
+    /**
+     * Set villeOrigine
+     *
+     * @param string $villeOrigine
+     * @return Personnalite
+     */
+    public function setVilleOrigine($villeOrigine)
+    {
+        $this->villeOrigine = $villeOrigine;
+
+        return $this;
+    }
+
+    /**
+     * Get villeOrigine
+     *
+     * @return string 
+     */
+    public function getVilleOrigine()
+    {
+        return $this->villeOrigine;
+    }
+
+    /**
+     * Set nationalite
+     *
+     * @param integer $nationalite
+     * @return Personnalite
+     */
+    public function setNationalite($nationalite)
+    {
+        $this->nationalite = $nationalite;
+
+        return $this;
+    }
+
+    /**
+     * Get nationalite
+     *
+     * @return integer 
+     */
+    public function getNationalite()
+    {
+        return $this->nationalite;
+    }
+
+
+    /**
+     * Set biographie
+     *
+     * @param string $biographie
+     * @return Personnalite
+     */
+    public function setBiographie($biographie)
+    {
+        $this->biographie = $biographie;
+
+        return $this;
+    }
+
+    /**
+     * Get biographie
+     *
+     * @return string 
+     */
+    public function getBiographie()
+    {
+        return $this->biographie;
+    }
+
+}

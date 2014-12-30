@@ -1,0 +1,5 @@
+movibe_backend_seance_search:
+    path:     /seance_search
+    defaults: { _controller: MovibeBackendBundle:Seance:search }
+    requirements:
+        idt: \d+

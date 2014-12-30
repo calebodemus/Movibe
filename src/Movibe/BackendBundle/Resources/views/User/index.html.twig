@@ -1,0 +1,97 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>UTILISATEURS<small>Liste</small></h1>
+    </div>
+
+    <div class="row">
+        <div class="navigation dataTables_paginate col-md-12" style="text-align: right">
+            {{ knp_pagination_render(users) }}
+        </div>
+    </div>
+
+
+    <div class="row" id="powerwidgets">
+        <div class="col-md-12 bootstrap-grid">
+            <div class="powerwidget powerwidget-as-portlet-white" id="datatable-filter-column" data-widget-editbutton="false">
+                <header>
+                    <h2>Table<small>Styled</small></h2>
+                </header>
+                <div class="inner-spacer">
+                    <table class="display table table-striped table-bordered table-hover" id="table-2">
+                        <thead>
+                        <tr>
+                            <th width="10%">Id</th>
+                            <th width="30%">Pseudo</th>
+                            <th width="30%">Email</th>
+                            <th width=20%">Droits</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td width="1%"><span class="num">{{ user.id }}</span></td>
+                                <td><h5>{{ user.username }}</h5></td>
+                                <td>{{ user.email }}</td>
+                                <td>
+                                    <label class="toggle">
+                                        <input type="checkbox" name="checkbox-toggle" checked>
+                                        <i></i>Activer</label>
+                                    <label class="toggle">
+                                        <input type="checkbox" name="checkbox-toggle">
+                                        <i></i>Bloquer</label>
+                                    <label class="toggle">
+                                        <input type="checkbox" name="checkbox-toggle">
+                                        <i></i>Admin</label>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th><input type="text" name="filter_id" placeholder="Filtre sur l'id" class="search_init" /></th>
+                            <th><input type="text" name="filter_nom" placeholder="Filtre sur le nom" class="search_init" /></th>
+                            <th class="search_init"></th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts 'bundles/movibebackend/js/vendors/datatables/jquery.dataTables.min.js'
+    'bundles/movibebackend/js/vendors/bootstrap-progress-bar/*'
+    'bundles/movibebackend/js/vendors/animation/*' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".remove").click(function(e){
+                e.preventDefault();
+                var btn = $(this);
+                $.ajax({
+                    url:btn.attr('data-url'),
+                    dataType: "json"})
+                        .done(function(data){
+                            //console.log('ok');
+                            btn.parents('tr').fadeOut(function(){
+                                $(this).remove();
+                            });
+                            $(".cancel").click();
+                            $("#message").append("<p class='callout callout-info'>Le type de Seance sélectionné a été supprimée</p>");
+                        });
+                return false;
+            })
+        });
+    </script>
+
+{% endblock %}

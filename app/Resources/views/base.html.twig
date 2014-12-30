@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <meta name="keywords" content="admin template, admin dashboard, inbox templte, calendar template, form validation">
+        <meta name="author" content="DazeinCreative">
+        <meta name="description" content="ORB - Powerfull and Massive Admin Dashboard Template with tonns of useful features">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}MoviBe{% endblock %}</title>
+        {% block stylesheets %}
+            {% stylesheets 'bundles/movibebackend/css/styles.css'
+            filter="cssrewrite,?yui_css" %}
+                <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+        {% endblock %}
+        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+        {% javascripts 'bundles/movibebackend/js/vendors/modernizr/*' %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    </head>
+
+    <body>
+        {% block body %}
+        {% endblock %}
+
+        {% block javascripts %}
+
+            {% javascripts 'bundles/movibebackend/js/vendors/jquery/jquery.min.js'
+                           'bundles/movibebackend/js/vendors/jquery/jquery-ui.min.js'
+                           'bundles/movibebackend/js/vendors/bootstrap/*'
+                           'bundles/movibebackend/js/vendors/nanoscroller/*'
+                           'bundles/movibebackend/js/vendors/sparkline/*'
+                           'bundles/movibebackend/js/vendors/horisontal/*'
+                           'bundles/movibebackend/js/vendors/powerwidgets/powerwidgets.min.js'
+                           'bundles/movibebackend/js/scripts.js' %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+        {% endblock %}
+    </body>
+</html>
+

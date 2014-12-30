@@ -1,0 +1,241 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{%  import "MovibeBackendBundle:Macro:functions.html.twig" as allFunctions %}
+
+{% block content %}
+    <style>
+        .carousel-inner > .item
+        {
+            height:500px ! important;
+        }
+    </style>
+
+    <div class="page-header">
+        <h1>SEANCE<small>Ajout</small></h1>
+    </div>
+
+    <div class="row" id="powerwidgets">
+        <div class="col-md-12 bootstrap-grid">
+            <div class="powerwidget dark-red" data-widget-editbutton="false" data-widget-deletebutton="false">
+                <header>
+                    <h2>Sample widget<small>Clear</small></h2>
+                </header>
+                <div class="inner-spacer">
+                    <div class="user-profile">
+                        <div class="main-info">
+                            <div class="img-rounded img-responsive">
+                                {% if film is defined %}
+                                    {% if film.promotion is not empty %}
+                                        {{ allFunctions.img(asset(film.promotion.getWebPath('medium')), "image_promotion") }}
+                                    {% else %}
+                                        <div style="text-align: center;">
+                                            {{ allFunctions.img("http://placehold.it/400x400", "Promotion photo") }}
+                                        </div>
+                                    {% endif %}
+                                {% else %}
+                                    {{ allFunctions.img("http://placehold.it/400x400", "Promotion photo") }}
+                                {% endif %}
+                            </div>
+                            {% if film is defined %}
+                                <h1>{{ film.titre }}</h1>
+                            {% elseif cinema is defined %}
+                                <h1>{{ cinema.nom }}</h1>
+                            {% endif %}
+
+                        </div>
+                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                            </ol>
+                            <div class="carousel-inner" >
+                                <div class="item item1 active"> </div>
+                                <div class="item item2"></div>
+                                <div class="item item3"></div>
+                            </div>
+                            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span> </a>
+                            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span> </a>
+                        </div>
+                        <div class="user-profile-info">
+                            <fieldset>
+                                <legend>Form Name</legend>
+                                <div class="form-group">
+                                    {{ form_start(form,{'method':'POST','role':'form','attr':{'novalidate':'novalidate','class':'form-horizontal'} } ) }}
+                                    <div class="col-md-12">
+                                        <table class="table table-striped table-hover margin-0px orb-form seances" data-prototype="{{ allFunctions.seance_prototype(form.seances.vars.prototype)|e }}">
+                                            <thead>
+                                                <tr>
+                                                    {% if film is defined %}
+                                                        <th>Cinema</th>
+                                                    {% elseif cinema is defined %}
+                                                        <th>Film</th>
+                                                    {% endif %}
+                                                    <th>Type</th>
+                                                    <th>Horaire</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tab_seances">
+
+                                                {% for seance in form.seances %}
+                                                    <tr hidden>
+                                                        <td>
+                                                            {% if seance.cinema is defined %}
+                                                                {{ form_label(seance.cinema,null,{'label_attr': {'class':'control-label'}}) }}
+                                                                {{ form_widget(seance.cinema,{'attr': {'placeholder':'Cinema', 'class':'form-control'}} )}}
+                                                                {{ form_errors(seance.cinema) }}
+                                                            {% elseif seance.film is defined %}
+                                                                {{ form_label(seance.film,null,{'label_attr': {'class':'control-label'}}) }}
+                                                                {{ form_widget(seance.film,{'attr': {'placeholder':'Film', 'class':'form-control'}} )}}
+                                                                {{ form_errors(seance.film) }}
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>
+                                                            {{ form_label(seance.horaire,null,{'label_attr': {'class':'control-label'}}) }}
+                                                            {{ form_widget(seance.horaire,{'attr': {'placeholder':'Horaire', 'class':'form-control'}} )}}
+                                                            {{ form_errors(seance.horaire) }}
+                                                        </td>
+                                                        <td>
+                                                            {{ form_label(seance.typeSeance,null,{'label_attr': {'class':'control-label'}}) }}
+                                                            {{ form_widget(seance.typeSeance,{'attr': {'placeholder':'Type', 'class':'form-control'}} )}}
+                                                            {{ form_errors(seance.typeSeance) }}
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    {{ form_errors(form.seances) }}
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="well" style="max-width: 100%; margin: 0 auto 10px;">
+                            {{ form_widget(form.submit,{'id':'submit','attr': {'class':'btn btn-primary btn-lg btn-block'}} )}}
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="message"></div>
+
+    <div class="powerwidget cold-grey"  data-widget-editbutton="false">
+        <header>
+            <h2 class="margin-0px pull-left">Séances</h2>
+            <span class="badge">{{ seances|length }}</span>
+        </header>
+        <div class="inner-spacer">
+            {% for seance in seances %}
+                <div class="col-md-4">
+                    <div class="coupons">
+                        <div class="coupons-inner">{{ seance.typeSeance.getNom() }}
+                            {% if film is defined %}
+                                <div class="coupons-code">{{ seance.cinema.getNom() }}</div>
+                            {% else %}
+                                <div class="coupons-code">{{ seance.film.getTitre() }}</div>
+                            {% endif %}
+                            <div class="one-time">{{ seance.horaire.getAffichage() }}</div>
+                            <div style="margin-top: 0.5rem">
+                                <a class="btn btn-danger btn-xs" href="#soc{{ seance.id }}" role="button" data-toggle="modal"><i class="fa fa-times"></i> Delete</a>
+                                <div id="soc{{ seance.id }}" class="modal" data-easein="tada" data-easeout="rollOut" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 class="modal-title">SUPPRESSION</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Voulez-vous supprimer cette séance?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-primary remove" data-dismiss="modal" aria-hidden="true" data-url="{{ path('movibe_backend_seanceCinema_delete', { 'id': seance.id }) }}">Oui</button>
+                                                <button class="btn btn-default cancel" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+        {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts 'bundles/movibebackend/js/vendors/animation/*' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Traitement pour les séances
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            var container_seances = $('.seances');
+            var linkseances = $('<a id="add_seances" href="#" data-id="0" class="btn btn-info btn-xs">Ajouter une séance</a>');
+            container_seances.before(linkseances);
+
+            container_seances.children('li').each(function(){
+                addLinkRemove($(this));
+            });
+
+            linkseances.click(function(e){
+                e.preventDefault();
+                var prototype = container_seances.attr('data-prototype');
+                var nbform = $('#tab_seances').children().length;
+                var newform = prototype.replace(/__name__/g, nbform);
+
+                var form = $('<tr>').append(newform);
+
+                addLinkRemove(form);
+
+                $('#tab_seances').append(form);
+            });
+
+            function addLinkRemove(form)
+            {
+                var removeLink = $('<div class="big-icons-buttons"><div class="btn-group"><a class="btn btn-default btn-photo-del" href="#soc"><i class="fa fa-times"></i> Delete</a></div></div>');
+                removeLink = $('<td>').append(removeLink);
+                form.append(removeLink);
+
+                removeLink.click(function(e){
+                    e.preventDefault();
+                    form.remove();
+                })
+            };
+
+            $(".remove").click(function(e){
+                e.preventDefault();
+                var btn = $(this);
+                $.ajax({
+                    url:btn.attr('data-url'),
+                    dataType: "json"})
+                        .done(function(data){
+                            btn.parents('.coupons').fadeOut(function(){
+                                $(this).remove();
+                            });
+                            $(".cancel").click();
+                            $("#message").append("<p class='callout callout-info'>La séance sélectionnée a été supprimée</p>");
+                        });
+                return false;
+            })
+        });
+    </script>
+
+{% endblock %}
+
+

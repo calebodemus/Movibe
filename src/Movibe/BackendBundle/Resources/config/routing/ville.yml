@@ -1,0 +1,40 @@
+movibe_backend_ville:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:Ville:index }
+
+
+movibe_backend_ville_new:
+    path:     /ville_new
+    defaults: { _controller: MovibeBackendBundle:Ville:new }
+
+movibe_backend_ville_create:
+    path:     /ville_create
+    defaults: { _controller: MovibeBackendBundle:Ville:create }
+    requirements:
+        _method: POST
+
+movibe_backend_ville_show:
+    path:     /ville_show/{id}
+    defaults: { _controller: MovibeBackendBundle:Ville:show }
+    requirements:
+        id: \d+
+
+movibe_backend_ville_edit:
+    path:     /ville_edit/{id}
+    defaults: { _controller: MovibeBackendBundle:Ville:edit }
+    requirements:
+        id: \d+
+
+movibe_backend_ville_update:
+    path:     /ville_update/{id}
+    defaults: { _controller: MovibeBackendBundle:Ville:update }
+    requirements:
+        _method: POST
+        id: \d+
+
+movibe_backend_ville_delete:
+    path:     /ville_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:Ville:delete }
+    requirements:
+        _method: GET|DELETE
+        id: \d+

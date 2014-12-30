@@ -1,0 +1,46 @@
+movibe_backend_pays:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:Pays:index }
+
+
+movibe_backend_pays_new:
+    path:     /pays_new
+    defaults: { _controller: MovibeBackendBundle:Pays:new }
+
+movibe_backend_pays_create:
+    path:     /pays_create
+    defaults: { _controller: MovibeBackendBundle:Pays:create }
+    requirements:
+        _method: POST
+
+movibe_backend_pays_show:
+    path:     /pays_show/{code}
+    defaults: { _controller: MovibeBackendBundle:Pays:show }
+    requirements:
+        code: "^[A-Z]{2}$"
+
+movibe_backend_pays_edit:
+    path:     /pays_edit/{code}
+    defaults: { _controller: MovibeBackendBundle:Pays:edit }
+    requirements:
+        code: "^[A-Z]{2}$"
+
+movibe_backend_pays_update:
+    path:     /pays_update/{code}
+    defaults: { _controller: MovibeBackendBundle:Pays:update }
+    requirements:
+        _method: POST
+        code: "^[A-Z]{2}$"
+
+movibe_backend_pays_delete:
+    path:     /pays_delete/{code}
+    defaults: { _controller: MovibeBackendBundle:Pays:delete }
+    requirements:
+        _method: GET|DELETE
+        code: "^[A-Z]{2}$"
+
+movibe_backend_pays_fichiers:
+    path:     /pays_fichiers
+    defaults: { _controller: MovibeBackendBundle:Pays:fichiers }
+
+

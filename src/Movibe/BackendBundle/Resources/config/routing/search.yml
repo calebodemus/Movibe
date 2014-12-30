@@ -1,0 +1,7 @@
+movibe_backend_search:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:Search:index }
+
+movibe_backend_search_complementaire:
+    path:     /search_complementaire
+    defaults: { _controller: MovibeBackendBundle:Search:search }

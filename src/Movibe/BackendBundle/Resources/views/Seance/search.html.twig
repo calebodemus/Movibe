@@ -1,0 +1,148 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{%  import "MovibeBackendBundle:Macro:functions.html.twig" as allFunctions %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>SEANCE<small>Recherhce</small></h1>
+    </div>
+
+    <!-- Widget Row Start grid -->
+    <div class="row" id="powerwidgets">
+        <div class="col-md-12 bootstrap-grid">
+
+            <!-- New widget -->
+            <div class="powerwidget cold-grey" data-widget-editbutton="false">
+                <header>
+                    <h2>Recherche<small>Film / Cinema</small></h2>
+                </header>
+                <div class="inner-spacer">
+
+                    <!--Search Field-->
+
+                    <div class="input-group input-group-lg">
+                        <div class="input-group-btn">
+                            <button id="liste-categorie" type="button" class="btn btn-default dropdown-toggle" data-categorie="Film/Cinema" data-url="{{ path('movibe_backend_seance_search') }}" data-toggle="dropdown">Globale <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li class="categorie-recherche" data-categorie="Film/Cinema"><a href="#">Recherche Globale</a></li>
+                                <li class="categorie-recherche" data-categorie="Film"><a href="#">Recherche Film</a></li>
+                                <li class="categorie-recherche" data-categorie="Cinema"><a href="#">Recherche Cinema</a></li>
+                            </ul>
+                        </div>
+                        <!-- /btn-group -->
+                        <input id="input-recherche" type="text" placeholder="Enter votre recherche (3 caractères minimum)" class="form-control">
+                              <span class="input-group-btn">
+                              <button id="btn-recherche" class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                              </span>
+                    </div>
+                    <!--/Search Field-->
+
+                    <div class="search-results">
+                        <div class="clearfix padding-10px"> <small class="pull-right text-cold-grey">Results: about 305 299 (0,25 sec.)</small> </div>
+                        <ol id="liste-resultat">
+                        </ol>
+                    </div>
+
+                    <!--Pagination-->
+                    <ul class="pagination">
+                        <li><a href="#">&laquo;</a></li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a href="#">&raquo;</a></li>
+                    </ul>
+                    <!--/Pagination-->
+
+                </div>
+            </div>
+            <!-- End Widget -->
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".categorie-recherche").click(function(e){
+                $("#liste-categorie").html($(this).attr("data-categorie") + ' <span class="caret"></span>');
+                $("#liste-categorie").attr("data-categorie",$(this).attr("data-categorie"));
+            });
+
+            $("#btn-recherche").click(function(e){
+                $('#liste-resultat>li').remove();
+                if ($("#input-recherche").val().length >= 3)
+                {
+                    e.preventDefault();
+
+                    var lien = $("#liste-categorie").attr("data-url");
+                    var categorie = $("#liste-categorie").attr("data-categorie");
+                    var recherche = $("#input-recherche").val();
+
+                    $.ajax({
+                        url:lien,
+                        data:'categorie=' + categorie + '&recherche=' + recherche,
+                        dataType: "json"})
+                            .done(function(data){
+                                var resultat = data.resultat;
+
+                                if (typeof(resultat) != "undefined" && resultat !== null)
+                                {
+                                    var i=0;
+                                    while (resultat[i] !== undefined)
+                                    {
+                                        var element =  $.parseJSON(resultat[i]);
+
+                                        var path = '{{ asset("path") }}';
+                                        path = path.replace("path",element.path);
+
+                                        var titre = element.titre;
+                                        var description = element.description.substring(0,750) + "[...]";
+
+                                        if (element.type === "film")
+                                        {
+                                            var lien= "{{ path('movibe_backend_seanceFilm_new', {'id': 0 }) }}";
+                                            var icon="fa-video-camera";
+                                        }
+                                        else if (element.type === "cinema")
+                                        {
+                                            var lien= "{{ path('movibe_backend_seanceCinema_new', {'id': 0 }) }}";
+                                            var icon="glyphicon glyphicon-facetime-video";
+                                        }
+
+                                        lien = lien.replace(0,element.id);
+
+                                        var form = seance_search_prototype(titre, path, description, icon, lien);
+
+                                        $('#liste-resultat').append(form);
+                                        i++;
+                                    }
+                                }
+                            });
+                }
+                return false;
+            })
+
+            function seance_search_prototype(fxTitre, fxPath, fxDescription, fxIcon, fxLien)
+            {
+                var fxForm = '<li>';
+                fxForm += '<div class="search-result-block clearfix"> <span class="badge pull-right"><i class="fa fa-refresh"></i> 14.03.2014</span>';
+                fxForm += '<h3><a href="' + fxLien + '">' + fxTitre + '</a></h3>';
+                fxForm += '<div class="video-block"><a href="#"><img src="'+ fxPath +'" alt="Image" /><i class="fa '+ fxIcon +'"></i></a></div>';
+                fxForm += '<div class="search-result clearfix">';
+                fxForm += '<p>' + fxDescription + '</p>';
+                fxForm += '</div>';
+                fxForm += '</div>';
+                fxForm += '</li>';
+
+                return fxForm;
+            }
+        });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,199 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{% block content %}
+
+    <div class="page-header">
+        <h1>CINEMAS<small>Edition</small></h1>
+    </div>
+
+    <div class="row" id="powerwidgets">
+        <div class="col-md-12 bootstrap-grid">
+            <div class="powerwidget dark-red" data-widget-editbutton="false" data-widget-deletebutton="false">
+                <header>
+                    <h2>Sample widget<small>Clear</small></h2>
+                </header>
+                <div class="inner-spacer">
+                    {{ form_start(edit_form,{'method':'POST','role':'form','attr':{'novalidate':'novalidate','class':'form-horizontal'} } ) }}
+                    <fieldset>
+                        <legend>Form Name</legend>
+                        <div class="form-group">
+                            {{ form_label(edit_form.nom,null,{'label_attr': {'class':'col-md-3 control-label'}}) }}
+                            <div class="col-md-4">
+                                {{ form_widget(edit_form.nom,{'id':'nom','attr': {'placeholder':'Nom', 'class':'form-control input-md'}} )}}
+                            </div>
+                            {{ form_errors(edit_form.nom) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(edit_form.adresse,null,{'label_attr': {'class':'col-md-3 control-label'}}) }}
+                            <div class="col-md-4">
+                                {{ form_widget(edit_form.adresse,{'id':'adresse','attr': {'placeholder':'Adresse', 'class':'form-control input-md'}} )}}
+                            </div>
+                            {{ form_errors(edit_form.adresse) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(edit_form.region,null,{'label_attr': {'class':'col-md-3 control-label'}}) }}
+                            <div id="reg_url" class="col-md-4" data-url="{{ path("movibe_backend_cinema_region", {'id': 0}) }}">
+                                {{ form_widget(edit_form.region,{'id':'region','attr': {'placeholder':'Région', 'class':'form-control input-md'} } ) }}
+                            </div>
+                            {{ form_errors(edit_form.region) }}
+                        </div>
+                        <fieldset id="field_dep">
+                            <div class="form-group">
+                                {{ form_label(edit_form.departement,null,{'label_attr': {'class':'col-md-3 control-label'}}) }}
+                                <div id="dep_url" class="col-md-4" data-url="{{ path("movibe_backend_cinema_departement", {'id': 0}) }}">
+                                    {{ form_widget(edit_form.departement,{'id':'departement','attr': {'placeholder':'Département', 'class':'form-control input-md'}} )}}
+                                </div>
+                                {{ form_errors(edit_form.departement) }}
+                            </div>
+                        </fieldset>
+                        <fieldset id="field_city">
+                            <div class="form-group">
+                                {{ form_label(edit_form.city,null,{'label_attr': {'class':'col-md-3 control-label'}}) }}
+                                <div class="col-md-4">
+                                    {{ form_widget(edit_form.city,{'id':'city','attr': {'placeholder':'Ville', 'class':'form-control input-md'}} )}}
+                                </div>
+                                {{ form_errors(edit_form.city) }}
+                            </div>
+                        </fieldset>
+                        <div class="form-group">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-4">
+                                {{ form_widget(edit_form.submit,{'attr': {'class':'btn btn-primary'}} )}}
+                            </div>
+                        </div>
+                    </fieldset>
+                    {{ form_end(edit_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="big-icons-buttons">
+        <a class="btn btn-info" href="{{ path('movibe_backend_cinema') }}"><i class="fa fa-mail-reply"></i>Retour à la liste</a>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var region_id = {{ cinema.ville.departement.region.id }};
+            var departement_id = {{ cinema.ville.departement.id }};
+            var ville_id = {{ cinema.ville.id }};
+
+            updateDepartement(region_id,departement_id);
+            updateVille(departement_id,ville_id);
+
+            $('#region option[value=' + region_id + ']').prop('selected', true);
+            //$('#departement option[value=' + departement_id + ']').prop('selected', true);
+            //$('#city option[value=' + ville_id + ']').prop('selected', true);
+
+            $("#region").change(function(e){
+                var input = $(this);
+                var id = parseInt(input.val());
+                if (isNaN(id))
+                {
+                    $("#field_dep").prop('disabled', true);
+                    $("#departement").empty();
+                    $("#field_city").prop('disabled', true);
+                    $("#city").empty();
+                }
+                else
+                {
+                    updateDepartement(id,0);
+                }
+            });
+
+            $("#departement").change(function(e){
+                var input = $(this);
+                var id = parseInt(input.val());
+                if (isNaN(id))
+                {
+                    $("#field_city").prop('disabled', true);
+                    $("#city").empty();
+                }
+                else
+                {
+                    updateVille(id,0);
+                }
+            });
+        });
+
+        function updateDepartement(id, select)
+        {
+            var url_input = $("#reg_url").attr('data-url');
+            url_input = url_input.replace(0,id);
+            $.ajax({
+                url:url_input,
+                dataType: "json"})
+                    .done(function(data){
+                        var departements = data.data;
+                        var i = 0;
+                        var longueur = departements.length;
+                        var options = "";
+
+                        while ( i < longueur)
+                        {
+                            departement = departements[i];
+
+                            if (select == departement['id'])
+                            {
+                                options = options + "<option selected value=" + departement['id'] + ">" + departement['code'] + " - " + departement['nom'] + "</option>";
+                            }
+                            else
+                            {
+                                options = options + "<option value=" + departement['id'] + ">" + departement['code'] + " - " + departement['nom'] + "</option>";
+                            }
+
+
+                            i++;
+                        }
+                        $("#departement").html(options);
+                        $("#field_dep").prop('disabled', false);
+                    });
+            return false;
+        }
+
+        function updateVille(id,select)
+        {
+            var url_input = $("#dep_url").attr('data-url');
+            url_input = url_input.replace(0,id);
+            $.ajax({
+                url:url_input,
+                dataType: "json"})
+                    .done(function(data){
+                        var villes = data.data;
+                        var i = 0;
+                        var longueur = villes.length;
+                        var options = "";
+
+                        while ( i < longueur)
+                        {
+                            var ville = villes[i];
+
+                            if (select == ville['id'])
+                            {
+                                options = options + "<option selected value=" + ville['id'] + ">" + ville['code-postal'] + " - " + ville['nom'] + "</option>";
+                            }
+                            else
+                            {
+                                options = options + "<option value=" + ville['id'] + ">" + ville['code-postal'] + " - " + ville['nom'] + "</option>";
+                            }
+                            i++;
+                        }
+                        $("#city").html(options);
+                        $("#field_city").prop('disabled', false);
+                    });
+            return false;
+        }
+    </script>
+
+{% endblock %}
+
+
+
+

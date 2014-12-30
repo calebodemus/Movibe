@@ -1,0 +1,40 @@
+movibe_backend_film:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:Film:index }
+
+
+movibe_backend_film_new:
+    path:     /film_new
+    defaults: { _controller: MovibeBackendBundle:Film:new }
+
+movibe_backend_film_create:
+    path:     /film_create
+    defaults: { _controller: MovibeBackendBundle:Film:create }
+    requirements:
+        _method: POST
+
+movibe_backend_film_show:
+    path:     /film_show/{id}
+    defaults: { _controller: MovibeBackendBundle:Film:show }
+    requirements:
+        id: \d+
+
+movibe_backend_film_edit:
+    path:     /film_edit/{id}
+    defaults: { _controller: MovibeBackendBundle:Film:edit }
+    requirements:
+        id: \d+
+
+movibe_backend_film_update:
+    path:     /film_update/{id}
+    defaults: { _controller: MovibeBackendBundle:Film:update }
+    requirements:
+        _method: POST
+        id: \d+
+
+movibe_backend_film_delete:
+    path:     /film_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:Film:delete }
+    requirements:
+        _method: GET|DELETE
+        id: \d+

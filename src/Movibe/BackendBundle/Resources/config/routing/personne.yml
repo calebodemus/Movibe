@@ -1,0 +1,62 @@
+movibe_backend_personne:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:Personne:index }
+
+
+movibe_backend_personne_new:
+    path:     /personne_new
+    defaults: { _controller: MovibeBackendBundle:Personne:new }
+
+movibe_backend_personne_create:
+    path:     /personne_create
+    defaults: { _controller: MovibeBackendBundle:Personne:create }
+    requirements:
+        _method: POST
+
+movibe_backend_personne_show:
+    path:     /personne_show/{id}
+    defaults: { _controller: MovibeBackendBundle:Personne:show }
+    requirements:
+        id: \d+
+
+movibe_backend_personne_edit:
+    path:     /personne_edit/{id}
+    defaults: { _controller: MovibeBackendBundle:Personne:edit }
+    requirements:
+        id: \d+
+
+movibe_backend_personne_update:
+    path:     /personne_update/{id}
+    defaults: { _controller: MovibeBackendBundle:Personne:update }
+    requirements:
+        _method: POST
+        id: \d+
+
+movibe_backend_personne_delete:
+    path:     /personne_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:Personne:delete }
+    requirements:
+        _method: GET|DELETE
+        id: \d+
+
+movibe_backend_personne_pays:
+    path:     /personne_pays/{id}
+    defaults: { _controller: MovibeBackendBundle:Personne:pays }
+
+movibe_backend_personne_region:
+    path:     /personne_region/{id}
+    defaults: { _controller: MovibeBackendBundle:Personne:region }
+    requirements:
+        id: \d+
+
+movibe_backend_personne_departement:
+    path:     /personne_departement/{id}
+    defaults: { _controller: MovibeBackendBundle:Personne:departement }
+    requirements:
+        id: \d+
+
+movibe_backend_personne_select:
+    path:     /personne_select/{id}
+    defaults: { _controller: MovibeBackendBundle:Personne:select }
+    requirements:
+        id: \d+

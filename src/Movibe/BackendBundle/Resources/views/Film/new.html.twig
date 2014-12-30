@@ -1,0 +1,1120 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{%  import "MovibeBackendBundle:Macro:functions.html.twig" as allFunctions %}
+{% form_theme form 'MovibeBackendBundle:Form:fields.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets 'bundles/movibebackend/css/vendors/yearpicker/*' filter="cssrewrite,?yui_css"%}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="page-header">
+        <h1>FILMS<small>Création</small></h1>
+    </div>
+    {{ form_start(form,{'method':'POST','role':'form','attr':{'novalidate':'novalidate','class':'form-horizontal'} } ) }}
+    <div class="tabbable tabs-left">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#one-left" data-toggle="tab"><i class="entypo-book-open"></i> A propos </a></li>
+            <li><a href="#two-left" data-toggle="tab"><i class="entypo-picture"></i> Images </a></li>
+            <li><a href="#three-left" data-toggle="tab"><i class="entypo-newspaper"></i> Presses </a></li>
+            <li><a href="#four-left" data-toggle="tab"><i class="fa fa-toggle-right"></i> Médias </a></li>
+            <li><a href="#five-left" data-toggle="tab"><i class="entypo-users"></i> Casting </a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="one-left">
+                <div class="row" id="powerwidgets">
+                    <div class="col-md-12 bootstrap-grid">
+                        <div class="powerwidget dark-cold-grey" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-togglebutton="false">
+                            <header>
+                                <h2>Sample widget<small>Clear</small></h2>
+                            </header>
+                            <div class="inner-spacer">
+                                <fieldset>
+                                    <legend>Form Name</legend>
+                                    <div class="form-group">
+                                        {{ form_label(form.titre,null,{'label_attr': {'class':'col-md-2 control-label'}}) }}
+                                        <div class="col-md-10">
+                                            {{ form_widget(form.titre,{'id':'titre','attr': {'placeholder':'Titre', 'class':'form-control input-md'}} )}}
+                                            <span class="help-block">Veuillez saisir le titre du film</span>
+                                        </div>
+                                        {{ form_errors(form.titre) }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form_label(form.titreOriginal,null,{'label_attr': {'class':'col-md-2 control-label'}}) }}
+                                        <div class="col-md-10">
+                                            {{ form_widget(form.titreOriginal,{'id':'titreOriginal','attr': {'placeholder':'Titre original', 'class':'form-control input-md'}} )}}
+                                            <span class="help-block">Veuillez saisir le titre original du film</span>
+                                        </div>
+                                        {{ form_errors(form.titreOriginal) }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(form.dateSortie,null,{'label_attr': {'class':'col-md-2 control-label'}}) }}
+                                        <div class="col-md-10">
+                                            {{ form_widget(form.dateSortie,{'id':'dateSortie','attr': {'placeholder':'Date de sortie', 'class':'form-control input-md'}} )}}
+                                            <span class="help-block">Veuillez saisir la date de sortie du film</span>
+                                        </div>
+                                        {{ form_errors(form.dateSortie) }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(form.synopsis,null,{'label_attr': {'class':'col-md-2 control-label'}}) }}
+                                        <div class="col-md-10">
+                                            {{ form_widget(form.synopsis,{'id':'synopsis','attr': {'placeholder':'Synopsis', 'class':'form-control input-md'}} )}}
+                                            <span class="help-block">Veuillez saisir le synopsis du film</span>
+                                        </div>
+                                        {{ form_errors(form.synopsis) }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(form.bandeOriginale,null,{'label_attr': {'class':'col-md-2 control-label'}}) }}
+                                        <div class="col-md-10">
+                                            {{ form_widget(form.bandeOriginale,{'id':'bandeOriginale','attr': {'placeholder':'Bande Originale', 'class':'form-control input-md'}} )}}
+                                            <span class="help-block">Veuillez saisir l'URL de la BO du film</span>
+                                        </div>
+                                        {{ form_errors(form.bandeOriginale) }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(form.budget,null,{'label_attr': {'class':'col-md-2 control-label'}}) }}
+                                        <div class="col-md-8">
+                                            {{ form_widget(form.budget,{'id':'budget','attr': {'placeholder':'Budget', 'class':'form-control input-md'}} )}}
+                                            <span class="help-block">Veuillez saisir le budget du film</span>
+                                        </div>
+                                        {{ form_errors(form.budget) }}
+                                        <div class="col-md-2">
+                                            {{ form_widget(form.devise,{'id':'devise','attr': {'placeholder':'Devise', 'class':'form-control input-md'}} )}}
+                                            <span class="help-block">Devise du budget</span>
+                                        </div>
+                                        {{ form_errors(form.devise) }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(form.anneeProduction,null,{'label_attr': {'class':'col-md-2 control-label'}}) }}
+                                        <div class="col-md-10">
+                                            {{ form_widget(form.anneeProduction,{'id':'anneeProduction','attr': {'placeholder':'Année de production', 'class':'form-control input-md'}} )}}
+
+                                            <span class="help-block">Veuillez saisir l'année de production du film</span>
+                                        </div>
+                                        {{ form_errors(form.anneeProduction) }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(form.duree,null,{'label_attr': {'class':'col-md-2 control-label'}}) }}
+                                        <div class="col-md-10">
+                                            {{ form_widget(form.duree,{'id':'duree','attr': {'placeholder':'Durée', 'class':'form-control input-md'}} )}}
+                                            <span class="help-block">Veuillez saisir la durée du film (en min.)</span>
+                                        </div>
+                                        {{ form_errors(form.duree) }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(form.visible,"A l'affiche",{'label_attr': {'class':'col-md-2 control-label'}}) }}
+                                        <div class="col-md-10">
+                                            {{ form_widget(form.visible,{'id':'visible','attr': {'class':'visible'}} )}}
+                                            <span class="help-block">Le film est-il à l'affiche?</span>
+                                        </div>
+                                        {{ form_errors(form.visible) }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(form.visa,null,{'label_attr': {'class':'col-md-2 control-label'}}) }}
+                                        <div class="col-md-10">
+                                            {{ form_widget(form.visa,{'id':'visa','attr': {'placeholder':'Visa', 'class':'form-control input-md'}} )}}
+                                            <span class="help-block">Veuillez saisir le n° visa du film</span>
+                                        </div>
+                                        {{ form_errors(form.visa) }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(form.couleur,null,{'label_attr': {'class':'col-md-2 control-label'}}) }}
+                                        <div class="col-md-10">
+                                            {{ form_widget(form.couleur,{'id':'couleur','attr': {'placeholder':'Couleur', 'class':'form-control input-md'}} )}}
+                                            <span class="help-block">Veuillez sélectionner la couleur du film</span>
+                                        </div>
+                                        {{ form_errors(form.couleur) }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(form.pays,null,{'label_attr': {'class':'col-md-2 control-label'}}) }}
+                                        <div class="col-md-10">
+                                            {{ form_widget(form.pays,{'id':'pays','attr': {'placeholder':'Pays', 'class':'form-control input-md'}} )}}
+                                            <span class="help-block">Veuillez sélectionner le pays du film</span>
+                                        </div>
+                                        {{ form_errors(form.pays) }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(form.genres,null,{'label_attr': {'class':'col-md-2 control-label'}}) }}
+                                        <div class="col-md-10">
+                                            {{ form_widget(form.genres,{'id':'genres','attr': {'placeholder':'GenreS', 'class':'form-control input-md'}} )}}
+                                            <span class="help-block">Veuillez sélectionner le(s) genre(s) du film</span>
+                                        </div>
+                                        {{ form_errors(form.genres) }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(form.typeFilm,null,{'label_attr': {'class':'col-md-2 control-label'}}) }}
+                                        <div class="col-md-10">
+                                            {{ form_widget(form.typeFilm,{'id':'typeFilm','attr': {'placeholder':'Type de film', 'class':'form-control input-md'}} )}}
+                                            <span class="help-block">Veuillez sélectionner le type de film</span>
+                                        </div>
+                                        {{ form_errors(form.typeFilm) }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(form.langue,null,{'label_attr': {'class':'col-md-2 control-label'}}) }}
+                                        <div class="col-md-10">
+                                            {{ form_widget(form.langue,{'id':'langue','attr': {'placeholder':'Langue', 'class':'form-control input-md'}} )}}
+                                            <span class="help-block">Veuillez sélectionner la langue</span>
+                                        </div>
+                                        {{ form_errors(form.langue) }}
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="two-left">
+                <div class="row" id="powerwidgets">
+                    <div class="col-md-12 bootstrap-grid">
+                        <div class="powerwidget pink" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-togglebutton="false">
+                            <header>
+                                <h2>Sample widget<small>Clear</small></h2>
+                            </header>
+                            <div class="inner-spacer ">
+                                <fieldset>
+                                    <legend>Form Name</legend>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <table class="table table-striped table-hover margin-0px orb-form images" data-prototype="{{ allFunctions.image_prototype(form.images.vars.prototype)|e }}">
+                                                <thead>
+                                                <tr>
+                                                    <th>Image</th>
+                                                    <th>Nom</th>
+                                                    <th>Type</th>
+                                                    <th>Caractèristiques</th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="tab_image">
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                        {{ form_errors(form.images) }}
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="three-left">
+                <div class="row" id="powerwidgets">
+                    <div class="col-md-12 bootstrap-grid">
+                        <div class="powerwidget purple" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-togglebutton="false">
+                            <header>
+                                <h2>Sample widget<small>Clear</small></h2>
+                            </header>
+                            <div class="inner-spacer ">
+                                <fieldset>
+                                    <legend>Form Name</legend>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <table class="table table-striped table-hover margin-0px orb-form critiques" data-prototype="{{ allFunctions.critique_prototype(form.critiques.vars.prototype)|e }}">
+                                                <thead>
+                                                <tr>
+                                                    <th>Presse</th>
+                                                    <th>Note</th>
+                                                    <th>Commentaire</th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="tab_critique">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        {{ form_errors(form.critiques) }}
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="four-left">
+                <div class="row" id="powerwidgets">
+                    <div class="col-md-12 bootstrap-grid">
+                        <div class="powerwidget green" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-togglebutton="false">
+                            <header>
+                                <h2>Sample widget<small>Clear</small></h2>
+                            </header>
+                            <div class="inner-spacer ">
+                                <fieldset>
+                                    <legend>Form Name</legend>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <table class="table table-striped table-hover margin-0px orb-form medias" data-prototype="{{ allFunctions.media_prototype(form.medias.vars.prototype)|e }}">
+                                                <thead>
+                                                <tr>
+                                                    <th>URL</th>
+                                                    <th>Type</th>
+                                                    <th>Descriptif</th>
+                                                    <th>Poids</th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="tab_video">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        {{ form_errors(form.medias) }}
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="five-left">
+                <div class="row" id="powerwidgets">
+                    <div class="col-md-12 bootstrap-grid">
+                        <div id="casting" class="powerwidget orange" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-togglebutton="false" data-url="{{ path("movibe_backend_personne_select", {'id': 1}) }}">
+                            <header>
+                                <h2>Sample widget<small>Clear</small></h2>
+                            </header>
+                            <div class="inner-spacer">
+                                <fieldset>
+                                    <legend>Form Name</legend>
+                                    <div class="tabbable tabs-left">
+                                        <ul class="nav nav-tabs">
+                                            <li class="active"><a href="#one-left-1" data-toggle="tab"><i class="entypo-user"></i> Acteurs </a></li>
+                                            <li><a href="#two-left-1" data-toggle="tab"><i class="fa fa-bullhorn"></i> Réalisateurs </a></li>
+                                            <li><a href="#three-left-1" data-toggle="tab"><i class="entypo-feather"></i> Scénaristes </a></li>
+                                            <li><a href="#four-left-1" data-toggle="tab"><i class="fa fa-money"></i> Producteurs </a></li>
+                                            <li><a href="#five-left-1" data-toggle="tab"><i class="entypo-vcard"></i> Equipe Technique </a></li>
+                                            <li><a href="#six-left-1" data-toggle="tab"><i class="fa fa-suitcase"></i> Distributeurs </a></li>
+                                            <li><a href="#seven-left-1" data-toggle="tab"><i class="entypo-note"></i> Compositeurs </a></li>
+                                            <li><a href="#eight-left-1" data-toggle="tab"><i class="fa fa-building"></i> Sociétés </a></li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="one-left-1">
+                                                <div class="row" id="powerwidgets">
+                                                    <div class="col-md-12 bootstrap-grid">
+                                                        <div class="powerwidget dark-blue" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-togglebutton="false">
+                                                            <header>
+                                                                <h2>Acteurs/Actrices<small>Clear</small></h2>
+                                                            </header>
+                                                            <div class="inner-spacer">
+                                                                <fieldset>
+                                                                    <legend>Ajout d'acteur</legend>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-12">
+                                                                            <table class="table table-striped table-hover margin-0px orb-form acteurs" data-prototype="{{ allFunctions.metier_acteur_prototype(form.acteurs.vars.prototype)|e }}">
+                                                                                <thead>
+                                                                                <tr>
+                                                                                    <th></th>
+                                                                                    <th>Nom</th>
+                                                                                    <th>Rôle</th>
+                                                                                    <th>Métier</th>
+                                                                                    <th></th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody id="tab_acteurs">
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                        {{ form_errors(form.acteurs) }}
+                                                                    </div>
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="two-left-1">
+                                                <div class="row" id="powerwidgets">
+                                                    <div class="col-md-12 bootstrap-grid">
+                                                        <div class="powerwidget dark-blue" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-togglebutton="false">
+                                                            <header>
+                                                                <h2>Réalisateurs/Réalisatrices<small>Clear</small></h2>
+                                                            </header>
+                                                            <div class="inner-spacer">
+                                                                <fieldset>
+                                                                    <legend>Ajout d'un réalisateur</legend>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-12">
+                                                                            <table class="table table-striped table-hover margin-0px orb-form realisateurs" data-prototype="{{ allFunctions.metier_casting_prototype(form.realisateurs.vars.prototype)|e }}">
+                                                                                <thead>
+                                                                                <tr>
+                                                                                    <th></th>
+                                                                                    <th>Nom</th>
+                                                                                    <th>Métier</th>
+                                                                                    <th></th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody id="tab_realisateurs">
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="three-left-1">
+                                                <div class="row" id="powerwidgets">
+                                                    <div class="col-md-12 bootstrap-grid">
+                                                        <div class="powerwidget dark-blue" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-togglebutton="false">
+                                                            <header>
+                                                                <h2>Scénaristes<small>Clear</small></h2>
+                                                            </header>
+                                                            <div class="inner-spacer">
+                                                                <fieldset>
+                                                                    <legend>Ajout d'un scénariste</legend>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-12">
+                                                                            <table class="table table-striped table-hover margin-0px orb-form scenaristes" data-prototype="{{ allFunctions.metier_casting_prototype(form.scenaristes.vars.prototype)|e }}">
+                                                                                <thead>
+                                                                                <tr>
+                                                                                    <th></th>
+                                                                                    <th>Nom</th>
+                                                                                    <th>Métier</th>
+                                                                                    <th></th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody id="tab_scenaristes">
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="four-left-1">
+                                                <div class="row" id="powerwidgets">
+                                                    <div class="col-md-12 bootstrap-grid">
+                                                        <div class="powerwidget dark-blue" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-togglebutton="false">
+                                                            <header>
+                                                                <h2>Producteurs<small>Clear</small></h2>
+                                                            </header>
+                                                            <div class="inner-spacer">
+                                                                <fieldset>
+                                                                    <legend>Ajout d'un producteur</legend>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-12">
+                                                                            <table class="table table-striped table-hover margin-0px orb-form producteurs" data-prototype="{{ allFunctions.metier_casting_prototype(form.producteurs.vars.prototype)|e }}">
+                                                                                <thead>
+                                                                                <tr>
+                                                                                    <th></th>
+                                                                                    <th>Nom</th>
+                                                                                    <th>Métier</th>
+                                                                                    <th></th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody id="tab_producteurs">
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="five-left-1">
+                                                <div class="row" id="powerwidgets">
+                                                    <div class="col-md-12 bootstrap-grid">
+                                                        <div class="powerwidget dark-blue" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-togglebutton="false">
+                                                            <header>
+                                                                <h2>Equipe Technique<small>Clear</small></h2>
+                                                            </header>
+                                                            <div class="inner-spacer">
+                                                                <fieldset>
+                                                                    <legend>Ajout d'un membre de l'équipe technique</legend>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-12">
+                                                                            <table class="table table-striped table-hover margin-0px orb-form equipe_tech" data-prototype="{{ allFunctions.metier_casting_prototype(form.equipeTech.vars.prototype)|e }}">
+                                                                                <thead>
+                                                                                <tr>
+                                                                                    <th></th>
+                                                                                    <th>Nom</th>
+                                                                                    <th>Métier</th>
+                                                                                    <th></th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody id="tab_equipe_tech">
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="six-left-1">
+                                                <div class="row" id="powerwidgets">
+                                                    <div class="col-md-12 bootstrap-grid">
+                                                        <div class="powerwidget dark-blue" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-togglebutton="false">
+                                                            <header>
+                                                                <h2>Distributeurs<small>Clear</small></h2>
+                                                            </header>
+                                                            <div class="inner-spacer">
+                                                                <fieldset>
+                                                                    <legend>Ajout d'un distributeur</legend>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-12">
+                                                                            <table class="table table-striped table-hover margin-0px orb-form distributeurs" data-prototype="{{ allFunctions.metier_casting_prototype(form.distributeurs.vars.prototype)|e }}">
+                                                                                <thead>
+                                                                                <tr>
+                                                                                    <th></th>
+                                                                                    <th>Nom</th>
+                                                                                    <th>Métier</th>
+                                                                                    <th></th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody id="tab_distributeurs">
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="seven-left-1">
+                                                <div class="row" id="powerwidgets">
+                                                    <div class="col-md-12 bootstrap-grid">
+                                                        <div class="powerwidget dark-blue" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-togglebutton="false">
+                                                            <header>
+                                                                <h2>Compositeurs<small>Clear</small></h2>
+                                                            </header>
+                                                            <div class="inner-spacer">
+                                                                <fieldset>
+                                                                    <legend>Ajout d'un compositeur</legend>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-12">
+                                                                            <table class="table table-striped table-hover margin-0px orb-form compositeurs" data-prototype="{{ allFunctions.metier_casting_prototype(form.compositeurs.vars.prototype)|e }}">
+                                                                                <thead>
+                                                                                <tr>
+                                                                                    <th></th>
+                                                                                    <th>Nom</th>
+                                                                                    <th>Métier</th>
+                                                                                    <th></th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody id="tab_compositeurs">
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="eight-left-1">
+                                                <div class="row" id="powerwidgets">
+                                                    <div class="col-md-12 bootstrap-grid">
+                                                        <div class="powerwidget dark-blue" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-togglebutton="false">
+                                                            <header>
+                                                                <h2>Sociétés<small>Clear</small></h2>
+                                                            </header>
+                                                            <div class="inner-spacer">
+                                                                <fieldset>
+                                                                    <legend>Ajout d'une société</legend>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-12">
+                                                                            <table class="table table-striped table-hover margin-0px orb-form filmSocieteMetiers" data-prototype="{{ allFunctions.film_societe_metier_prototype(form.filmSocieteMetiers.vars.prototype)|e }}">
+                                                                                <thead>
+                                                                                <tr>
+                                                                                    <th>Nom</th>
+                                                                                    <th>Métier</th>
+                                                                                    <th></th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody id="tab_film_societe_metiers">
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="well" style="max-width: 100%; margin: 0 auto 10px;">
+                    {{ form_widget(form.submit,{'id':'submit','attr': {'class':'btn btn-primary btn-lg btn-block'}} )}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {{ form_widget(form._token) }}
+    </form>
+
+    <div class="big-icons-buttons">
+        <a class="btn btn-info" href="{{ path('movibe_backend_film') }}"><i class="fa fa-mail-reply"></i>Retour à la liste</a>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts 'bundles/movibebackend/js/vendors/yearpicker/mootools-core.js'
+    'bundles/movibebackend/js/vendors/yearpicker/mootools-more.js'
+    'bundles/movibebackend/js/vendors/yearpicker/picker.js'
+    'bundles/movibebackend/js/vendors/yearpicker/picker.attach.js'
+    'bundles/movibebackend/js/vendors/yearpicker/picker.date.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+
+        window.addEvent('domready', function(){
+            myPicker = new Picker.Date($$('#anneeProduction'), {
+                pickOnly: 'years',
+                format: '%Y'
+            });
+        });
+
+        $(document).ready(function(){
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Traitement pour les images
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            var container_image = $('.images');
+            var linkimages = $('<a id="add_img" href="#" data-id="0" class="btn btn-info btn-xs" data-img=0 >Ajouter une image</a>');
+            //container_image.append(linkimages);
+            container_image.before(linkimages);
+
+            /*
+            container.children('li').each(function(){
+                addLinkRemove($(this));
+            });*/
+
+            linkimages.click(function(e){
+                e.preventDefault();
+                var prototype = container_image.attr('data-prototype');
+                var nbform = $('#tab_image').children().length;
+                var newform = prototype.replace(/__name__/g, nbform);
+
+                var form = $('<tr class="trImage" hidden>').append(newform);
+
+
+                addLinkRemove(form);
+
+                $('#tab_image').append(form);
+
+                var input = $(".fileImage").last();
+
+                input.trigger('click');
+
+            });
+
+
+            $(document).delegate(':file', 'change', function() {
+                var input = $(".fileImage").last();
+                readURL(input);
+            });
+
+            function readURL(input) {
+                if (input[0].files && input[0].files[0]) {
+
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('.previewPhoto').last().attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input[0].files[0]);
+
+                    input.parents('.tdFileImg').next('.tdNameImg').children('.NomImg').val(input[0].files[0].name);
+                    input.parents('.trImage').attr('hidden',false);
+
+                    var nbImg = $('#add_img').attr('data-img');
+                    nbImg++;
+
+                    $('#add_img').attr('data-img',nbImg);
+
+                    if (nbImg == 1)
+                    {
+                        $('.PromoImg').trigger('click');
+                    }
+                }
+            };
+
+            $(document).delegate('.PromoImg ', 'click', function() {
+                $this = $(this);
+                $(".PromoImg").each(function(){
+                    if (!$this.is($(this)))
+                        $(this).attr('checked',false);
+                });
+
+            });
+
+
+            /*
+            linkimages.click(function(e){
+                e.preventDefault();
+                var prototype = container.attr('data-prototype');
+                var nbform = container.children().length;
+                var newform = prototype.replace(/__name__/g, nbform);
+
+                newform = $('<li>').append(newform);
+                container.append(newform);
+
+                linkimages.before(newform);
+
+                addLinkRemove(newform);
+
+                var label = $('li>div>div>label, form>div>label');
+                label.remove();
+
+                var file = $('li>div div:first-child>input');
+                file.addClass('filePhoto');
+
+                var promotion = $('li>div div:nth-child(2)>input');
+                promotion.addClass('promoPhoto');
+
+                var ipt = $(".filePhoto").last();
+                var id = ipt.attr('id');
+                ipt.trigger('click');
+
+                var li = $('.images>li');
+                li.addClass('imglive_row');
+                li.hide();
+
+            });
+            /*
+
+            /*
+            function addLinkRemove(form)
+            {
+                var id = $('#add_img').attr('data-id');
+                id++;
+
+                var id_img = "img_" + id;
+                var removeLink = $('<a id="' + id_img + '" href="#" class="btn btn-info btn-xs">Supprimer l\'image</a>');
+                form.append(removeLink);
+
+                $('#add_img').attr('data-id',id);
+
+                removeLink.click(function(e){
+                    e.preventDefault();
+                    form.remove();
+
+                    $i=0;
+
+                    $(".imglive_row").each(function(){
+                        $i++;
+                        $(this).children('div').attr('id','movibe_backendbundle_film_images_' + $i);
+                        $(this).children('div').children(':nth-child(1)').children('input').attr({id:'movibe_backendbundle_film_images_' + $i + '_file', name:'movibe_backendbundle_film[images][' + $i + '][file]'});
+                        $(this).children('div').children(':nth-child(2)').children('input').attr({id:'movibe_backendbundle_film_images_' + $i + '_promotion', name:'movibe_backendbundle_film[images][' + $i + '][promotion]'});
+                        $(this).children('div').children(':nth-child(3)').children('input').attr({id:'movibe_backendbundle_film_images_' + $i + '_affiche', name:'movibe_backendbundle_film[images][' + $i + '][affiche]'});
+                    });
+                })
+            };*/
+
+            /*
+            function readURL(input) {
+                if (input[0].files && input[0].files[0]) {
+                    var id = $('#add_img').attr('data-id');
+
+                    var tr = '<tr>';
+                    tr = tr + '<td><img class="previewPhoto" alt="Uploaded Image Preview Holder" width="150px" height="150px"/></td>';
+                    tr = tr + '<td></td>';
+                    tr = tr + '<td><label class="toggle"><input type="radio" name="radio-toggle" class="radio-img" data-img="' + id + '"';
+
+                    if ( $('#tab_photo').children('tr').length == 0)
+                    {
+                        tr = tr + " checked ";
+                        $('#movibe_backendbundle_film_images_' + id + '_promotion').trigger('click');
+                    }
+
+                    tr = tr + '><i></i>Promotionelle</label>';
+                    tr = tr + '<label class="toggle"><input type="checkbox" name="checkbox-toggle" class="check-img" data-img="' + id + '"><i></i>Affiche</label></td>';
+                    tr = tr + '<td><div class="big-icons-buttons"><div class="btn-group"><a class="btn btn-default btn-photo-del" href="#soc" data-img="' + id + '"><i class="fa fa-times"></i> Delete</a></div></div></td>';
+                    tr = tr + '</tr>';
+
+                    $('#tab_photo').append(tr);
+
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('.previewPhoto').last().attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input[0].files[0]);
+                }
+            };
+            */
+
+            /*
+            $(document).delegate(':file', 'change', function() {
+                var ipt = $(".filePhoto").last();
+                var id = ipt.attr('id');
+                ipt.trigger('click');
+                readURL(ipt);
+            });
+            */
+
+            /*
+            $(document).delegate('.btn-photo-del', 'click', function() {
+                var id = $(this).attr('data-img');
+                $('#img_' + id).trigger('click');
+                var parent = $(this).closest('tr');
+                parent.remove();
+
+            });*/
+
+            /*
+            $(document).delegate('.radio-img', 'click', function() {
+                var id = $(this).attr('data-img');
+                /*$(".imglive_row").each(function(){
+                    $(this).children('div').children('div').last().children('input').attr('checked',false);
+                });*/
+
+            /*
+                $('.promoPhoto').attr('checked',false);
+                $('#movibe_backendbundle_film_images_' + id + '_promotion').trigger('click');
+            });*/
+
+
+            /*
+            $(document).delegate('.check-img', 'click', function() {
+                var id = $(this).attr('data-img');
+                $('#movibe_backendbundle_film_images_' + id + '_affiche').trigger('click');
+            });*/
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Traitement pour les critiques
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            var container_critique = $('.critiques');
+            var linkcritiques = $('<a id="add_crit" href="#" data-id="0" class="btn btn-info btn-xs">Ajouter une critique</a>');
+            container_critique.before(linkcritiques);
+
+            container_critique.children('li').each(function(){
+                addLinkRemove($(this));
+            });
+
+            linkcritiques.click(function(e){
+                e.preventDefault();
+                var prototype = container_critique.attr('data-prototype');
+                var nbform = $('#tab_critique').children().length;
+                var newform = prototype.replace(/__name__/g, nbform);
+
+                var form = $('<tr>').append(newform);
+                form.find('.rating').find('label').append('<i class="fa fa-star"></i>');
+
+                addLinkRemove(form);
+
+                $('#tab_critique').append(form);
+            });
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Traitement pour les medias
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            var container_medias = $('.medias');
+            var linkmedias = $('<a id="add_vid" href="#" data-id="0" class="btn btn-info btn-xs">Ajouter une vidéo</a>');
+            container_medias.before(linkmedias);
+
+            container_medias.children('tr').each(function(){
+                addLinkRemove($(this));
+            });
+
+            linkmedias.click(function(e){
+                e.preventDefault();
+                var prototype = container_medias.attr('data-prototype');
+                var nbform = $('#tab_video').children().length;
+                var newform = prototype.replace(/__name__/g, nbform);
+
+                newform = $('<tr>').append(newform);
+
+                container_medias.append(newform);
+
+                addLinkRemove(newform);
+            });
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Traitement pour les acteurs
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            var container_acteurs = $('.acteurs');
+            var linkacteurs = $('<a id="add_acteur" href="#" data-id="0" class="btn btn-info btn-xs">Ajouter un acteur</a>');
+            container_acteurs.before(linkacteurs);
+
+            container_acteurs.children('tr').each(function(){
+                addLinkRemove($(this));
+            });
+
+            linkacteurs.click(function(e){
+                e.preventDefault();
+                var prototype = container_acteurs.attr('data-prototype');
+                var nbform = $('#tab_acteurs').children().length;
+
+                addPersonne(prototype, nbform, container_acteurs);
+            });
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Traitement pour les réalisateurs
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            var container_realisateurs = $('.realisateurs');
+            var linkrealisateurs = $('<a id="add_realisateur" href="#" data-id="0" class="btn btn-info btn-xs">Ajouter un réalisateur</a>');
+            container_realisateurs.before(linkrealisateurs);
+
+            container_realisateurs.children('tr').each(function(){
+                addLinkRemove($(this));
+            });
+
+            linkrealisateurs.click(function(e){
+                e.preventDefault();
+                var prototype = container_realisateurs.attr('data-prototype');
+                var nbform = $('#tab_realisateurs').children().length;
+
+                addPersonne(prototype, nbform, container_realisateurs);
+            });
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Traitement pour les scénaristes
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            var container_scenaristes = $('.scenaristes');
+            var linkscenaristes = $('<a id="add_scenariste" href="#" data-id="0" class="btn btn-info btn-xs">Ajouter un scénariste</a>');
+            container_scenaristes.before(linkscenaristes);
+
+            container_scenaristes.children('tr').each(function(){
+                addLinkRemove($(this));
+            });
+
+            linkscenaristes.click(function(e){
+                e.preventDefault();
+                var prototype = container_scenaristes.attr('data-prototype');
+                var nbform = $('#tab_scenaristes').children().length;
+
+                addPersonne(prototype, nbform, container_scenaristes);
+            });
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Traitement pour les producteurs
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            var container_producteurs = $('.producteurs');
+            var linkproducteurs = $('<a id="add_producteur" href="#" data-id="0" class="btn btn-info btn-xs">Ajouter un producteur</a>');
+            container_producteurs.before(linkproducteurs);
+
+            container_producteurs.children('tr').each(function(){
+                addLinkRemove($(this));
+            });
+
+            linkproducteurs.click(function(e){
+                e.preventDefault();
+                var prototype = container_producteurs.attr('data-prototype');
+                var nbform = $('#tab_producteurs').children().length;
+
+                addPersonne(prototype, nbform, container_producteurs);
+            });
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Traitement pour l'équipe technique
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            var container_equipe_tech = $('.equipe_tech');
+            var linkequipeTech = $('<a id="add_equipe_tech" href="#" data-id="0" class="btn btn-info btn-xs">Ajouter un membre</a>');
+            container_equipe_tech.before(linkequipeTech);
+
+            container_equipe_tech.children('tr').each(function(){
+                addLinkRemove($(this));
+            });
+
+            linkequipeTech.click(function(e){
+                e.preventDefault();
+                var prototype = container_equipe_tech.attr('data-prototype');
+                var nbform = $('#tab_equipe_tech').children().length;
+
+                addPersonne(prototype, nbform, container_equipe_tech);
+            });
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Traitement pour les distributeurs
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            var container_distributeurs = $('.distributeurs');
+            var linkdistributeurs = $('<a id="add_distributeur" href="#" data-id="0" class="btn btn-info btn-xs">Ajouter un distributeur</a>');
+            container_distributeurs.before(linkdistributeurs);
+
+            container_distributeurs.children('tr').each(function(){
+                addLinkRemove($(this));
+            });
+
+            linkdistributeurs.click(function(e){
+                e.preventDefault();
+                var prototype = container_distributeurs.attr('data-prototype');
+                var nbform = $('#tab_distributeurs').children().length;
+
+                addPersonne(prototype, nbform, container_distributeurs);
+            });
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Traitement pour les compositeurs
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            var container_compositeurs = $('.compositeurs');
+            var linkcompositeurs = $('<a id="add_compositeur" href="#" data-id="0" class="btn btn-info btn-xs">Ajouter un compositeur</a>');
+            container_compositeurs.before(linkcompositeurs);
+
+            container_compositeurs.children('tr').each(function(){
+                addLinkRemove($(this));
+            });
+
+            linkcompositeurs.click(function(e){
+                e.preventDefault();
+                var prototype = container_compositeurs.attr('data-prototype');
+                var nbform = $('#tab_compositeurs').children().length;
+
+                addPersonne(prototype, nbform, container_compositeurs);
+            });
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Traitement pour les Film_Societe_Metiers
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            var container_film_societe_metiers = $('.filmSocieteMetiers');
+            var linkfilmSocieteMetiers = $('<a id="add_compositeur" href="#" data-id="0" class="btn btn-info btn-xs">Ajouter d\'une société</a>');
+            container_film_societe_metiers.before(linkfilmSocieteMetiers);
+
+            container_film_societe_metiers.children('tr').each(function(){
+                addLinkRemove($(this));
+            });
+
+            linkfilmSocieteMetiers.click(function(e){
+                e.preventDefault();
+                var prototype = container_film_societe_metiers.attr('data-prototype');
+                var nbform = $('#tab_film_societe_metiers').children().length;
+
+                addPersonne(prototype, nbform, container_film_societe_metiers);
+            });
+
+            function addPersonne(fx_prototype, fx_nbform, fx_container)
+            {
+                var newform = fx_prototype.replace(/__name__/g, fx_nbform);
+
+                newform = $('<tr>').append(newform);
+
+                fx_container.append(newform);
+
+                addLinkRemove(newform);
+            }
+
+            $(document).delegate('.personne', 'change', function() {
+                var personne = $(this);
+                var lien = $('#casting').attr('data-url');
+                var img = personne.parent().prev('td').children('img');
+
+                lien = lien.replace(1, personne.val());
+                $.ajax({
+                    url:lien,
+                    dataType: "json"})
+                        .done(function(data){
+                            var lien = data.data;
+
+                            if (lien)
+                            {
+                                img.attr("src","/Movibe/web/" + lien);
+                            }
+                            return true;
+                        });
+
+                img.attr("src","http://placehold.it/200x200");
+                return false;
+            })
+
+            function addLinkRemove(form)
+            {
+                var removeLink = $('<div class="big-icons-buttons"><div class="btn-group"><a class="btn btn-default btn-photo-del" href="#soc"><i class="fa fa-times"></i> Delete</a></div></div>');
+                removeLink = $('<td>').append(removeLink);
+                form.append(removeLink);
+
+                removeLink.click(function(e){
+                    e.preventDefault();
+                    form.remove();
+                })
+            };
+
+
+
+        });
+
+    </script>
+
+
+{% endblock %}
+
+
+
+
+

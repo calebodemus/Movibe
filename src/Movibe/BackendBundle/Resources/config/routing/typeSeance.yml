@@ -1,0 +1,40 @@
+movibe_backend_typeSeance:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:TypeSeance:index }
+
+
+movibe_backend_typeSeance_new:
+    path:     /typeSeance_new
+    defaults: { _controller: MovibeBackendBundle:TypeSeance:new }
+
+movibe_backend_typeSeance_create:
+    path:     /typeSeance_create
+    defaults: { _controller: MovibeBackendBundle:TypeSeance:create }
+    requirements:
+        _method: POST
+
+movibe_backend_typeSeance_show:
+    path:     /typeSeance_show/{id}
+    defaults: { _controller: MovibeBackendBundle:TypeSeance:show }
+    requirements:
+        id: \d+
+
+movibe_backend_typeSeance_edit:
+    path:     /typeSeance_edit/{id}
+    defaults: { _controller: MovibeBackendBundle:TypeSeance:edit }
+    requirements:
+        id: \d+
+
+movibe_backend_typeSeance_update:
+    path:     /typeSeance_update/{id}
+    defaults: { _controller: MovibeBackendBundle:TypeSeance:update }
+    requirements:
+        _method: POST
+        id: \d+
+
+movibe_backend_typeSeance_delete:
+    path:     /typeSeance_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:TypeSeance:delete }
+    requirements:
+        _method: GET|DELETE
+        id: \d+

@@ -1,0 +1,42 @@
+movibe_backend_metier:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:Metier:index }
+
+
+movibe_backend_metier_new:
+    path:     /metier_new
+    defaults: { _controller: MovibeBackendBundle:Metier:new }
+
+movibe_backend_metier_create:
+    path:     /metier_create
+    defaults: { _controller: MovibeBackendBundle:Metier:create }
+    requirements:
+        _method: POST
+
+movibe_backend_metier_show:
+    path:     /metier_show/{id}
+    defaults: { _controller: MovibeBackendBundle:Metier:show }
+
+movibe_backend_metier_edit:
+    path:     /metier_edit/{id}
+    defaults: { _controller: MovibeBackendBundle:Metier:edit }
+
+movibe_backend_metier_update:
+    path:     /metier_update/{id}
+    defaults: { _controller: MovibeBackendBundle:Metier:update }
+    requirements:
+        _method: POST
+
+movibe_backend_metier_delete:
+    path:     /metier_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:Metier:delete }
+    requirements:
+        _method: GET|DELETE
+
+movibe_backend_metiers:
+    path:     /metier
+    defaults: { _controller: MovibeBackendBundle:Metier:metiers }
+
+movibe_backend_parents:
+    path:     /parent
+    defaults: { _controller: MovibeBackendBundle:Metier:parents }

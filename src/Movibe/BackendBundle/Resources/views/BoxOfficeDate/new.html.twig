@@ -1,0 +1,407 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{%  import "MovibeBackendBundle:Macro:functions.html.twig" as allFunctions %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets 'bundles/movibebackend/css/vendors/jcal/*' filter="cssrewrite,?yui_css"%}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+    <style>
+        .dInfo {
+            font-family:tahoma;
+            font-size:7pt;
+            color:#fff;
+            padding-top:1px;
+            padding-bottom:1px;
+            background:rgb(0, 102, 153);
+        }
+        .jCalMo .day,.jCalMo .invday,.jCalMo .pday,.jCalMo .aday,.jCalMo .selectedDay,.jCalMo .dow { width:60px !important; height:60px !important; }
+        .jCalMo .dow { height:auto !important }
+        .jCalMo, .jCalMo .jCal { width:434px !important; }
+        .jCalMo .month { width:418px !important; }
+        .jCalMo .month span { width:205px !important; }
+    </style>
+
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="page-header">
+        <h1>BOX OFFICE<small>Ajout</small></h1>
+    </div>
+
+    <div class="row" id="powerwidgets">
+        <div class="col-md-12 bootstrap-grid">
+            <div class="powerwidget dark-red" data-widget-editbutton="false" data-widget-deletebutton="false">
+                <header>
+                    <h2>Sample widget<small>Clear</small></h2>
+                </header>
+                <div class="inner-spacer">
+                    <div class="user-profile">
+                        <div class="user-profile-info">
+                            <fieldset>
+                                <legend>Form Name</legend>
+                                <div style="text-align: -webkit-center;">
+                                    <table id="calendrier" data-url="{{ path('movibe_backend_boxOfficeDate_showBoxOffices', { 'date': 'XXX' }) }}">
+                                        <tr>
+                                            <td align=left id="calOne" valign=top style="padding:10px; background:#E3E3E3;">
+                                                chargement du calendrier...
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align=left id="calOneResult" valign=top style="padding:10px; background:#E3E3E3;text-align: center;font-size: 2rem;">Veuillez sélectionner une semaine</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="form-group" hidden>
+                                    {{ form_start(form,{'method':'POST','role':'form','attr':{'id':'form_box','novalidate':'novalidate','class':'form-horizontal'} } ) }}
+                                    <div class="col-md-12">
+                                        <table class="table table-striped table-hover margin-0px orb-form boxOffices" data-prototype="{{ allFunctions.boxOfficeDate_prototype(form.boxOffices.vars.prototype)|e }}">
+                                            <thead>
+                                            <tr>
+                                                <th>Film</th>
+                                                <th>Entrée</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="tab_boxOffices">
+                                            {% for boxOffice in form.boxOffices %}
+                                                <tr class="row_box">
+                                                    <td>
+                                                        {{ form_label(boxOffice.film,null,{'label_attr': {'class':'control-label'}}) }}
+                                                        {{ form_widget(boxOffice.film,{'attr': {'placeholder':'Film', 'class':'form-control'}} )}}
+                                                        {{ form_errors(boxOffice.film) }}
+                                                    </td>
+                                                    <td>
+                                                        {{ form_label(boxOffice.entree,null,{'label_attr': {'class':'control-label'}}) }}
+                                                        {{ form_widget(boxOffice.entree,{'attr': {'placeholder':'Entrées', 'class':'form-control'}} )}}
+                                                        {{ form_errors(boxOffice.entree) }}
+                                                    </td>
+                                                    <td>
+                                                        <div class="big-icons-buttons">
+                                                            <div class="btn-group">
+
+                                                                <a class="btn btn-danger" href="#soc{{ boxOffice.id }}" role="button" data-toggle="modal"><i class="fa fa-times"></i> Delete</a>
+                                                                <div id="soc{{ boxOffice.id }}" class="modal" data-easein="tada" data-easeout="rollOut" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-sm">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                                <h4 class="modal-title">SUPPRESSION</h4>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <p>Voulez-vous supprimer ce box Office?</p>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button class="btn btn-primary remove" data-dismiss="modal" aria-hidden="true" data-url="{{ path('movibe_backend_boxOffice_delete', { 'id': boxOffice.id }) }}">Oui</button>
+                                                                                <button class="btn btn-default cancel" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    {{ form_errors(form.boxOffices) }}
+                                    <div class="well" style="max-width: 100%; margin: 0 auto 10px;">
+                                        {{ form_widget(form.submit,{'id':'submit','attr': {'class':'btn btn-primary btn-lg btn-block'}} )}}
+                                    </div>
+                                    {{ form_rest(form) }}
+                                    </form>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="message"></div>
+
+    <div class="chat-container">
+        <div class="top-buttons clearfix">
+            <h2 class="margin-0px pull-left">Box Office</h2>
+            <span class="badge">{{ boxOffices|length }}</span>
+        </div>
+        <div class="chat-container">
+            <div class="chat-pusher">
+                <div class="chat-content">
+                    <div class="nano">
+                        <div class="nano-content">
+                            <table id="list-boxOffices" class="table-dark table table-striped table-bordered table-hover margin-0px" data-url="{{ path('movibe_backend_boxOffice_delete', { 'id': 0 }) }}">
+                                <thead>
+                                <tr>
+                                    <th width="55%" colspan="2">Film</th>
+                                    <th width="10%">Nbre d'entrée</th>
+                                    <th width="10%">Dinamic</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody id="old-boxOffices">
+
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th colspan="2">Film</th>
+                                    <th>Nbre d'entrée</th>
+                                    <th>Dynamic</th>
+                                    <th></th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts 'bundles/movibebackend/js/vendors/animation/*'
+    'bundles/movibebackend/js/vendors/jcal/*' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".remove").click(function(e){
+                e.preventDefault();
+                var btn = $(this);
+                $.ajax({
+                    url:btn.attr('data-url'),
+                    dataType: "json"})
+                        .done(function(data){
+                            btn.parents('.row_box').fadeOut(function(){
+                                $(this).remove();
+                            });
+                            $(".cancel").click();
+                            $("#message").append("<p class='callout callout-info'>Le commentaire sélectionné a été supprimé</p>");
+                        });
+                return false;
+            });
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Traitement pour les Box Offices
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            var container_boxOffices = $('.boxOffices');
+            var linkboxOffices = $('<a id="add_seances" href="#" data-id="0" data-box=0 class="btn btn-info btn-xs">Ajouter un box Office</a>');
+            container_boxOffices.before(linkboxOffices);
+
+            container_boxOffices.children('li').each(function(){
+                addLinkRemove($(this));
+            });
+
+            linkboxOffices.click(function(e){
+                e.preventDefault();
+                var prototype = container_boxOffices.attr('data-prototype');
+                var nbform = $('#add_seances').attr('data-box');
+                var newform = prototype.replace(/__name__/g, nbform);
+
+                var form = $('<tr>').append(newform);
+
+                addLinkRemove(form);
+
+                $('#tab_boxOffices').append(form);
+            });
+
+            function addLinkRemove(form)
+            {
+                var removeLink = $('<div class="big-icons-buttons"><div class="btn-group"><a class="btn btn-default btn-photo-del" href="#soc"><i class="fa fa-times"></i> Delete</a></div></div>');
+                removeLink = $('<td>').append(removeLink);
+                form.append(removeLink);
+
+                removeLink.click(function(e){
+                    e.preventDefault();
+                    form.remove();
+                })
+            };
+
+            //$(".remove").click(function(e){
+            $(document).delegate('.remove', 'click', function() {
+                var btn = $(this);
+                $.ajax({
+                    url:btn.attr('data-url'),
+                    dataType: "json"})
+                        .done(function(data){
+                            btn.parents('.row_box').fadeOut(function(){
+                                $(this).remove();
+                            });
+                            $(".cancel").click();
+                            $("#message").append("<p class='callout callout-info'>Le box Office sélectionné a été supprimé</p>");
+                        });
+                return false;
+            })
+
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Traitement Calendrier
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            $('#calOne').jCal({
+                day:			new Date(),
+                days:			7,
+                dayOffset:      3,
+                showMonths:		2,
+                monthSelect:	true,
+                forceWeek:      true,
+                dow:            ['M', 'J', 'V', 'S', 'D', 'L', 'M'],
+                ml:             ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
+                drawBack:		function () {
+                    return false;
+                },
+                dCheck:			function (day) {
+                    if ( day.getTime() == (new Date('8/7/2008')).getTime() )
+                        return 'invday';
+                    else if (day.getDate() != 3)
+                        return 'day';
+                    else
+                        return 'invday';
+                },
+                callback:		function (day, days) {
+                    $('#old-boxOffices').empty();
+                    $('#tab_boxOffices').empty();
+                    $("#add_seances").attr("data-box",0);
+                    $('.form-group').attr('hidden',false);
+                    $('#calOneDays').val( days );
+                    $(this._target).find('.dInfo').remove();
+                    var dCursor = new Date( day.getTime() );
+                    for (var di=0; di < days; di++) {
+                        var currDay = $(this._target).find('[id*=d_' + ( dCursor.getMonth() + 1 ) + '_' + dCursor.getDate() + '_' + dCursor.getFullYear() + ']');
+
+                        dCursor.setDate( dCursor.getDate() + 1 );
+                    }
+
+                    var jour = day.getDate();
+
+                    if (jour < 10)
+                    {
+                        jour = '0' + jour;
+                    }
+
+                    var date_affichage = jour + '/' + ( day.getMonth() + 1 ) + '/' + day.getFullYear();
+                    var date = day.getFullYear() + '-' + ( day.getMonth() + 1 ) + '-' + jour;
+
+                    var action = $('#form_box').attr('action');
+
+                    action = action.replace('XXX',date);
+
+                    $('#form_box').attr('action',action);
+
+                    $('#calOneResult').html('Semaine du ' + date_affichage + ' sélectionnée.');
+
+                    lien = $('#calendrier').attr('data-url');
+                    lien = lien.replace('XXX',date);
+
+                    $.ajax({
+                        url:lien,
+                        dataType: "json"})
+                            .done(function(data){
+                                var resultat = data.resultat;
+
+                                if (typeof(resultat) != "undefined" && resultat !== null)
+                                {
+                                    var i=0;
+                                    while (resultat[i] !== undefined)
+                                    {
+                                        //var element =  $.parseJSON(resultat[i]);
+                                        var element =  resultat[i];
+                                        var film = element.film;
+                                        var entree = element.entree;
+                                        var stat = element.stat;
+
+                                        var tabStat = $.map(stat, function(value,index){
+                                            return value;
+                                        });
+
+                                        var id = element.id;
+                                        var lien = $("#list-boxOffices").attr("data-url");
+                                        lien = lien.replace(0,id);
+
+                                        var form = boxOffices_show_prototype(id, film, entree, lien, tabStat);
+                                        $('#old-boxOffices').append(form);
+                                        i++;
+                                    }
+
+                                    $("#add_seances").attr("data-box",resultat.length);
+
+                                    $(".table-sparkline-lines").sparkline('html', {
+                                        type: 'line',
+                                        lineColor: '#858689',
+                                        width: '100',
+                                        height: '30',
+                                        fillColor: '#8b8c8d',
+                                        lineWidth: 3,
+                                        spotRadius: 3,
+                                        spotColor: '#f4b66d',
+                                        minSpotColor: '#fff',
+                                        maxSpotColor: '#fff',
+                                        highlightSpotColor: '#a6c172'
+                                    });
+                                }
+                            });
+                    return true;
+                }
+            });
+
+            function boxOffices_show_prototype(fxId, fxFilm, fxEntree, fxLien, fxStat)
+            {
+
+                var fxForm = '<tr class="row_box">';
+                fxForm += '<td width="1%"><span class="num">1</span></td>';
+                fxForm += '<td><h5>' + fxFilm + '</h5>';
+                fxForm += '<td>' + fxEntree + '</td>';
+                fxForm += '<td class="text-center"><span class="table-sparkline-lines">' + fxStat + '</span></td>';
+                fxForm += '<td>';
+                fxForm += '<a class="btn btn-danger btn-xs" href="#soc'+ fxId + '" role="button" data-toggle="modal"><i class="fa fa-times"></i> Delete</a>';
+                fxForm += '<div id="soc'+ fxId +'" class="modal" data-easein="tada" data-easeout="rollOut" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+                fxForm += '<div class="modal-dialog modal-sm">';
+                fxForm += '<div class="modal-content">';
+                fxForm += '<div class="modal-header">';
+                fxForm += '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>';
+                fxForm += '<h4 class="modal-title">SUPPRESSION</h4>';
+                fxForm += '</div>';
+                fxForm += '<div class="modal-body">';
+                fxForm += '<p style="color:black !important;">Voulez-vous supprimer ce Box Office?</p>';
+                fxForm += '</div>';
+                fxForm += '<div class="modal-footer">';
+                fxForm += '<button class="btn btn-primary remove" data-dismiss="modal" aria-hidden="true" data-url="' + fxLien + '">Oui</button>';
+                fxForm += '<button class="btn btn-default cancel" data-dismiss="modal" aria-hidden="true">Cancel</button>';
+                fxForm += '</div>';
+                fxForm += '</div>';
+                fxForm += '</div>';
+                fxForm += '</div>';
+                fxForm += '</td>';
+                fxForm += '</tr>';
+
+                return fxForm;
+            }
+        });
+    </script>
+
+{% endblock %}
+
+

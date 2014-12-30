@@ -1,0 +1,120 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>REGIONS<small>Liste</small></h1>
+    </div>
+
+    <div class="row">
+        <div class="big-icons-buttons col-md-6">
+            <a class="btn btn-primary" href="{{ path('movibe_backend_region_new') }}"><i class="fa fa-plus"></i>Ajouter</a>
+        </div>
+        <div class="navigation dataTables_paginate col-md-6" style="text-align: right">
+            {{ knp_pagination_render(regions) }}
+        </div>
+    </div>
+
+
+    <div class="row" id="powerwidgets">
+        <div class="col-md-12 bootstrap-grid">
+            <div class="powerwidget powerwidget-as-portlet-white" id="datatable-filter-column" data-widget-editbutton="false">
+                <header>
+                    <h2>Table<small>Styled</small></h2>
+                </header>
+                <div class="inner-spacer">
+                    <table class="display table table-striped table-bordered table-hover" id="table-2">
+                        <thead>
+                        <tr>
+                            <th width="10%">Id</th>
+                            <th width="70%">Nom</th>
+                            <th width="20"%">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for region in regions %}
+                            <tr>
+                                <td width="1%"><span class="num">{{ region.id }}</span></td>
+                                <td>
+                                    <h5>{{ region.nom }}</h5>
+                                    <small>{{ region.pays.nom }}</small>
+                                </td>
+                                <td>
+                                    <div class="big-icons-buttons">
+                                        <div class="btn-group">
+                                            <a class="btn btn-info" href="{{ path('movibe_backend_region_show', { 'id': region.id }) }}"><i class="fa fa-eye"></i> View </a>
+                                            <a class="btn btn-warning" href="{{ path('movibe_backend_region_edit', { 'id': region.id }) }}"><i class="fa fa-pencil"></i> Edit</a>
+                                            <a class="btn btn-danger" href="#soc{{ region.id }}" role="button" data-toggle="modal"><i class="fa fa-times"></i> Delete</a>
+                                            <div id="soc{{ region.id }}" class="modal" data-easein="tada" data-easeout="rollOut" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-sm">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                            <h4 class="modal-title">SUPPRESSION</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Voulez-vous supprimer cette région?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-primary remove" data-dismiss="modal" aria-hidden="true" data-url="{{ path('movibe_backend_region_delete', { 'id': region.id }) }}">Oui</button>
+                                                            <button class="btn btn-default cancel" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th><input type="text" name="filter_id" placeholder="Filtre sur l'id" class="search_init" /></th>
+                            <th><input type="text" name="filter_nom" placeholder="Filtre sur le nom" class="search_init" /></th>
+                            <th class="search_init"></th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts 'bundles/movibebackend/js/vendors/datatables/jquery.dataTables.min.js'
+    'bundles/movibebackend/js/vendors/bootstrap-progress-bar/*'
+    'bundles/movibebackend/js/vendors/animation/*' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".remove").click(function(e){
+                e.preventDefault();
+                var btn = $(this);
+                $.ajax({
+                    url:btn.attr('data-url'),
+                    dataType: "json"})
+                        .done(function(data){
+                            //console.log('ok');
+                            btn.parents('tr').fadeOut(function(){
+                                $(this).remove();
+                            });
+                            $(".cancel").click();
+                            $("#message").append("<p class='callout callout-info'>Le region sélectionné a été supprimé</p>");
+                            //var nb = parseInt($(".NbRegions").html());
+                            //nb = nb - 1;
+                            //$(".NbRegions").html(nb);
+                        });
+                return false;
+            })
+        });
+    </script>
+
+{% endblock %}

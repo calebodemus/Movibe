@@ -1,0 +1,38 @@
+movibe_backend_commentaire_new:
+    path:     /commentaire_new/{type}/{idt}
+    defaults: { _controller: MovibeBackendBundle:Commentaire:new }
+    requirements:
+        idt: \d+
+
+movibe_backend_commentaire_create:
+    path:     /commentaire_create/{type}/{idt}
+    defaults: { _controller: MovibeBackendBundle:Commentaire:create }
+    requirements:
+        _method: POST
+        idt: \d+
+
+movibe_backend_commentaire_edit:
+    path:     /commentaire_edit/{id}
+    defaults: { _controller: MovibeBackendBundle:Commentaire:edit }
+    requirements:
+        id: \d+
+
+movibe_backend_commentaire_update:
+    path:     /commentaire_update/{id}
+    defaults: { _controller: MovibeBackendBundle:Commentaire:update }
+    requirements:
+        _method: POST
+        id: \d+
+
+movibe_backend_commentaire_delete:
+    path:     /commentaire_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:Commentaire:delete }
+    requirements:
+        _method: GET|DELETE
+        id: \d+
+
+movibe_backend_commentaire_search:
+    path:     /commentaire_search
+    defaults: { _controller: MovibeBackendBundle:Commentaire:search }
+    requirements:
+        idt: \d+

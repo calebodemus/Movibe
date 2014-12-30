@@ -1,0 +1,612 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{%  import "MovibeBackendBundle:Macro:functions.html.twig" as allFunctions %}
+
+{% block content %}
+
+<style>
+    .carousel-inner > .item
+    {
+        height:500px ! important;
+    }
+</style>
+
+<div class="page-header">
+    <h1>Film<small>Visualisation</small></h1>
+</div>
+
+<!-- Widget Row Start grid -->
+<div class="row" id="powerwidgets">
+<div class="col-md-12 bootstrap-grid">
+
+<!-- New widget -->
+
+<div class="powerwidget cold-grey" id="profile" data-widget-editbutton="false">
+<header>
+    <h2>Datas</h2>
+</header>
+<div class="inner-spacer">
+
+<!--Profile-->
+<div class="user-profile">
+<div class="main-info">
+    <div class="img-rounded img-responsive">
+        {% if film.promotion is not empty %}
+            {{ allFunctions.img(asset(film.promotion.getWebPath('medium')), "image_promotion") }}
+        {% else %}
+            <div style="text-align: center;">
+            {{ allFunctions.img("http://placehold.it/400x400", "Promotion photo") }}
+            </div>
+        {% endif %}
+    </div>
+    <h1>{{ film.titre }}</h1>
+    Vidéos: {{ film.medias|length }} | Commentaires: {{ film.commentaires|length }} | Photos: {{ film.images|length }} </div>
+<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" >
+        <div class="item item1 active"> </div>
+        <div class="item item2"></div>
+        <div class="item item3"></div>
+    </div>
+    <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span> </a> <a class="right carousel-control" href="#carousel-example-generic" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span> </a> </div>
+<div class="user-profile-info">
+<div class="tabs-white">
+<ul id="myTab" class="nav nav-tabs nav-justified">
+    <li class="active"><a href="#home" data-toggle="tab">A propos</a></li>
+    <li><a href="#casting" data-toggle="tab">Casting</a></li>
+    <li><a href="#bandes-annonces" data-toggle="tab">B-A</a></li>
+    <li><a href="#photos" data-toggle="tab">Photos</a></li>
+    <!--<li><a href="#activity" data-toggle="tab">Activités</a></li>-->
+    <li><a href="#news" data-toggle="tab">News</a></li>
+    <li><a href="#commentaires" data-toggle="tab">Commentaires</a></li>
+    <li><a href="#presses" data-toggle="tab">Presses</a></li>
+</ul>
+<div id="myTabContent" class="tab-content">
+<div class="tab-pane in active" id="home">
+    <div class="profile-header">Synopsis</div>
+    <p>{{ film.synopsis }}</p>
+    <table class="table">
+        <tr>
+            <td><strong>Titre Original:</strong></td>
+            <td>{{ film.titreOriginal }}</td>
+            <td><strong>Durée:</strong></td>
+            <td>{{ film.duree }} min.</td>
+        </tr>
+        <tr>
+            <td><strong>Date de sortie:</strong></td>
+            <td>{{ film.dateSortie|localizeddate("medium","none") }}</td>
+            <td><strong>Nationalité:</strong></td>
+            <td>
+                {% for pays in film.pays %}
+                    {{ pays.nationalite }}
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Budget:</strong></td>
+            <td>{{ film.budget }}
+                {% if film.devise == 0 %}
+                 $
+                {% else %}
+                 €
+                {% endif %}
+            </td>
+            <td><strong>Année de production:</strong></td>
+            <td>{{ film.anneeProduction }}</td>
+        </tr>
+        <tr>
+            <td><strong>A l'affiche:</strong></td>
+            <td>
+                {% if film.visible == 1 %}
+                oui
+                {% else %}
+                non
+                {% endif %}
+            </td>
+            <td><strong>Visa:</strong></td>
+            <td>{{ film.visa }}</td>
+        </tr>
+        <tr>
+            <td><strong>Couleur:</strong></td>
+            <td>{{ film.couleur.nom }}</td>
+            <td><strong>Type:</strong></td>
+            <td>{{ film.typeFilm.nom }}</td>
+        </tr>
+        <tr>
+            <td><strong>Genre:</strong></td>
+            <td>
+                {% for genre in film.genres %}
+                {{ genre.nom }}
+                    {% if not loop.last %}
+                        ,
+                    {% endif %}
+                {% endfor %}
+            </td>
+            <td><strong>Langue:</strong></td>
+            <td>{{ film.langue.nom }}</td>
+        </tr>
+    </table>
+</div>
+<div class="tab-pane" id="casting">
+    <div class="profile-header"> Réalisateurs/Réalisatrices <span class="badge">{{ film.realisateurs|length }}</span>
+        <div class="btn-group btn-group-xs pull-right">
+            <button class="btn btn-default">Show all</button>
+        </div>
+    </div>
+    <div id="items" class="items-switcher items-view-grid">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" data-provide="typeahead" class="form-control" id="users" placeholder="Search">
+                        <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                        </span> </div>
+            </div>
+            <div class="col-md-6 items-options"> <a href="#" class="items-icon items-grid items-selected" data-view="items-view-grid">Grid View</a> <a href="#" class="items-icon items-list" data-view="items-view-list">List View</a> </div>
+        </div>
+        <ul>
+            <div class="row">
+                {% set cpt = 1 %}
+                {% for realisateur in film.realisateurs %}
+                    {% if cpt == 6 %}
+                        <div class="row">
+                        {% set cpt = 1 %}
+                    {% endif %}
+                    <li>
+                        <div class="items-inner clearfix">
+                            <a class="items-image" href="#">
+                                {% if realisateur.personne.promotion is not empty %}
+                                    {{ allFunctions.img(asset(realisateur.personne.promotion.getWebPath('small')), "image_personne", "img-responsive") }}
+                                {% else %}
+                                    {{ allFunctions.img("http://placehold.it/200x200", "image_personne", "img-responsive") }}
+                                {% endif %}
+                            </a>
+                            <h3 class="items-title">{{ realisateur.personne.prenom }} {{ realisateur.personne.nom }}</h3>
+                            <span class="label label-danger">{{ realisateur.metier.nom }}</span>
+                            <div class="items-details"><strong>Age:</strong> {{ realisateur.personne|age }} ans <strong>Nationalité:</strong> {{ realisateur.personne.nationalite.nationalite }} <strong>Commentaires:</strong> {{ realisateur.personne.commentaires|length }} </div>
+                            <div class="control-buttons"> <a href="#" title="Ban"><i class="fa fa-ban"></i></a> <a href="#" title="Delete"><i class="fa fa-times-circle"></i></a> <a href="#" title="Modify"><i class="fa fa-cog"></i></a> </div>
+                        </div>
+                    </li>
+                    {% if cpt == 5 %}
+                        </div>
+                    {% endif %}
+                    {% set cpt = cpt + 1 %}
+                {% endfor %}
+            </div>
+        </ul>
+    </div>
+
+    <div class="profile-header"> Acteurs/Actrices <span class="badge">{{ film.acteurs|length }}</span>
+        <div class="btn-group btn-group-xs pull-right">
+            <button class="btn btn-default">Show all</button>
+        </div>
+    </div>
+    <div id="items" class="items-switcher items-view-grid">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" data-provide="typeahead" class="form-control" id="users" placeholder="Search">
+                        <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                        </span> </div>
+            </div>
+            <div class="col-md-6 items-options"> <a href="#" class="items-icon items-grid items-selected" data-view="items-view-grid">Grid View</a> <a href="#" class="items-icon items-list" data-view="items-view-list">List View</a> </div>
+        </div>
+        <ul>
+            <div class="row">
+            {% set cpt = 1 %}
+            {% for acteur in film.acteurs %}
+                {% if cpt == 6 %}
+                    <div class="row">
+                    {% set cpt = 1 %}
+                {% endif %}
+                <li>
+                    <div class="items-inner clearfix">
+                        <a class="items-image" href="#">
+                            {% if acteur.personne.promotion is not empty %}
+                                {{ allFunctions.img(asset(acteur.personne.promotion.getWebPath('small')), "image_personne", "img-responsive") }}
+                            {% else %}
+                                {{ allFunctions.img("http://placehold.it/200x200", "image_personne", "img-responsive") }}
+                            {% endif %}
+                        </a>
+                        <h3 class="items-title">{{ acteur.personne.prenom }} {{ acteur.personne.nom }}</h3>
+                        <span class="label label-danger">{{ acteur.role }}</span>
+                        <div class="items-details"><strong>Age:</strong> {{ acteur.personne|age }} ans <strong>Nationalité:</strong> {{ acteur.personne.nationalite.nationalite }} <strong>Commentaires:</strong> {{ acteur.personne.commentaires|length }} </div>
+                        <div class="control-buttons"> <a href="#" title="Ban"><i class="fa fa-ban"></i></a> <a href="#" title="Delete"><i class="fa fa-times-circle"></i></a> <a href="#" title="Modify"><i class="fa fa-cog"></i></a> </div>
+                    </div>
+                </li>
+                {% if cpt == 5 %}
+                    </div>
+                {% endif %}
+                {% set cpt = cpt + 1 %}
+            {% endfor %}
+            </div>
+        </ul>
+    </div>
+</div>
+<div class="tab-pane" id="bandes-annonces">
+    <div class="profile-header">Bandes-Annonces</div>
+    <div class="row">
+        {% for media in film.medias %}
+            <div class="col-md-6 col-sm-6">
+                <div class="powerwidget powerwidget-as-portlet powerwidget-as-portlet-cold-grey" id="widget12" data-widget-editbutton="false">
+                    <header>
+                        <h2>{{ media.type.libelle }}<small>{{ media.descriptif }}</small></h2>
+                    </header>
+                    <div class="inner-spacer nopadding">
+                        <div class="vidz" style="text-align: center ">
+                            {{ media.url|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="tab-pane" id="photos">
+    <div class="profile-header"> Photo de promotion <span class="badge">{{ film.promotion|length }}</span>
+        <div class="btn-group btn-group-xs pull-right">
+            <button class="btn btn-default">Show all</button>
+        </div>
+    </div>
+    <div class="row">
+        <ul class="thumbnails">
+            <li class="col-md-3 col-sm-6">
+                <div class="thumbnail">
+                    <div class='hover-fader'><a href="#image-1">
+                            {% if film.promotion is not empty %}
+                                {{ allFunctions.img(asset(film.promotion.getWebPath('medium')), "image_promotion", "img-rounded img-responsive") }}
+                            {% else %}
+                                {{ allFunctions.img("http://placehold.it/200x200", "image_promotion", "img-rounded img-responsive") }}
+                            {% endif %}
+                            <span class='zoom'><i class='fa fa-search-plus'></i></span></a>
+                    </div>
+                    <div class="gal-overlay" id="image-1">
+                        {% if film.promotion is not empty %}
+                            {{ allFunctions.img(asset(film.promotion.getWebPath('large')), "image_promotion", "img-responsive") }}
+                        {% else %}
+                            {{ allFunctions.img("http://placehold.it/200x200", "image_promotion", "img-responsive") }}
+                        {% endif %}
+                        <div>
+                            <h3>Image Item</h3>
+                            <p>Here comes description of the Image Item</p>
+                            <a href="#image-10" class="gal-prev"><i class="fa fa-angle-left"></i></a> <a href="#image-2" class="gal-next"><i class="fa fa-angle-right"></i></a> </div>
+                        <a href="#die" class="gal-close"><i class="fa fa-times-circle"></i></a> </div>
+                    <div class="caption">
+                        <p class="small"><strong>Loaded by:</strong> <a href="#">Master Youda</a> | <strong>Folder:</strong> <a href="#">Images</a> | <i class="fa fa-clock-o"></i> <a href="#">22.01.2015</a> | 235Kb </p>
+                        <div class="btn-group">
+                            <div class="btn-group btn-group-xs">
+                                <button type="button" class="btn btn-default"><i class="fa fa-flash"></i> Report</button>
+                            </div>
+                            <div class="btn-group btn-group-xs">
+                                <button type="button" class="btn btn-danger"><i class="fa fa-times-circle"></i> Delete</button>
+                            </div>
+                            <div class="btn-group btn-group-xs">
+                                <button type="button" class="btn btn-default"><i class="fa fa-folder-open"></i> Move</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="profile-header"> Affiches <span class="badge">{{ film.affiches|length }}</span>
+        <div class="btn-group btn-group-xs pull-right">
+            <button class="btn btn-default">Show all</button>
+        </div>
+    </div>
+    <div class="row">
+        <ul class="thumbnails">
+            {% for affiche in film.affiches %}
+                <li class="col-md-3 col-sm-6">
+                    <div class="thumbnail">
+                        <div class='hover-fader'><a href="#image-1">
+                                {% if affiche is not empty %}
+                                    {{ allFunctions.img(asset(affiche.getWebPath('medium')), "image_affiche", "img-rounded img-responsive") }}
+                                {% else %}
+                                    {{ allFunctions.img("http://placehold.it/400x400", "image_affiche", "img-roundedimg-responsive") }}
+                                {% endif %}
+                                <span class='zoom'><i class='fa fa-search-plus'></i></span></a>
+                        </div>
+                        <div class="gal-overlay" id="image-1">
+                            {% if affiche is not empty %}
+                                {{ allFunctions.img(asset(affiche.getWebPath('large')), "image_promotion", "img-responsive") }}
+                            {% else %}
+                                {{ allFunctions.img("http://placehold.it/600x600", "image_promotion", "img-responsive") }}
+                            {% endif %}
+                            <div>
+                                <h3>Image Item</h3>
+                                <p>Here comes description of the Image Item</p>
+                                <a href="#image-10" class="gal-prev"><i class="fa fa-angle-left"></i></a> <a href="#image-2" class="gal-next"><i class="fa fa-angle-right"></i></a> </div>
+                            <a href="#die" class="gal-close"><i class="fa fa-times-circle"></i></a> </div>
+                        <div class="caption">
+                            <p class="small"><strong>Loaded by:</strong> <a href="#">Master Youda</a> | <strong>Folder:</strong> <a href="#">Images</a> | <i class="fa fa-clock-o"></i> <a href="#">22.01.2015</a> | 235Kb </p>
+                            <div class="btn-group">
+                                <div class="btn-group btn-group-xs">
+                                    <button type="button" class="btn btn-default"><i class="fa fa-flash"></i> Report</button>
+                                </div>
+                                <div class="btn-group btn-group-xs">
+                                    <button type="button" class="btn btn-danger"><i class="fa fa-times-circle"></i> Delete</button>
+                                </div>
+                                <div class="btn-group btn-group-xs">
+                                    <button type="button" class="btn btn-default"><i class="fa fa-folder-open"></i> Move</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {%  endfor %}
+        </ul>
+    </div>
+</div>
+<div class="tab-pane" id="activity">
+    <div class="profile-header">Timeline</div>
+    <ul class="tmtimeline">
+        <li>
+            <time class="tmtime" datetime="2013-04-10 18:30"><span>4/10/13</span> <span>18:30</span></time>
+            <div class="tmicon bg-cold-grey fa-camera"></div>
+            <div class="tmlabel">
+                <h2>Added photo</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam cursus turpis quis neque imperdiet, eleifend feugiat erat consectetur. Donec eget fringilla lorem, eget auctor sapien.</p>
+            </div>
+        </li>
+        <li>
+            <time class="tmtime" datetime="2013-04-11T12:04"><span>4/11/13</span> <span>12:04</span></time>
+            <div class="tmicon bg-cold-grey fa-comment"></div>
+            <div class="tmlabel">
+                <h2>Added comment</h2>
+                <p>Caulie dandelion maize lentil collard greens radish arugula
+                    sweet pepper water spinach kombu courgette lettuce. Celery coriander
+                    bitterleaf epazote radicchio shallot winter purslane collard greens
+                    spring onion squash lentil. Artichoke salad bamboo shoot black-eyed pea
+                    brussels sprout garlic kohlrabi.</p>
+            </div>
+        </li>
+        <li>
+            <time class="tmtime" datetime="2013-04-13 05:36"><span>4/13/13</span> <span>05:36</span></time>
+            <div class="tmicon bg-cold-grey fa-coffee"></div>
+            <div class="tmlabel">
+                <h2>Drinked tea</h2>
+                <p>Nam tincidunt neque nec est bibendum, ut cursus nulla egestas. Etiam at mi vel sem viverra euismod. Nam scelerisque metus urna, ut facilisis augue dictum quis.</p>
+            </div>
+        </li>
+        <li>
+            <time class="tmtime" datetime="2013-04-15 13:15"><span>4/15/13</span> <span>13:15</span></time>
+            <div class="tmicon bg-cold-grey fa-cloud"></div>
+            <div class="tmlabel">
+                <h2>Uploaded files to cloud</h2>
+                <p> Donec fringilla metus dui, placerat pulvinar lectus elementum ullamcorper. Quisque dignissim nulla at purus volutpat placerat. In a justo purus.</p>
+            </div>
+        </li>
+        <li>
+            <time class="tmtime" datetime="2013-04-16 21:30"><span>4/16/13</span> <span>21:30</span></time>
+            <div class="tmicon bg-cold-grey bg-cold-grey fa-heart"></div>
+            <div class="tmlabel">
+                <h2>Falling in love</h2>
+                <p>Fusce pretium nibh eros, at adipiscing neque euismod eget. Suspendisse sollicitudin justo vel urna sollicitudin, sed pellentesque dolor ultricies.</p>
+            </div>
+        </li>
+        <li>
+            <time class="tmtime" datetime="2013-04-17 12:11"><span>4/17/13</span> <span>12:11</span></time>
+            <div class="tmicon bg-cold-grey fa-thumbs-up"></div>
+            <div class="tmlabel">
+                <h2>Giving Some Likes</h2>
+                <p> Fusce feugiat ornare libero sed gravida. Aenean metus est, suscipit nec condimentum ac, facilisis eget lorem. Suspendisse rutrum lorem orci. Ut in ligula neque. Phasellus a enim at leo pellentesque dapibus. Integer dignissim sem eu venenatis facilisis. Sed quis neque nec lectus gravida euismod. Nam sollicitudin, nisl nec lacinia blandit, magna felis pharetra enim, et lacinia metus ipsum et est.</p>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="tab-pane" id="news">
+    <div class="profile-header">NEWS</div>
+
+    {% for news in film.listNews %}
+        <div class="user-blog-entry">
+            <h2><a href="#">{{ news.titre }}</a></h2>
+            <div class="info">
+                <p class="month">{{ news.dateCreation|localizeddate("medium","none",null,null,"MMM") }}</p>
+                <p class="day">{{ news.dateCreation|localizeddate("medium","none",null,null,"dd") }}</p>
+                <p class="time">{{ news.dateCreation|localizeddate("none","medium") }}</p>
+            </div>
+            {{ news.description|raw }}
+            <div class="blog-tags padding"> <a href="#" rel="tag">Sex</a> <a href="#" rel="tag">Envato</a> <a href="#" rel="tag">Modern Design</a> <a href="#" rel="tag">SEO Optimization</a> <a href="#" rel="tag">Big Money Deal</a> <a href="#" rel="tag">Hipsta</a></div>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="tab-pane" id="presses">
+    <div class="profile-header"> Critiques <span class="badge">{{ film.critiques|length }}</span>
+        <div class="btn-group btn-group-xs pull-right">
+            <button class="btn btn-default">Show all</button>
+        </div>
+    </div>
+    <div class="row">
+        {% for critique in film.critiques %}
+            <div class="col-md-4 col-sm-6">
+                <div class="tiny-user-block clearfix">
+                    <h3>
+                        {{ critique.presse.nom }}
+                        <div class="rating">
+                            {% if critique.note >= 1 %}
+                                <label for="stars-rating-1"><i class="fa fa-star" style="color:yellow;"></i></label>
+                            {% else %}
+                                <label for="stars-rating-1"><i class="fa fa-star"></i></label>
+                            {% endif %}
+                            {% if critique.note >= 2 %}
+                                <label for="stars-rating-2"><i class="fa fa-star" style="color:yellow;"></i></label>
+                            {% else %}
+                                <label for="stars-rating-2"><i class="fa fa-star"></i></label>
+                            {% endif %}
+                            {% if critique.note >= 3 %}
+                                <label for="stars-rating-3"><i class="fa fa-starw" style="color:yellow;"></i></label>
+                            {% else %}
+                                <label for="stars-rating-3"><i class="fa fa-star"></i></label>
+                            {% endif %}
+                            {% if critique.note >= 4 %}
+                                <label for="stars-rating-4"><i class="fa fa-star" style="color:yellow;"></i></label>
+                            {% else %}
+                                <label for="stars-rating-4"><i class="fa fa-star"></i></label>
+                            {% endif %}
+                            {% if critique.note == 5 %}
+                                <label for="stars-rating-5"><i class="fa fa-star" style="color:yellow;"></i></label>
+                            {% else %}
+                                <label for="stars-rating-5"><i class="fa fa-star"></i></label>
+                            {% endif %}
+                        </div>
+                    </h3>
+                    <ul>
+                        <li>Commentaire: <strong>{{ critique.commentaire }}</strong></li>
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="tab-pane in" id="commentaires">
+    <div class="profile-header">Commentaires</div>
+    <div class="chat-messages user-profile-chat">
+        <ul>
+            {% set flag = 0 %}
+            {% for commentaire in film.commentaires %}
+                {% if flag == 0 %}
+                    <li class="left clearfix">
+                        <div class="user-img pull-left"> <img src="http://placehold.it/150x150" alt="User Avatar" /> </div>
+                        <div class="chat-body clearfix">
+                            <div class="header"> <span class="name">{{ commentaire.user.username }}</span><span class="name"></span> <span class="badge"><i class="fa fa-clock-o"></i>{{ commentaire.dateCreation|localizeddate("medium","none") }}</span></div>
+                            <p>{{ commentaire.comment }}</p>
+                        </div>
+                    </li>
+                    {% set flag = flag + 1 %}
+                {% else %}
+                    <li class="right clearfix"><span class="user-img pull-right"> <img src="http://placehold.it/150x150" alt="User Avatar" /> </span>
+                        <div class="chat-body clearfix">
+                            <div class="header"> <span class="name">{{ commentaire.user.username }}</span><span class=" badge"><i class="fa fa-clock-o"></i>{{ commentaire.dateCreation|localizeddate("medium","none") }}</span> </div>
+                            <p>{{ commentaire.comment }}</p>
+                        </div>
+                    </li>
+                    {% set flag = flag - 1 %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="chat-message-form">
+        <div class="row">
+            <div class="col-md-12">
+                <textarea placeholder="Ecriver votre commentaire" class="form-control margin-bottom" rows="2"></textarea>
+            </div>
+            <div class="col-md-8 col-sm-8 col-xs-8">
+                <!--
+                <div class="btn-group">
+                    <button class="btn btn-default tooltiped" data-toggle="tooltip" data-placement="top" title="Add Location"><i class="fa fa-location-arrow"></i></button>
+                    <button class="btn btn-default tooltiped" data-toggle="tooltip" data-placement="top" title="Add Photo"><i class="fa fa-camera"></i></button>
+                    <button class="btn btn-default tooltiped" data-toggle="tooltip" data-placement="top" title="Add Music"><i class="fa fa-music"></i></button>
+                    <button class="btn btn-default tooltiped" data-toggle="tooltip" data-placement="top" title="Add File"><i class="fa fa-file"></i></button>
+                </div>-->
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-4">
+                <button class="btn btn-default pull-right" type="button">Envoyer!</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+</div>
+</div>
+</div>
+</div>
+
+<!--/Profile-->
+</div>
+</div>
+<!-- End .powerwidget -->
+
+</div>
+<!-- /Inner Row Col-md-12 -->
+</div>
+<!-- /Widgets Row End Grid-->
+</div>
+<!-- / Content Wrapper -->
+</div>
+<!--/MainWrapper-->
+</div>
+<!--/Smooth Scroll-->
+
+
+<!-- scroll top -->
+<div class="scroll-top-wrapper hidden-xs">
+    <i class="fa fa-angle-up"></i>
+</div>
+<!-- /scroll top -->
+
+
+
+<!--Modals-->
+
+<!--Power Widgets Modal-->
+<div class="modal" id="delete-widget">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <i class="fa fa-lock"></i> </div>
+            <div class="modal-body text-center">
+                <p>Are you sure to delete this widget?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="trigger-deletewidget-reset">Cancel</button>
+                <button type="button" class="btn btn-primary" id="trigger-deletewidget">Delete</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!--Sign Out Dialog Modal-->
+<div class="modal" id="signout">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <i class="fa fa-lock"></i> </div>
+            <div class="modal-body text-center">Are You Sure Want To Sign Out?</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="yesigo">Ok</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!--Lock Screen Dialog Modal-->
+<div class="modal" id="lockscreen">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <i class="fa fa-lock"></i> </div>
+            <div class="modal-body text-center">Are You Sure Want To Lock Screen?</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="yesilock">Ok</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+{% endblock %}
+

@@ -1,0 +1,225 @@
+{% macro img(route, alt, classe) %}
+    <img src="{{ route }}" alt="{{ alt }}" class="{{ classe }}" >
+{% endmacro %}
+
+{% macro image_prototype(image, preview = true) %}
+    {% import _self as allFunctions %}
+
+    {% set obj=image.vars.value %}
+
+
+    <td class="tdFileImg">
+        {% if preview %}
+            <img src="" alt="Preview Photo" class="previewPhoto" height="200px" width="150px">
+        {% else %}
+            {{ allFunctions.img(asset(obj), "Image de film") }}
+        {% endif %}
+        <div hidden>
+        {{ form_widget(image.file,{'attr': {'class':'fileImage','hidden':true}} ) }}
+        {{ form_errors(image.file) }}
+        </div>
+    </td>
+    <td class="tdNameImg">
+        {{ form_widget(image.nom,{'attr': {'placeholder':'Nom', 'class':'form-control input-md NomImg', 'style':'height:20px!important; width:80%;'}} ) }}
+        {{ form_errors(image.nom) }}
+    </td>
+    <td>
+        <label class="toggle">
+            {{ form_widget(image.promotion,{'attr': {'class':'PromoImg'}} ) }}
+            <i></i>Promotion
+        </label>
+        {{ form_errors(image.promotion) }}
+        <label class="toggle">
+            {{ form_widget(image.affiche,{'attr': {'class':'AfficheImg'}} ) }}
+            <i></i>Affiche
+        </label>
+        {{ form_errors(image.affiche) }}
+    </td>
+{% endmacro %}
+
+{% macro critique_prototype(critique) %}
+    <td>
+        {{ form_widget(critique.presse,{'attr': {'class':'form-control input-md', 'style':'height:20px!important; width:80%;'}} ) }}
+        {{ form_errors(critique.presse) }}
+    </td>
+    <td>
+        <div class="rating">
+            {{ form_widget(critique.note,{'attr': {'class':'informations_widget'}} ) }}
+            {{ form_errors(critique.note) }}
+        </div>
+    </td>
+    <td>
+        {{ form_widget(critique.commentaire,{'attr': {'class':'form-control input-md', 'style':'height:30px!important; width:80%;'}} ) }}
+        {{ form_errors(critique.commentaire) }}
+    </td>
+{% endmacro %}
+
+{% macro metier_acteur_prototype(casting, preview = true) %}
+    {% import _self as allFunctions %}
+
+    {% set obj=casting.children.personne.vars.form.vars.data %}
+
+    <td>
+        {% if preview %}
+            {{ allFunctions.img("http://placehold.it/200x200", "image_acteur", "img-responsive") }}
+        {% else %}
+            {{ allFunctions.img(asset(obj), "image_acteur", "img-responsive") }}
+        {% endif %}
+    </td>
+    <td>
+        {{ form_widget(casting.personne,{'attr': {'placeholder':'Personne', 'class':'form-control input-md personne', 'style':'height:20px!important; width:80%;'}} ) }}
+        {{ form_errors(casting.personne) }}
+    </td>
+    <td>
+        {{ form_widget(casting.role,{'attr': {'placeholder':'Rôle', 'class':'form-control input-md', 'style':'height:20px!important; width:80%;'}} ) }}
+        {{ form_errors(casting.role) }}
+    </td>
+    <td>
+        {{ form_widget(casting.metier,{'attr': {'placeholder':'Métier', 'class':'form-control input-md', 'style':'height:20px!important; width:80%;'}} ) }}
+        {{ form_errors(casting.metier) }}
+    </td>
+{% endmacro %}
+
+{% macro metier_casting_prototype(casting,preview = true) %}
+    {% import _self as allFunctions %}
+
+    {% set obj=casting.children.personne.vars.form.vars.data %}
+    <td>
+        {% if preview %}
+            {{ allFunctions.img("http://placehold.it/200x200", "image_casting", "img-responsive") }}
+        {% else %}
+            {{ allFunctions.img(asset(obj), "image_acting", "img-responsive") }}
+        {% endif %}
+    </td>
+    <td>
+        {{ form_widget(casting.personne,{'attr': {'placeholder':'Personne', 'class':'form-control input-md personne', 'style':'height:20px!important; width:80%;'}} ) }}
+        {{ form_errors(casting.personne) }}
+    </td>
+    <td>
+        {{ form_widget(casting.metier,{'attr': {'placeholder':'Rôle', 'class':'form-control input-md', 'style':'height:20px!important; width:80%;'}} ) }}
+        {{ form_errors(casting.metier) }}
+    </td>
+{% endmacro %}
+
+{% macro film_societe_metier_prototype(filmSocieteMetier) %}
+    {% import _self as allFunctions %}
+    <td>
+        {{ form_widget(filmSocieteMetier.societe,{'attr': {'placeholder':'Société', 'class':'form-control input-md', 'style':'height:20px!important; width:80%;'}} ) }}
+        {{ form_errors(filmSocieteMetier.societe) }}
+    </td>
+    <td>
+        {{ form_widget(filmSocieteMetier.metier,{'attr': {'placeholder':'Fonction', 'class':'form-control input-md', 'style':'height:20px!important; width:80%;'}} ) }}
+        {{ form_errors(filmSocieteMetier.metier) }}
+    </td>
+{% endmacro %}
+
+
+{% macro media_prototype(media) %}
+    <td>
+        {{ form_widget(media.url,{'attr': {'placeholder':'Url', 'class':'form-control input-md', 'style':'width:90%;'}} ) }}
+        {{ form_errors(media.url) }}
+    </td>
+    <td>
+        {{ form_widget(media.type,{'attr': {'placeholder':'Type de média', 'class':'form-control input-md', 'style':'height:20px!important; width:80%;'}} ) }}
+        {{ form_errors(media.type) }}
+    </td>
+    <td>
+        {{ form_widget(media.descriptif,{'attr': {'placeholder':'Descriptif', 'class':'form-control input-md', 'style':'width:90%;'}} ) }}
+        {{ form_errors(media.descriptif) }}
+    </td>
+    <td>
+        {{ form_widget(media.poids,{'attr': {'placeholder':'Poids', 'class':'form-control input-md', 'style':'height:20px!important; width:70%;'}} ) }}
+        {{ form_errors(media.poids) }}
+    </td>
+{% endmacro %}
+
+{% macro photo_galerie(image) %}
+    {% import _self as allFunctions %}
+    <li class="col-md-3 col-sm-6">
+        <div class="thumbnail">
+            <div class='hover-fader'>
+                <a href="#image-1">
+                    {% if image is not empty %}
+                        {{ allFunctions.img(asset(image.getWebPath('medium')), "image_personne", "img-responsive") }}
+                    {% else %}
+                        {{ allFunctions.img("http://placehold.it/400x400", "image_personne", "img-responsive") }}
+                    {% endif %}
+                    <span class='zoom'><i class='fa fa-search-plus'></i></span>
+                </a>
+            </div>
+            <div class="gal-overlay" id="image-1"><img src="./images/gallery/1.png" alt="image01" />
+                <div>
+                    <h3>Image Item</h3>
+                    <p>Here comes description of the Image Item</p>
+                    <a href="#image-10" class="gal-prev"><i class="fa fa-angle-left"></i></a> <a href="#image-2" class="gal-next"><i class="fa fa-angle-right"></i></a>
+                </div>
+                <a href="#die" class="gal-close"><i class="fa fa-times-circle"></i></a>
+            </div>
+            <div class="caption">
+                <p class="small"><strong>Loaded by:</strong> <a href="#">Master Youda</a> | <strong>Folder:</strong> <a href="#">Images</a> | <i class="fa fa-clock-o"></i> <a href="#">22.01.2015</a> | 235Kb </p>
+                <div class="btn-group">
+                    <div class="btn-group btn-group-xs">
+                        <button type="button" class="btn btn-default"><i class="fa fa-flash"></i> Report</button>
+                    </div>
+                    <div class="btn-group btn-group-xs">
+                        <button type="button" class="btn btn-danger"><i class="fa fa-times-circle"></i> Delete</button>
+                    </div>
+                    <div class="btn-group btn-group-xs">
+                        <button type="button" class="btn btn-default"><i class="fa fa-folder-open"></i> Move</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+{% endmacro %}
+
+{% macro news_search_prototype() %}
+    <li>
+        <div class="search-result-block clearfix"> <span class="badge pull-right"><i class="fa fa-refresh"></i> 14.03.2014</span>
+            <h3><a href="admin-buttons.html">TITRE</a></h3>
+            <div class="video-block"><a href="#"><img src="PATH" alt="Image" /><i class="fa fa-video-camera"></i></a></div>
+            <div class="search-result clearfix">
+                <div class="url text-green"><strong>http://yourdomain.com/admin-buttons.html</strong> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-down"></i></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Cashed Version</a></li>
+                        <li><a href="#">Share Page</a></li>
+                        <li><a href="#">Similar Pages</a></li>
+                    </ul>
+                </div>
+                <p>Like all others templates made by DazeinCreative ORB has a excellent documentation and support.</p>
+            </div>
+        </div>
+    </li>
+{% endmacro %}
+
+{% macro seance_prototype(seance) %}
+    <td>
+        {% if seance.film is defined %}
+            {{ form_widget(seance.film,{'attr': {'class':'form-control input-md', 'style':'height:20px!important; width:85%;'}} ) }}
+            {{ form_errors(seance.film) }}
+        {% elseif seance.cinema is defined %}
+            {{ form_widget(seance.cinema,{'attr': {'class':'form-control input-md', 'style':'height:20px!important; width:85%;'}} ) }}
+            {{ form_errors(seance.cinema) }}
+        {% endif %}
+    </td>
+    <td>
+        {{ form_widget(seance.typeSeance,{'attr': {'class':'form-control input-md', 'style':'height:20px!important; width:85%;'}} ) }}
+        {{ form_errors(seance.typeSeance) }}
+    </td>
+    <td>
+        {{ form_widget(seance.horaire,{'attr': {'class':'form-control input-md', 'style':'height:20px!important; width:85%;'}} ) }}
+        {{ form_errors(seance.horaire) }}
+    </td>
+{% endmacro %}
+
+{% macro boxOfficeDate_prototype(boxOffice) %}
+    <td>
+        {{ form_widget(boxOffice.film,{'attr': {'class':'form-control input-md', 'style':'height:20px!important; width:85%;'}} ) }}
+        {{ form_errors(boxOffice.film) }}
+    </td>
+    <td>
+        {{ form_widget(boxOffice.entree,{'attr': {'class':'form-control input-md', 'style':'height:20px!important; width:85%;'}} ) }}
+        {{ form_errors(boxOffice.entree) }}
+    </td>
+
+{% endmacro %}

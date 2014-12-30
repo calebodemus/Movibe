@@ -1,0 +1,140 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{%  import "MovibeBackendBundle:Macro:functions.html.twig" as allFunctions %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>FILMS<small>Liste</small></h1>
+    </div>
+
+    <div class="row">
+        <div class="big-icons-buttons col-md-6">
+            <a class="btn btn-primary" href="{{ path('movibe_backend_film_new') }}"><i class="fa fa-plus"></i>Ajouter</a>
+        </div>
+        <div class="navigation dataTables_paginate col-md-6" style="text-align: right">
+            {{ knp_pagination_render(films) }}
+        </div>
+    </div>
+
+
+    <div class="row" id="powerwidgets">
+        <div class="col-md-12 bootstrap-grid">
+            <div class="powerwidget powerwidget-as-portlet-white" id="datatable-filter-column" data-widget-editbutton="false">
+                <header>
+                    <h2>Table<small>Styled</small></h2>
+                </header>
+                <div class="inner-spacer">
+                    <div class="navigation dataTables_paginate">
+                        {{ knp_pagination_render(films) }}
+                    </div>
+                    <table class="display table table-striped table-bordered table-hover" id="table-2">
+                        <thead>
+                        <tr>
+                            <th  width="10%"></th>
+                            <th width="5%">Id</th>
+                            <th width="20%">Titre</th>
+                            <th width="10%">Date de Sortie</th>
+                            <th width="30%">Synopsis</th>
+                            <th width="5%">Visible</th>
+                            <th width="20%">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for film in films %}
+                            <tr>
+                                <td>
+                                    {% if film.promotion is not empty %}
+                                        {{ allFunctions.img(asset(film.promotion.getWebPath('small')), "image_film", "img-responsive") }}
+                                    {% else %}
+                                        {{ allFunctions.img("http://placehold.it/200x200", "image_film", "img-responsive") }}
+                                    {% endif %}
+                                </td>
+                                <td width="1%"><span class="num">{{ film.id }}</span></td>
+                                <td><h5>{{ film.titre }}</h5></td>
+                                <td>{{ film.dateSortie|localizeddate("medium","none")  }}</td>
+                                <td>{{ film.synopsis|striptags|truncate(300, true)|raw }}</td>
+                                <td>{{ film.visible }}</td>
+                                <td>
+                                    <div class="big-icons-buttons">
+                                        <div class="btn-group">
+                                            <a class="btn btn-info" href="{{ path('movibe_backend_film_show', { 'id': film.id }) }}"><i class="fa fa-eye"></i> View </a>
+                                            <a class="btn btn-warning" href="{{ path('movibe_backend_film_edit', { 'id': film.id }) }}"><i class="fa fa-pencil"></i> Edit</a>
+                                            <a class="btn btn-danger" href="#soc{{ film.id }}" role="button" data-toggle="modal"><i class="fa fa-times"></i> Delete</a>
+                                            <div id="soc{{ film.id }}" class="modal" data-easein="tada" data-easeout="rollOut" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-sm">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                            <h4 class="modal-title">SUPPRESSION</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Voulez-vous supprimer ce film?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-primary remove" data-dismiss="modal" aria-hidden="true" data-url="{{ path('movibe_backend_film_delete', { 'id': film.id }) }}">Oui</button>
+                                                            <button class="btn btn-default cancel" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th class="search_init"><input type="text" name="filter_path" placeholder="Filtre sur promotion" class="search_init" hidden /></th>
+                            <th><input type="text" name="filter_id" placeholder="Filtre sur l'id" class="search_init" /></th>
+                            <th><input type="text" name="filter_titre" placeholder="Filtre sur le titre" class="search_init" /></th>
+                            <th><input type="text" name="filter_dateSortie" placeholder="Filtre sur la date de sortie" class="search_init" /></th>
+                            <th class="search_init"></th>
+                            <th><input type="text" name="filter_visible" placeholder="Filtre sur la visibilité" class="search_init" /></th>
+                            <th class="search_init"></th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts 'bundles/movibebackend/js/vendors/datatables/jquery.dataTables.min.js'
+    'bundles/movibebackend/js/vendors/bootstrap-progress-bar/*'
+    'bundles/movibebackend/js/vendors/animation/*' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".remove").click(function(e){
+                e.preventDefault();
+                var btn = $(this);
+                $.ajax({
+                    url:btn.attr('data-url'),
+                    dataType: "json"})
+                        .done(function(data){
+                            //console.log('ok');
+                            btn.parents('tr').fadeOut(function(){
+                                $(this).remove();
+                            });
+                            $(".cancel").click();
+                            $("#message").append("<p class='callout callout-info'>Le film sélectionné a été supprimé</p>");
+                            //var nb = parseInt($(".NbFilms").html());
+                            //nb = nb - 1;
+                            //$(".NbFilms").html(nb);
+                        });
+                return false;
+            })
+        });
+    </script>
+
+{% endblock %}

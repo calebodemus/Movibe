@@ -1,0 +1,141 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{%  import "MovibeBackendBundle:Macro:functions.html.twig" as allFunctions %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>PERSONNES<small>Liste</small></h1>
+    </div>
+
+    <div class="row">
+        <div class="big-icons-buttons col-md-6">
+            <a class="btn btn-primary" href="{{ path('movibe_backend_personne_new') }}"><i class="fa fa-plus"></i>Ajouter</a>
+        </div>
+        <div class="navigation dataTables_paginate col-md-6">
+            {{ knp_pagination_render(personnes) }}
+        </div>
+    </div>
+
+
+    <div class="row" id="powerwidgets">
+        <div class="col-md-12 bootstrap-grid">
+            <div class="powerwidget powerwidget-as-portlet-white" id="datatable-filter-column" data-widget-editbutton="false">
+                <header>
+                    <h2>Table<small>Styled</small></h2>
+                </header>
+                <div class="inner-spacer">
+                    <table class="display table table-striped table-bordered table-hover" id="table-2">
+                        <thead>
+                        <tr>
+                            <th width="10%"></th>
+                            <th width="10%">Id</th>
+                            <th width="30%">Nom</th>
+                            <th width="10%">Date de Naissance</th>
+                            <th width="10%">Nationalité</th>
+                            <th width="10%">Sexe</th>
+                            <th width="20%">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for personne in personnes %}
+                            <tr>
+                                <td>
+                                    {% if personne.promotion is not empty %}
+                                        {{ allFunctions.img(asset(personne.promotion.getWebPath('small')), "image_personne", "img-responsive") }}
+                                    {% else %}
+                                        {{ allFunctions.img("http://placehold.it/200x200", "image_personne", "img-responsive") }}
+                                    {% endif %}
+                                </td>
+                                <td width="1%"><span class="num">{{ personne.id }}</span></td>
+                                <td><h5>{{ personne.prenom }} {{ personne.nom }}</h5></td>
+                                <td>{{ personne.dateNaissance|localizeddate("medium","none")  }}</td>
+                                <td>
+                                    {% if personne.nationalite is not empty %}
+                                        {{ personne.nationalite.nationalite }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ personne|sexe }}</td>
+                                <td>
+                                    <div class="big-icons-buttons">
+                                        <div class="btn-group">
+                                            <a class="btn btn-info" href="{{ path('movibe_backend_personne_show', { 'id': personne.id }) }}"><i class="fa fa-eye"></i> View </a>
+                                            <a class="btn btn-warning" href="{{ path('movibe_backend_personne_edit', { 'id': personne.id }) }}"><i class="fa fa-pencil"></i> Edit</a>
+                                            <a class="btn btn-danger" href="#soc{{ personne.id }}" role="button" data-toggle="modal"><i class="fa fa-times"></i> Delete</a>
+                                            <div id="soc{{ personne.id }}" class="modal" data-easein="tada" data-easeout="rollOut" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-sm">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                            <h4 class="modal-title">SUPPRESSION</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Voulez-vous supprimer cette personne?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-primary remove" data-dismiss="modal" aria-hidden="true" data-url="{{ path('movibe_backend_personne_delete', { 'id': personne.id }) }}">Oui</button>
+                                                            <button class="btn btn-default cancel" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th><input type="text" class="search_init" hidden/></th>
+                            <th><input type="text" name="filter_id" placeholder="Filtre sur l'id" class="search_init" /></th>
+                            <th><input type="text" name="filter_nom" placeholder="Filtre sur le nom" class="search_init" /></th>
+                            <th><input type="text" name="filter_dateNaissance" placeholder="Filtre sur la date de naissance" class="search_init" /></th>
+                            <th><input type="text" name="filter_nationalite" placeholder="Filtre sur la nationalité" class="search_init" /></th>
+                            <th><input type="text" name="filter_sexe" placeholder="Filtre sur le sexe" class="search_init" /></th>
+                            <th><input type="text" class="search_init" hidden/></th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts 'bundles/movibebackend/js/vendors/datatables/jquery.dataTables.min.js'
+    'bundles/movibebackend/js/vendors/bootstrap-progress-bar/*'
+    'bundles/movibebackend/js/vendors/animation/*' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".remove").click(function(e){
+                e.preventDefault();
+                var btn = $(this);
+                $.ajax({
+                    url:btn.attr('data-url'),
+                    dataType: "json"})
+                        .done(function(data){
+                            //console.log('ok');
+                            btn.parents('tr').fadeOut(function(){
+                                $(this).remove();
+                            });
+                            $(".cancel").click();
+                            $("#message").append("<p class='callout callout-info'>Le personne sélectionné a été supprimé</p>");
+                            //var nb = parseInt($(".NbPersonnes").html());
+                            //nb = nb - 1;
+                            //$(".NbPersonnes").html(nb);
+                        });
+                return false;
+            })
+        });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+movibe_backend_seanceCinema_new:
+    path:     /seanceCinema_new/{id}
+    defaults: { _controller: MovibeBackendBundle:SeanceCinema:new }
+    requirements:
+        id: \d+
+
+movibe_backend_seanceCinema_create:
+    path:     /seanceCinema_create/{id}
+    defaults: { _controller: MovibeBackendBundle:SeanceCinema:create }
+    requirements:
+        id: \d+
+        _method: POST
+
+
+movibe_backend_seanceCinema_delete:
+    path:     /seanceCinema_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:SeanceCinema:delete }
+    requirements:
+        _method: GET|DELETE
+        id: \d+
+

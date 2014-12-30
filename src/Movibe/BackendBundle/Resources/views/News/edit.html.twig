@@ -1,0 +1,80 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets 'bundles/movibebackend/css/vendors/sumernote/*' filter="cssrewrite,?yui_css"%}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+    <style type="text/css">
+        .btn-toolbar{
+            margin-left: 0px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="page-header">
+        <h1>NEWS<small>Edition</small></h1>
+    </div>
+
+    <div class="row" id="powerwidgets">
+        <div class="col-md-12 bootstrap-grid">
+            <div class="powerwidget dark-red" data-widget-editbutton="false" data-widget-deletebutton="false">
+                <header>
+                    <h2>Sample widget<small>Clear</small></h2>
+                </header>
+                <div class="inner-spacer">
+                    {{ form_start(edit_form,{'method':'POST','role':'form','attr':{'novalidate':'novalidate','class':'form-horizontal'} } ) }}
+                    <fieldset>
+                        <legend>Form Name</legend>
+                        <div class="form-group">
+                            {{ form_label(edit_form.titre,null,{'label_attr': {'class':'col-md-1 control-label'}}) }}
+                            <div class="col-md-11">
+                                {{ form_widget(edit_form.titre,{'id':'code','attr': {'placeholder':'Titre', 'class':'form-control input-md'}} )}}
+                            </div>
+                            {{ form_errors(edit_form.titre) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(edit_form.image,null,{'label_attr': {'class':'col-md-1 control-label'}}) }}
+                            <div class="col-md-11">
+                                {{ form_widget(edit_form.image,{'id':'Image','attr': {'placeholder':'Image', 'class':'form-control input-md'}} )}}
+                            </div>
+                            {{ form_errors(edit_form.image) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(edit_form.description,null,{'label_attr': {'class':'col-md-1 control-label'}}) }}
+                            <div class="col-md-11">
+                                {{ form_widget(edit_form.description,{'id':'summernote','attr': {'placeholder':'Description', 'class':'form-control input-md'}} )}}
+                            </div>
+                            {{ form_errors(edit_form.description) }}
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                {{ form_widget(edit_form.submit,{'attr': {'class':'btn btn-primary'}} )}}
+                            </div>
+                        </div>
+                    </fieldset>
+                    {{ form_end(edit_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="big-icons-buttons">
+        <a class="btn btn-info" href="{{ path('movibe_backend_news') }}"><i class="fa fa-mail-reply"></i>Retour à la liste</a>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts 'bundles/movibebackend/js/vendors/summernote/*' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+

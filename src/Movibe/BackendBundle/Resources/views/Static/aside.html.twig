@@ -1,0 +1,146 @@
+<!--OffCanvas Menu -->
+<aside class="user-menu">
+
+    <!-- Tabs -->
+    <div class="tabs-offcanvas">
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active"><a href="#userbar-one" data-toggle="tab">Main</a></li>
+            <li><a href="#userbar-two" data-toggle="tab">Users</a></li>
+            <li><a href="#userbar-three" data-toggle="tab">ToDo</a></li>
+        </ul>
+        <div class="tab-content">
+
+            <!--User Primary Panel-->
+            <div class="tab-pane active" id="userbar-one">
+                <div class="main-info">
+                    <div class="user-img"><img src="http://placehold.it/150x150" alt="User Picture" /></div>
+                    <h1>{{ app.user.username }}
+                        {% set categorie = 'UTILISATEUR' %}
+                        {% for role in app.user.roles %}
+                            {% if role == 'ROLE_ADMIN' %}
+                                {% set categorie = 'ADMINISTRATEUR' %}
+                            {% endif %}
+                        {% endfor %}
+                        <small>{{ categorie }}</small>
+                    </h1>
+                </div>
+                <div class="list-group"> <a href="#" class="list-group-item"><i class="fa fa-user"></i>Profile</a> <a href="#" class="list-group-item"><i class="fa fa-cog"></i>Settings</a> <a href="#" class="list-group-item"><i class="fa fa-flask"></i>Projects<span class="badge">2</span></a>
+                    <div class="empthy"></div>
+                    <a href="#" class="list-group-item"><i class="fa fa-refresh"></i>Updates<span class="badge">5</span></a> <a href="#" class="list-group-item"><i class="fa fa-comment"></i>Messages<span class="badge">12</span></a> <a href="#" class="list-group-item"><i class="fa fa-comments"></i> Comments<span class="badge">45</span></a>
+                    <div class="empthy"></div>
+                    <a href="#" data-toggle="modal" class="list-group-item lockme"><i class="fa fa-lock"></i> Lock</a> <a data-toggle="modal" href="#" class="list-group-item goaway"><i class="fa fa-power-off"></i> Sign Out</a> </div>
+            </div>
+
+            <!--User Chat Panel-->
+            <div class="tab-pane" id="userbar-two">
+                <div class="chat-users-menu">
+                    <!--Adding Some Scroll-->
+                    <div class="nano">
+                        <div class="nano-content">
+                            <div class="buttons">
+                                <div class="btn-group btn-group-xs">
+                                    <button type="button" class="btn btn-default">Friends</button>
+                                    <button type="button" class="btn btn-default">Work</button>
+                                    <button type="button" class="btn btn-default">Girls</button>
+                                </div>
+                            </div>
+                            <ul>
+                                <li><a href="#"><span class="chat-name">Gluck Dorris</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-success">Online</span><span class="badge">5</span></a></li>
+                                <li><a href="#"><span class="chat-name">Anton Durant</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-success">Online</span></a></li>
+                                <li><a href="#"><span class="chat-name">Spiderman</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-success">Online</span></a></li>
+                                <li><a href="#"><span class="chat-name">Muchu</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-default">Offline</span></a></li>
+                                <li><a href="#"><span class="chat-name">Mr. Joker</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-success">Online</span></a></li>
+                                <li><a href="#"><span class="chat-name">Chewbacca</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-success">Online</span></a></li>
+                                <li><a href="#"><span class="chat-name">The Piggy</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-success">Online</span></a></li>
+                                <li><a href="#"><span class="chat-name">Anton Durant</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-success">Online</span></a></li>
+                                <li><a href="#"><span class="chat-name">Spiderman</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-success">Online</span></a></li>
+                                <li><a href="#"><span class="chat-name">Muchu</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-success">Online</span></a></li>
+                                <li><a href="#"><span class="chat-name">Anton Durant</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-success">Online</span></a></li>
+                                <li><a href="#"><span class="chat-name">Spiderman</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-success">Online</span></a></li>
+                                <li><a href="#"><span class="chat-name">Muchu</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-success">Online</span></a></li>
+                                <li><a href="#"><span class="chat-name">Anton Durant</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-success">Online</span></a></li>
+                                <li><a href="#"><span class="chat-name">Spiderman</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-success">Online</span></a></li>
+                                <li><a href="#"><span class="chat-name">Muchu</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-success">Online</span></a></li>
+                                <li><a href="#"><span class="chat-name">Anton Durant</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-default">Offline</span></a></li>
+                                <li><a href="#"><span class="chat-name">Spiderman</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-success">Online</span></a></li>
+                                <li><a href="#"><span class="chat-name">Muchu</span><span class="user-img"><img src="http://placehold.it/150x150" alt="User"/></span><span class="label label-success">Online</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--User Tasks Panel-->
+            <div class="tab-pane" id="userbar-three">
+                <div class="nano">
+                    <!--Adding Some Scroll-->
+                    <div class="nano-content">
+                        <div class="small-todos">
+                            <div class="input-group input-group-sm">
+                                <input id="new-todo" placeholder="Add ToDo" type="text" class="form-control">
+                    <span class="input-group-btn">
+                    <button id="add-todo" class="btn btn-default" type="button"><i class="fa fa-plus-circle"></i></button>
+                    </span> </div>
+                            <section id="task-list">
+                                <ul id="todo-list">
+                                </ul>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /tabs -->
+
+</aside>
+<!-- /Offcanvas user menu-->
+
+<!--Main Menu-->
+<div class="responsive-admin-menu">
+    <div class="responsive-menu">ORB
+        <div class="menuicon"><i class="fa fa-angle-down"></i></div>
+    </div>
+    <ul id="menu" data-setpage="{{ path('movibe_backend_homepage_set_page') }}" data-getpage="{{ path('movibe_backend_homepage_get_page') }}">
+        <li><a id="menu-home" class="menus" class="menus" href="{{ path('movibe_backend_homepage') }}" title="Home" data-id="home-sub"><i class="entypo-briefcase"></i><span> Home</span></a></li>
+        <li><a id="menu-ref" class="submenu" href="#" data-id="referentiel-sub" title="Referentiel"><i class="entypo-flow-tree"></i><span> Referentiel</span></a>
+            <ul id="referentiel-sub" class="accordion">
+                <li> <a class="submenu" href="#" data-id="metiers-sub" title="Metiers"><i class="entypo-clipboard"></i><span> Metiers</span></a>
+                    <!-- Pages Sub-Menu -->
+                    <ul id="metiers-sub">
+                        <li><a class="menus-ref menus" href="{{ path('movibe_backend_parents') }}" title="Metiers"><i class="entypo-dot"></i><span> Parents</span></a></li>
+                        <li><a class="menus-ref menus" href="{{ path('movibe_backend_metiers') }}" title="Metiers"><i class="entypo-dot-2"></i><span> Metiers</span></a></li>
+                    </ul>
+                </li>
+                <li> <a class="menus-ref menus" href="{{ path('movibe_backend_societe') }}" data-id="societes-sub" title="Sociétés"><i class="fa fa-building-o"></i><span> Societes</span></a></li>
+                <li> <a class="menus-ref menus" href="{{ path('movibe_backend_genre') }}" data-id="genre-sub" title="Genres"><i class="fa fa-folder-o"></i><span> Genres</span></a></li>
+                <li> <a class="menus-ref menus" href="{{ path('movibe_backend_typeFilm') }}" data-id="typeFilm-sub" title="Types de Film"><i class="entypo-book"></i><span>Types de film</span></a></li>
+                <li> <a class="menus-ref menus" href="{{ path('movibe_backend_couleur') }}" data-id="couleur-sub" title="Couleur du film"><i class="entypo-palette"></i><span>Couleur du film</span></a></li>
+                <li> <a class="menus-ref menus" href="{{ path('movibe_backend_langue') }}" data-id="langue-sub" title="Langues"><i class="glyphicon glyphicon-headphones"></i><span>Langues</span></a></li>
+                <li> <a class="submenu" href="#" data-id="geographie-sub" title="Géographie"><i class="fa fa-flag-o"></i><span>Geographie</span></a>
+                    <!-- Pages Sub-Menu -->
+                    <ul id="geographie-sub">
+                        <li><a class="menus-ref menus" href="{{ path('movibe_backend_pays') }}" title="Pays"><i class="entypo-globe"></i><span> Pays</span></a></li>
+                        <li><a class="menus-ref menus" href="{{ path('movibe_backend_region') }}" title="Region"><i class="entypo-map"></i><span>Region</span></a></li>
+                        <li><a class="menus-ref menus" href="{{ path('movibe_backend_departement') }}" title="Departement"><i class="entypo-address"></i><span>Departement</span></a></li>
+                        <li><a class="menus-ref menus" href="{{ path('movibe_backend_ville') }}" title="Ville"><i class="entypo-location"></i><span>Ville</span></a></li>
+                    </ul>
+                </li>
+                <li> <a class="menus-ref menus" href="{{ path('movibe_backend_cinema') }}" data-id="cinema-sub" title="Cinemas"><i class="glyphicon glyphicon-facetime-video"></i><span>Cinemas</span></a></li>
+                <li> <a class="menus-ref menus" href="{{ path('movibe_backend_horaire') }}" data-id="horaire-sub" title="Horaires"><i class="glyphicon glyphicon-time"></i><span>Horaires</span></a></li>
+                <li> <a class="menus-ref menus" href="{{ path('movibe_backend_presse') }}" data-id="presse-sub" title="Presses"><i class="entypo-newspaper"></i><span>Presses</span></a></li>
+                <li> <a class="menus-ref menus" href="{{ path('movibe_backend_typeMedia') }}" data-id="typeMedia-sub" title="Types de Média"><i class="fa fa-file-video-o"></i><span>Types de média</span></a></li>
+                <li> <a class="menus-ref menus" href="{{ path('movibe_backend_typeSeance') }}" data-id="typeSeance-sub" title="Types de Séance"><i class="entypo-video"></i><span>Types de séance</span></a></li>
+            </ul>
+        </li>
+        <li><a id="menu-film" class="menus" href="{{ path('movibe_backend_film') }}" title="Film"><i class="glyphicon glyphicon-film"></i><span> Films</span></a></li>
+        <li><a id="menu-personne" class="menus" href="{{ path('movibe_backend_personne') }}" title="Personne"><i class="fa fa-users"></i><span> Personnes</span></a></li>
+         <li><a id="menu-comment" class="menus" href="{{ path('movibe_backend_commentaire_search') }}" title="Commentaires"><i class="fa fa-comments"></i><span> Commentaires</span></a></li>
+        <li><a id="menu-seance" class="menus" href="{{ path('movibe_backend_seance_search') }}" title="Séances"><i class="entypo-ticket"></i><span> Séances</span></a></li>
+        <li><a id="menu-box" class="menus" href="{{ path('movibe_backend_boxOfficeDate_new') }}" title="Box Office"><i class="entypo-chart-line"></i><span> Box Office</span></a></li>
+        <li><a id="menu-box" class="menus" href="{{ path('movibe_backend_news_search') }}" title="News"><i class="entypo-newspaper"></i><span> News</span></a></li>
+        <li><a id="menu-box" class="menus" href="{{ path('movibe_backend_user') }}" title="Utilisateurs"><i class="entypo-user"></i><span> Utilisateurs</span></a></li>
+    </ul>
+</div>
+<!--/MainMenu-->

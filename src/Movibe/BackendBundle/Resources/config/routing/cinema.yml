@@ -1,0 +1,52 @@
+movibe_backend_cinema:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:Cinema:index }
+
+
+movibe_backend_cinema_new:
+    path:     /cinema_new
+    defaults: { _controller: MovibeBackendBundle:Cinema:new }
+
+movibe_backend_cinema_create:
+    path:     /cinema_create
+    defaults: { _controller: MovibeBackendBundle:Cinema:create }
+    requirements:
+        _method: POST
+
+movibe_backend_cinema_show:
+    path:     /cinema_show/{id}
+    defaults: { _controller: MovibeBackendBundle:Cinema:show }
+    requirements:
+        id: \d+
+
+movibe_backend_cinema_edit:
+    path:     /cinema_edit/{id}
+    defaults: { _controller: MovibeBackendBundle:Cinema:edit }
+    requirements:
+        id: \d+
+
+movibe_backend_cinema_update:
+    path:     /cinema_update/{id}
+    defaults: { _controller: MovibeBackendBundle:Cinema:update }
+    requirements:
+        _method: POST
+        id: \d+
+
+movibe_backend_cinema_delete:
+    path:     /cinema_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:Cinema:delete }
+    requirements:
+        _method: GET|DELETE
+        id: \d+
+
+movibe_backend_cinema_region:
+    path:     /cinema_region/{id}
+    defaults: { _controller: MovibeBackendBundle:Cinema:region }
+    requirements:
+        id: \d+
+
+movibe_backend_cinema_departement:
+    path:     /cinema_departement/{id}
+    defaults: { _controller: MovibeBackendBundle:Cinema:departement }
+    requirements:
+        id: \d+

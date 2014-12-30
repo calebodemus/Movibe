@@ -1,0 +1,59 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="smooth-overflow">
+
+        {{ include('MovibeBackendBundle:Static:nav.html.twig') }}
+        <!--MainWrapper-->
+        <div class="main-wrap">
+            {{ include('MovibeBackendBundle:Static:aside.html.twig') }}
+
+            <div class="content-wrapper">
+                {{ include('MovibeBackendBundle:Static:header.content.html.twig') }}
+
+                <div id="message">
+                    {% for flash in app.session.flashbag.get('message') %}
+                        <p class="callout callout-info">{{ flash }}</p>
+                    {% endfor %}
+                </div>
+
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            /*
+            $.ajax({
+                url:$('#menu').attr('data-getpage'),
+                dataType: "json"})
+                    .done(function(data){
+                        var page = data.page;
+                        page = "#" + page;
+                        $(page).addClass('active');
+                        return true
+                    });
+
+            $(".menus").click(function(){
+                page = $(this).attr('id');
+                $.ajax({
+                    url:$('#menu').attr('data-setpage'),
+                    data:'page=' + page ,
+                    dataType: "json"})
+                        .done(function(data){
+                            return true
+                        });
+            })*/
+        });
+    </script>
+{% endblock %}
+
+
+
+

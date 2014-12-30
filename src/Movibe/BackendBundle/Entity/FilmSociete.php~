@@ -1,0 +1,71 @@
+<?php
+
+namespace Movibe\BackendBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * FilmSociete
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Movibe\BackendBundle\Entity\FilmSocieteRepository")
+ */
+class FilmSociete
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="Movibe\BackendBundle\Entity\Film", inversedBy="filmSocietes")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $film;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="Movibe\BackendBundle\Entity\Metier", inversedBy="filmSocietes")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $metier;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set film
+     *
+     * @param \Movibe\BackendBundle\Entity\Film $film
+     * @return FilmSociete
+     */
+    public function setFilm(\Movibe\BackendBundle\Entity\Film $film)
+    {
+        $this->film = $film;
+
+        return $this;
+    }
+
+    /**
+     * Get film
+     *
+     * @return \Movibe\BackendBundle\Entity\Film 
+     */
+    public function getFilm()
+    {
+        return $this->film;
+    }
+}

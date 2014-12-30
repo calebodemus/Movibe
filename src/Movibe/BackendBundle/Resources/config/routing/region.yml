@@ -1,0 +1,40 @@
+movibe_backend_region:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:Region:index }
+
+
+movibe_backend_region_new:
+    path:     /region_new
+    defaults: { _controller: MovibeBackendBundle:Region:new }
+
+movibe_backend_region_create:
+    path:     /region_create
+    defaults: { _controller: MovibeBackendBundle:Region:create }
+    requirements:
+        _method: POST
+
+movibe_backend_region_show:
+    path:     /region_show/{id}
+    defaults: { _controller: MovibeBackendBundle:Region:show }
+    requirements:
+        id: \d+
+
+movibe_backend_region_edit:
+    path:     /region_edit/{id}
+    defaults: { _controller: MovibeBackendBundle:Region:edit }
+    requirements:
+        id: \d+
+
+movibe_backend_region_update:
+    path:     /region_update/{id}
+    defaults: { _controller: MovibeBackendBundle:Region:update }
+    requirements:
+        _method: POST
+        id: \d+
+
+movibe_backend_region_delete:
+    path:     /region_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:Region:delete }
+    requirements:
+        _method: GET|DELETE
+        id: \d+

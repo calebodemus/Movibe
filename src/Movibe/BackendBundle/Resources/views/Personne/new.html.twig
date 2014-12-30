@@ -1,0 +1,535 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block choice_widget_expanded %}
+    {% spaceless %}
+        <div {{ block('widget_container_attributes') }}>
+            {% for child in form %}
+                <div>
+                {{ form_widget(child) }}
+                {{ form_label(child) }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endspaceless %}
+{% endblock choice_widget_expanded %}
+
+{% block content %}
+
+    <div class="page-header">
+        <h1>PERSONNES<small>Création</small></h1>
+    </div>
+
+    <div class="row" id="powerwidgets">
+        <div class="col-md-12 bootstrap-grid">
+            <div class="powerwidget dark-red" data-widget-editbutton="false" data-widget-deletebutton="false">
+                <header>
+                    <h2>Sample widget<small>Clear</small></h2>
+                </header>
+                <div class="inner-spacer" style="background:#BDBDBD !important">
+                    {{ form_start(form,{'method':'POST','role':'form','attr':{'novalidate':'novalidate','class':'form-horizontal'} } ) }}
+                    <fieldset>
+                        <legend>Form Name</legend>
+                        <div class="row" id="powerwidgets">
+                            <div class="col-md-6 bootstrap-grid">
+                                <div class="powerwidget dark-cold-grey" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-togglebutton="false">
+                                    <header>
+                                        <h2>Sample widget<small>Clear</small></h2>
+                                    </header>
+                                    <div class="inner-spacer">
+                                        <fieldset>
+                                            <legend>Form Name</legend>
+                                            <div class="form-group">
+                                                {{ form_label(form.prenom,null,{'label_attr': {'class':'col-md-3 control-label'}}) }}
+                                                <div class="col-md-9">
+                                                    {{ form_widget(form.prenom,{'id':'nom','attr': {'placeholder':'Prenom', 'class':'form-control input-md'}} )}}
+                                                    <span class="help-block">Veuillez saisir le prenom de la personne</span>
+                                                </div>
+                                                {{ form_errors(form.prenom) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_label(form.nom,null,{'label_attr': {'class':'col-md-3 control-label'}}) }}
+                                                <div class="col-md-9">
+                                                    {{ form_widget(form.nom,{'id':'nom','attr': {'placeholder':'Nom', 'class':'form-control input-md'}} )}}
+                                                    <span class="help-block">Veuillez saisir le nom de la personne</span>
+                                                </div>
+                                                {{ form_errors(form.nom) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_label(form.dateNaissance,null,{'label_attr': {'class':'col-md-3 control-label'}}) }}
+                                                <div class="col-md-9">
+                                                    {{ form_widget(form.dateNaissance,{'id':'dateNaissance','attr': {'placeholder':'Nom', 'class':'form-control input-md'}} )}}
+                                                    <span class="help-block">Veuillez sélectionner la date de naissance</span>
+                                                </div>
+                                                {{ form_errors(form.dateNaissance) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_label(form.paysNaissance,'lieu de naissance',{'label_attr': {'class':'col-md-3 control-label'}}) }}
+                                                <div id="pays_url" class="col-md-9" data-url="{{ path("movibe_backend_personne_pays", {'id': 0}) }}">
+                                                    {{ form_widget(form.paysNaissance,{'id':'paysNaissance','attr': {'placeholder':'Adresse', 'class':'form-control input-md'}} )}}
+                                                    <span class="help-block">Veuillez sélectionner le pays de naissance de la personne</span>
+                                                </div>
+                                                {{ form_errors(form.paysNaissance) }}
+                                            </div>
+                                            <fieldset id="field_reg" disabled>
+                                                <div class="form-group">
+                                                    {{ form_label(form.regionNaissance,null,{'label_attr': {'class':'col-md-3 control-label','hidden':'true'}}) }}
+                                                    <div class="col-md-3"></div>
+                                                    <div id="reg_url" class="col-md-9" data-url="{{ path("movibe_backend_personne_region", {'id': 0}) }}">
+                                                        {{ form_widget(form.regionNaissance,{'id':'regionNaissance','attr': {'placeholder':'Région', 'class':'form-control input-md'} } ) }}
+                                                        <span class="help-block">Veuillez sélectionner la région de naissance de la personne</span>
+                                                    </div>
+                                                    {{ form_errors(form.regionNaissance) }}
+                                                </div>
+                                            </fieldset>
+                                            <fieldset id="field_dep" disabled>
+                                                <div class="form-group">
+                                                    {{ form_label(form.departementNaissance,null,{'label_attr': {'class':'col-md-3 control-label','hidden':'true'}}) }}
+                                                    <div class="col-md-3"></div>
+                                                    <div id="dep_url" class="col-md-9" data-url="{{ path("movibe_backend_personne_departement", {'id': 0}) }}">
+                                                        {{ form_widget(form.departementNaissance,{'id':'departementNaissance','attr': {'placeholder':'Département', 'class':'form-control input-md'}} )}}
+                                                        <span class="help-block">Veuillez sélectionner le département de naissance de la personne</span>
+                                                    </div>
+                                                    {{ form_errors(form.departementNaissance) }}
+                                                </div>
+                                            </fieldset>
+                                            <fieldset id="field_city" disabled>
+                                                <div class="form-group">
+                                                    {{ form_label(form.cityNaissance,null,{'label_attr': {'class':'col-md-3 control-label','hidden':'true'}}) }}
+                                                    <div class="col-md-3"></div>
+                                                    <div class="col-md-9">
+                                                        {{ form_widget(form.cityNaissance,{'id':'cityNaissance','attr': {'placeholder':'Ville', 'class':'form-control input-md'}} )}}
+                                                        <span class="help-block">Veuillez sélectionner la ville de naissance de la personne</span>
+                                                    </div>
+                                                    {{ form_errors(form.cityNaissance) }}
+                                                </div>
+                                            </fieldset>
+                                            <div class="form-group">
+                                                {{ form_label(form.nationalite,null,{'label_attr': {'class':'col-md-3 control-label'}}) }}
+                                                <div class="col-md-9">
+                                                    {{ form_widget(form.nationalite,{'id':'nationalite','attr': {'placeholder':'Nationalite', 'class':'form-control input-md'}} )}}
+                                                    <span class="help-block">Veuillez sélectionner la nationalité de la personne</span>
+                                                </div>
+                                                {{ form_errors(form.nationalite) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_label(form.biographie,null,{'label_attr': {'class':'col-md-3 control-label'}}) }}
+                                                <div class="col-md-9">
+                                                    {{ form_widget(form.biographie,{'id':'biographie','attr': {'placeholder':'Biographie', 'class':'form-control input-md'}} )}}
+                                                    <span class="help-block">Veuillez saisir la biographie de la personne</span>
+                                                </div>
+                                                {{ form_errors(form.biographie) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_label(form.sexe,null,{'label_attr': {'class':'col-md-3 control-label'}}) }}
+                                                <div class="col-md-9">
+                                                    {{ form_widget(form.sexe,{'id':'sexe','attr': {'placeholder':'Adresse', 'class':'sexe'}} )}}
+                                                    <span class="help-block">Veuillez sélectionner le sexe de la personne</span>
+                                                </div>
+                                                {{ form_errors(form.sexe) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_label(form.pseudos,null,{'label_attr': {'class':'col-md-3 control-label'}}) }}
+                                                <ul class="pseudos col-md-9" style="list-style-type: none;" data-prototype="{{ form_widget(form.pseudos.vars.prototype)|e }}">
+                                                </ul>
+                                                {{ form_errors(form.pseudos) }}
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 bootstrap-grid">
+                                <div class="powerwidget pink" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-togglebutton="false">
+                                    <header>
+                                        <h2>Sample widget<small>Clear</small></h2>
+                                    </header>
+                                    <div class="inner-spacer ">
+                                        <fieldset>
+                                            <legend>Form Name</legend>
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <ul class="images" style="list-style-type: none;" data-prototype="{{ form_widget(form.images.vars.prototype)|e }}">
+                                                    </ul>
+                                                    <table class="table table-striped table-hover margin-0px orb-form">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Image</th>
+                                                            <th>Nom</th>
+                                                            <th>Caractèristiques</th>
+                                                            <th></th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody id="tab_photo">
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+                                                {{ form_errors(form.images) }}
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-4">
+                                {{ form_widget(form.submit,{'attr': {'class':'btn btn-primary'}} )}}
+                            </div>
+                        </div>
+                    </fieldset>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="big-icons-buttons">
+        <a class="btn btn-info" href="{{ path('movibe_backend_personne') }}"><i class="fa fa-mail-reply"></i>Retour à la liste</a>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Traitement pour les pseudos
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            var contain = $('.pseudos');
+            var linkpseudos = $('<a href="#" class="btn btn-info btn-xs">Ajouter un pseudo</a>');
+            contain.append(linkpseudos);
+
+            contain.children('li').each(function(){
+                addButtRemove($(this));
+            });
+
+            linkpseudos.click(function(e){
+                e.preventDefault();
+                var prototype = contain.attr('data-prototype');
+                var nbform = contain.children().length;
+                var newform = prototype.replace(/__name__/g, nbform);
+
+                newform = $('<li>').append(newform);
+                contain.append(newform);
+
+                linkpseudos.before(newform);
+
+                addButtRemove(newform);
+
+                var label = $('form>div>label');
+                label.remove();
+                var input = $('li>input');
+                input.addClass('form-control input-md');
+
+            });
+
+            function addButtRemove(form)
+            {
+                var removeLink = $('<a href="#" class="btn btn-info btn-xs">Supprimer le pseudo</a>');
+                form.append(removeLink);
+
+                removeLink.click(function(e){
+                    e.preventDefault();
+                    form.remove();
+                })
+
+            };
+
+            //linkpseudos.trigger('click');
+
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Traitement pour les images
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            var container = $('.images');
+            var linkimages = $('<a id="add_img" href="#" data-id="0" class="btn btn-info btn-xs">Ajouter une image</a>');
+            container.append(linkimages);
+
+            container.children('li').each(function(){
+                addLinkRemove($(this));
+            });
+
+            linkimages.click(function(e){
+                e.preventDefault();
+                var prototype = container.attr('data-prototype');
+                //console.log(prototype);
+                var nbform = container.children().length;
+                var newform = prototype.replace(/__name__/g, nbform);
+
+                newform = $('<li>').append(newform);
+                container.append(newform);
+
+                linkimages.before(newform);
+
+                addLinkRemove(newform);
+
+                var label = $('li>div>div>label, form>div>label');
+                label.remove();
+
+                var file = $('li>div div:first-child>input');
+                file.addClass('filePhoto');
+
+                var promotion = $('li>div div:nth-child(2)>input');
+                promotion.addClass('promoPhoto');
+
+                var ipt = $(".filePhoto").last();
+                var id = ipt.attr('id');
+                ipt.trigger('click');
+
+                var li = $('.images>li');
+                li.addClass('imglive_row');
+                li.hide();
+
+            });
+
+            function addLinkRemove(form)
+            {
+                var id = $('#add_img').attr('data-id');
+                id++;
+
+                var id_img = "img_" + id;
+                var removeLink = $('<a id="' + id_img + '" href="#" class="btn btn-info btn-xs">Supprimer l\'image</a>');
+                form.append(removeLink);
+
+                $('#add_img').attr('data-id',id);
+
+                removeLink.click(function(e){
+                    e.preventDefault();
+                    form.remove();
+
+                    $i=0;
+
+                    $(".imglive_row").each(function(){
+                        $i++;
+                        $(this).children('div').attr('id','movibe_backendbundle_personne_images_' + $i);
+                        $(this).children('div').children(':nth-child(1)').children('input').attr({id:'movibe_backendbundle_personne_images_' + $i + '_file', name:'movibe_backendbundle_personne[images][' + $i + '][file]'});
+                        $(this).children('div').children(':nth-child(2)').children('input').attr({id:'movibe_backendbundle_personne_images_' + $i + '_promotion', name:'movibe_backendbundle_personne[images][' + $i + '][promotion]'});
+                        $(this).children('div').children(':nth-child(3)').children('input').attr({id:'movibe_backendbundle_personne_images_' + $i + '_affiche', name:'movibe_backendbundle_personne[images][' + $i + '][affiche]'});
+                    });
+                })
+            };
+
+            function readURL(input) {
+                if (input[0].files && input[0].files[0]) {
+                    var id = $('#add_img').attr('data-id');
+
+                    var tr = '<tr>';
+                    tr = tr + '<td><img class="previewPhoto" alt="Uploaded Image Preview Holder" width="150px" height="150px"/></td>';
+                    tr = tr + '<td></td>';
+                    tr = tr + '<td><label class="toggle"><input type="radio" name="radio-toggle" class="radio-img" data-img="' + id + '"';
+
+                    if ( $('#tab_photo').children('tr').length == 0)
+                    {
+                        tr = tr + " checked ";
+                        $('#movibe_backendbundle_personne_images_' + id + '_promotion').trigger('click');
+                    }
+
+                    tr = tr + '><i></i>Promotionelle</label></td>';
+                    tr = tr + '<td><div class="big-icons-buttons"><div class="btn-group"><a class="btn btn-default btn-photo-del" href="#soc" data-img="' + id + '"><i class="fa fa-times"></i> Delete</a></div></div></td>';
+                    tr = tr + '</tr>';
+
+                    $('#tab_photo').append(tr);
+
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('.previewPhoto').last().attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input[0].files[0]);
+                }
+            };
+
+
+            $(document).delegate(':file', 'change', function() {
+                var ipt = $(".filePhoto").last();
+                var id = ipt.attr('id');
+                ipt.trigger('click');
+                readURL(ipt);
+            });
+
+            $(document).delegate('.btn-photo-del', 'click', function() {
+                var id = $(this).attr('data-img');
+                $('#img_' + id).trigger('click');
+                var parent = $(this).closest('tr');
+                parent.remove();
+
+            });
+
+            $(document).delegate('.radio-img', 'click', function() {
+                var id = $(this).attr('data-img');
+                /*$(".imglive_row").each(function(){
+                 $(this).children('div').children('div').last().children('input').attr('checked',false);
+                 });*/
+
+                $('.promoPhoto').attr('checked',false);
+                $('#movibe_backendbundle_personne_images_' + id + '_promotion').trigger('click');
+            });
+
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Traitement pour la location de naissance
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            $("#paysNaissance").change(function(e){
+                var input = $(this);
+                var id = input.val();
+                if (!isNaN(id))
+                {
+                    $("#field_reg").prop('disabled', true);
+                    $("#regionNaissance").empty();
+                    $("#field_dep").prop('disabled', true);
+                    $("#departementNaissance").empty();
+                    $("#field_city").prop('disabled', true);
+                    $("#cityNaissance").empty();
+                }
+                else
+                {
+                    var url_input = $("#pays_url").attr('data-url');
+                    url_input = url_input.replace(0,id);
+                    $.ajax({
+                        url:url_input,
+                        dataType: "json"})
+                            .done(function(data){
+                                var regions = data.data;
+                                var i = 0;
+                                var longueur = regions.length;
+                                var options = "<option value=''></option>";
+
+                                if (longueur > 0)
+                                {
+                                    while ( i < longueur)
+                                    {
+                                        region = regions[i];
+                                        options = options + "<option value=" + region['id'] + ">" + region['nom'] + "</option>";
+                                        i++;
+                                    }
+                                    $("#regionNaissance").html(options);
+                                    $("#field_reg").prop('disabled', false);
+                                }
+                                else
+                                {
+                                    $("#field_reg").prop('disabled', true);
+                                    $("#regionNaissance").empty();
+                                    $("#field_dep").prop('disabled', true);
+                                    $("#departementNaissance").empty();
+                                    $("#field_city").prop('disabled', true);
+                                    $("#cityNaissance").empty();
+                                }
+                            });
+                    return false;
+                }
+            });
+
+            $("#regionNaissance").change(function(e){
+                var input = $(this);
+                var id = parseInt(input.val());
+                if (isNaN(id))
+                {
+                    $("#field_dep").prop('disabled', true);
+                    $("#departement").empty();
+                    $("#field_city").prop('disabled', true);
+                    $("#city").empty();
+                }
+                else
+                {
+                    var url_input = $("#reg_url").attr('data-url');
+                    url_input = url_input.replace(0,id);
+                    $.ajax({
+                        url:url_input,
+                        dataType: "json"})
+                            .done(function(data){
+                                var departements = data.data;
+                                var i = 0;
+                                var longueur = departements.length;
+                                var options = "<option value=''></option>";
+
+                                if (longueur > 0)
+                                {
+                                    while ( i < longueur)
+                                    {
+                                        departement = departements[i];
+                                        options = options + "<option value=" + departement['id'] + ">" + departement['code'] + " - " + departement['nom'] + "</option>";
+                                        i++;
+                                    }
+                                    $("#departementNaissance").html(options);
+                                    $("#field_dep").prop('disabled', false);
+                                }
+                                else
+                                {
+                                    $("#field_dep").prop('disabled', true);
+                                    $("#departement").empty();
+                                    $("#field_city").prop('disabled', true);
+                                    $("#city").empty();
+                                }
+                            });
+                    return false;
+                }
+            });
+
+            $("#departementNaissance").change(function(e){
+                var input = $(this);
+                var id = parseInt(input.val());
+                if (isNaN(id))
+                {
+                    $("#field_city").prop('disabled', true);
+                    $("#city").empty();
+                }
+                else
+                {
+                    var url_input = $("#dep_url").attr('data-url');
+                    url_input = url_input.replace(0,id);
+                    $.ajax({
+                        url:url_input,
+                        dataType: "json"})
+                            .done(function(data){
+                                var villes = data.data;
+                                var i = 0;
+                                var longueur = villes.length;
+                                var options = "<option value=''></option>";
+
+                                if (longueur > 0)
+                                {
+                                    while ( i < longueur)
+                                    {
+                                        var ville = villes[i];
+                                        options = options + "<option value=" + ville['id'] + ">" + ville['code-postal'] + " - " + ville['nom'] + "</option>";
+                                        i++;
+                                    }
+                                    $("#cityNaissance").html(options);
+                                    $("#field_city").prop('disabled', false);
+                                }
+                                else
+                                {
+                                    $("#field_city").prop('disabled', true);
+                                    $("#city").empty();
+                                }
+                            });
+                    return false;
+                }
+            });
+        });
+    </script>
+
+{% endblock %}
+
+
+

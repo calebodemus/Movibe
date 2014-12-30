@@ -1,0 +1,51 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{% block content %}
+
+    <div class="page-header">
+        <h1>HORAIRES<small>Affichage</small></h1>
+    </div>
+    <!-- New widget -->
+    <div class="powerwidget blue" id="nestable-2" data-widget-editbutton="false">
+        <header>
+            <h2>Nestable<small>with Styling</small></h2>
+        </header>
+        <div class="inner-spacer">
+            <div class="dd nestable3" id="nestable3">
+                <ol class="dd-list">
+                    <li class="dd-item task-item" data-id="13">
+                        <div class="dd-handle task-handle"></div>
+                        <div class="task-content header">New Tasks</div>
+                        <ol class="dd-list new">
+                            <li class="dd-item task-item" data-id="16">
+                                <div class="dd-handle task-handle"></div>
+                                <div class="task-content">
+                                    <h4><span class="task">Horaire ID: {{ horaire.id }}</span></h4>
+                                    <p class="desc">Nombre de séances: {{ horaire.heures|length }}</p>
+                                    <small><i class="fa fa-clock-o"></i>
+                                        {% for heure in horaire.heures %}
+                                            {{ heure.heure }} |
+                                        {% endfor %}
+                                    </small></div>
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /New widget -->
+
+    <div class="big-icons-buttons">
+        <a class="btn btn-info" href="{{ path('movibe_backend_horaire') }}"><i class="fa fa-mail-reply"></i>Retour à la liste</a>
+        <div class="btn-group">
+            <a class="btn btn-primary" href="{{ path('movibe_backend_horaire_new') }}"><i class="fa fa-plus"></i> Ajout</a>
+            <a class="btn btn-warning" href="{{ path('movibe_backend_horaire_edit', { 'id': horaire.id }) }}"><i class="fa fa-pencil"></i> Edit</a>
+            <a class="btn btn-danger" href="{{ path('movibe_backend_horaire_delete', { 'id': horaire.id }) }}"><i class="fa fa-times"></i> Delete</a>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+

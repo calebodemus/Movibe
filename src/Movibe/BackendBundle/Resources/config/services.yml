@@ -1,0 +1,29 @@
+parameters:
+#    movibe_backend.example.class: Movibe\BackendBundle\Example
+
+services:
+   movibe_backend.preexecute_controller:
+        class: Movibe\BackendBundle\Listener\PreMethodListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: preMethod }
+
+   twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+
+   twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
+
+
+   movibe_backend.twig_extension:
+       class: Movibe\BackendBundle\Twig\UtilExtension
+       tags:
+           - { name: twig.extension }
+
+
+#    movibe_backend.example:
+#        class: %movibe_backend.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

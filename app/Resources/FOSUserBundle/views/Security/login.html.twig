@@ -1,0 +1,70 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block fos_user_content %}
+
+    {% if error %}
+        <div>{{ error|trans }}</div>
+    {% endif %}
+
+    <div class="colorful-page-wrapper">
+        <div class="center-block">
+            <div class="login-block">
+                <form action="{{ path("fos_user_security_check") }}" method="post" class="orb-form">
+                    <header>
+                        Connexion à MOVIBE </header>
+                    <fieldset>
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                            <section>
+                                <div class="row">
+                                    <label class="label col col-4" for="username">Pseudo</label>
+                                    <div class="col col-8">
+                                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                                            <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+                                        </label>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <div class="row">
+                                    <label  class="label col col-4" for="password">Password</label>
+                                    <div class="col col-8">
+                                        <label class="input"> <i class="icon-append fa fa-lock"></i>
+                                            <input type="password" id="password" name="_password" required="required" />
+                                        </label>
+                                        <div class="note"><a href="{{ path("fos_user_resetting_request") }}">Mot de passe oublié?</a></div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <div class="row">
+                                    <div class="col col-4"></div>
+                                    <div class="col col-8">
+                                        <label for="remember_me"></label>
+                                            <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                                            <i></i>Se souvenir de moi</label>
+                                    </div>
+                                </div>
+                            </section>
+                    </fieldset>
+                    <footer>
+                        <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" class="btn btn-default"/>
+                    </footer>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts 'bundles/movibebackend/js/vendors/forms/jquery.form.min.js'
+    'bundles/movibebackend/js/vendors/forms/jquery.validate.min.js'
+    'bundles/movibebackend/js/vendors/forms/jquery.maskedinput.min.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+

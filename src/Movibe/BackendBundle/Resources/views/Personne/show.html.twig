@@ -1,0 +1,392 @@
+{% extends 'MovibeBackendBundle::layout.html.twig' %}
+
+{%  import "MovibeBackendBundle:Macro:functions.html.twig" as allFunctions %}
+
+{% block content %}
+
+    <style>
+        .carousel-inner > .item
+        {
+            height:500px ! important;
+        }
+    </style>
+
+    <div class="page-header">
+        <h1>Personne<small>Visualisation</small></h1>
+    </div>
+
+    <!-- Widget Row Start grid -->
+    <div class="row" id="powerwidgets">
+    <div class="col-md-12 bootstrap-grid">
+
+    <!-- New widget -->
+
+    <div class="powerwidget cold-grey" id="profileX" data-widget-editbutton="false">
+    <header>
+        <h2>Datas</h2>
+    </header>
+    <div class="inner-spacer">
+
+    <!--Profile-->
+    <div class="user-profile">
+    <div class="main-info">
+        <div class="img-rounded img-responsive">
+            {% if promotion is not empty %}
+                {{ allFunctions.img(asset(promotion.getWebPath('medium')), "image_promotion") }}
+            {% else %}
+                {{ allFunctions.img("http://placehold.it/400x400", "Promotion photo", "img-responsive") }}
+            {% endif %}
+        </div>
+        <h1>{{ personne.prenom }} {{ personne.nom }}</h1>
+        Commentaires: {{ personne.commentaires|length }} | Photos: {{ personne.images|length }} </div>
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner" >
+            <div class="item item1 active"> </div>
+            <div class="item item2"></div>
+            <div class="item item3"></div>
+        </div>
+        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span> </a> <a class="right carousel-control" href="#carousel-example-generic" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span> </a> </div>
+    <div class="user-profile-info">
+    <div class="tabs-white">
+    <ul id="myTab" class="nav nav-tabs nav-justified">
+        <li class="active"><a href="#home" data-toggle="tab">A propos</a></li>
+        <li><a href="#filmographie" data-toggle="tab">Filmographie</a></li>
+        <!--<li><a href="#videos-bonus" data-toggle="tab">Vidéos Bonus</a></li>-->
+        <li><a href="#photos" data-toggle="tab">Photos</a></li>
+        <li><a href="#commentaires" data-toggle="tab">Commentaires</a></li>
+        <li><a href="#news" data-toggle="tab">News</a></li>
+    </ul>
+    <div id="myTabContent" class="tab-content">
+    <div class="tab-pane in active" id="home">
+        <div class="profile-header">Biographie</div>
+        <p>{{ personne.biographie }}</p>
+        <table class="table">
+            <tr>
+                <td><strong>Prénom:</strong></td>
+                <td>{{ personne.prenom }}</td>
+                <td><strong>Nationalité:</strong></td>
+                <td>{{ personne.nationalite.nationalite }}</td>
+            </tr>
+            <tr>
+                <td><strong>Nom:</strong></td>
+                <td>{{ personne.nom }}</td>
+                <td><strong>Date de naissance:</strong></td>
+                <td>
+                    {% if personne.dateNaissance is not empty and personne.DateNaissance is not null %}
+                        {{ personne.dateNaissance|localizeddate("medium","none") }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Sexe:</strong></td>
+                <td>{{ personne|sexe }}</td>
+                <td><strong>Age:</strong></td>
+                <td>{{ personne|age }} ans</td>
+            </tr>
+            <tr>
+                <td><strong>Pseudos:</strong></td>
+                <td>
+                    {% if personne.pseudos is not empty %}
+                        {% set i = 0 %}
+                        {% for pseudo in personne.pseudos %}
+                            {% if i == 1 %}
+                                {{ pseudo }}
+                            {% else %}
+                                , {{ pseudo }}
+                            {% endif %}
+                            {% set i = i + 1 %}
+                        {% endfor %}
+                    {% endif %}
+                </td>
+                <td><strong>Lieu de naissance:</strong></td>
+                <td>
+                    {% if personne.villeNaissance %}
+                        {{ personne.villeNaissance.nom }}
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    {% if personne.images is not empty %}
+        <div class="tab-pane" id="photos">
+            <div class="profile-header"> Promotion <span class="badge">1</span>
+                <div class="btn-group btn-group-xs pull-right">
+                    <button class="btn btn-default">Show all</button>
+                </div>
+            </div>
+            <div class="row">
+                <ul class="thumbnails">
+                    {% if promotion is not empty %}
+                        {{ allFunctions.photo_galerie(promotion) }}
+                    {% else %}
+                        {{ allFunctions.photo_galerie("http://placehold.it/400x400") }}
+                    {% endif %}
+
+                </ul>
+            </div>
+            <div class="profile-header"> Autres photos <span class="badge">{{ autres|length }}</span>
+                <div class="btn-group btn-group-xs pull-right">
+                    <button class="btn btn-default">Show all</button>
+                </div>
+            </div>
+            <div class="row">
+                <ul class="thumbnails">
+                    {% if autres is not empty %}
+                        {% for autre in autres %}
+                            {{ allFunctions.photo_galerie(autre) }}
+                        {% endfor %}
+                    {% endif %}
+
+                </ul>
+            </div>
+
+        </div>
+    {% endif %}
+    <div class="tab-pane" id="filmographie">
+        <div class="profile-header"> Détail <span class="badge">{{ personne.castings|length }}</span>
+            <div class="btn-group btn-group-xs pull-right">
+                <button class="btn btn-default">Show all</button>
+            </div>
+        </div>
+        <div class="row">
+            {% for casting in personne.castings %}
+                <div class="col-md-4 col-sm-6">
+                    <div class="tiny-user-block clearfix">
+                        <div class="user-img"> {{ allFunctions.img(asset(casting.film.promotion.getWebPath('small')), "image_promotion") }} </div>
+                        <h3>{{ casting.film.titre }}</h3>
+                        <ul>
+                            <li>Images: <strong>{{ casting.film.images|length }}</strong></li>
+                            <li>Vidéos: <strong>{{ casting.film.medias|length }}</strong></li>
+                        </ul>
+                        <a href="{{ path('movibe_backend_film_show', { 'id': casting.film.id }) }}" class="btn btn-sm btn-success">Voir</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!--
+    <div class="tab-pane" id="activity">
+        <div class="profile-header">Timeline</div>
+        <ul class="tmtimeline">
+            <li>
+                <time class="tmtime" datetime="2013-04-10 18:30"><span>4/10/13</span> <span>18:30</span></time>
+                <div class="tmicon bg-cold-grey fa-camera"></div>
+                <div class="tmlabel">
+                    <h2>Added photo</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam cursus turpis quis neque imperdiet, eleifend feugiat erat consectetur. Donec eget fringilla lorem, eget auctor sapien.</p>
+                </div>
+            </li>
+            <li>
+                <time class="tmtime" datetime="2013-04-11T12:04"><span>4/11/13</span> <span>12:04</span></time>
+                <div class="tmicon bg-cold-grey fa-comment"></div>
+                <div class="tmlabel">
+                    <h2>Added comment</h2>
+                    <p>Caulie dandelion maize lentil collard greens radish arugula
+                        sweet pepper water spinach kombu courgette lettuce. Celery coriander
+                        bitterleaf epazote radicchio shallot winter purslane collard greens
+                        spring onion squash lentil. Artichoke salad bamboo shoot black-eyed pea
+                        brussels sprout garlic kohlrabi.</p>
+                </div>
+            </li>
+            <li>
+                <time class="tmtime" datetime="2013-04-13 05:36"><span>4/13/13</span> <span>05:36</span></time>
+                <div class="tmicon bg-cold-grey fa-coffee"></div>
+                <div class="tmlabel">
+                    <h2>Drinked tea</h2>
+                    <p>Nam tincidunt neque nec est bibendum, ut cursus nulla egestas. Etiam at mi vel sem viverra euismod. Nam scelerisque metus urna, ut facilisis augue dictum quis.</p>
+                </div>
+            </li>
+            <li>
+                <time class="tmtime" datetime="2013-04-15 13:15"><span>4/15/13</span> <span>13:15</span></time>
+                <div class="tmicon bg-cold-grey fa-cloud"></div>
+                <div class="tmlabel">
+                    <h2>Uploaded files to cloud</h2>
+                    <p> Donec fringilla metus dui, placerat pulvinar lectus elementum ullamcorper. Quisque dignissim nulla at purus volutpat placerat. In a justo purus.</p>
+                </div>
+            </li>
+            <li>
+                <time class="tmtime" datetime="2013-04-16 21:30"><span>4/16/13</span> <span>21:30</span></time>
+                <div class="tmicon bg-cold-grey bg-cold-grey fa-heart"></div>
+                <div class="tmlabel">
+                    <h2>Falling in love</h2>
+                    <p>Fusce pretium nibh eros, at adipiscing neque euismod eget. Suspendisse sollicitudin justo vel urna sollicitudin, sed pellentesque dolor ultricies.</p>
+                </div>
+            </li>
+            <li>
+                <time class="tmtime" datetime="2013-04-17 12:11"><span>4/17/13</span> <span>12:11</span></time>
+                <div class="tmicon bg-cold-grey fa-thumbs-up"></div>
+                <div class="tmlabel">
+                    <h2>Giving Some Likes</h2>
+                    <p> Fusce feugiat ornare libero sed gravida. Aenean metus est, suscipit nec condimentum ac, facilisis eget lorem. Suspendisse rutrum lorem orci. Ut in ligula neque. Phasellus a enim at leo pellentesque dapibus. Integer dignissim sem eu venenatis facilisis. Sed quis neque nec lectus gravida euismod. Nam sollicitudin, nisl nec lacinia blandit, magna felis pharetra enim, et lacinia metus ipsum et est.</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    -->
+
+    <div class="tab-pane in" id="commentaires">
+        <div class="profile-header">Commentaires</div>
+        <div class="chat-messages user-profile-chat">
+            <ul>
+                {% set flag = 0 %}
+                {% for commentaire in personne.commentaires %}
+                    {% if flag == 0 %}
+                        <li class="left clearfix">
+                            <div class="user-img pull-left"> <img src="http://placehold.it/150x150" alt="User Avatar" /> </div>
+                            <div class="chat-body clearfix">
+                                <div class="header"> <span class="name">{{ commentaire.user.username }}</span><span class="name"></span> <span class="badge"><i class="fa fa-clock-o"></i>{{ commentaire.dateCreation|localizeddate("medium","none") }}</span></div>
+                                <p>{{ commentaire.comment }}</p>
+                            </div>
+                        </li>
+                        {% set flag = flag + 1 %}
+                    {% else %}
+                        <li class="right clearfix"><span class="user-img pull-right"> <img src="http://placehold.it/150x150" alt="User Avatar" /> </span>
+                            <div class="chat-body clearfix">
+                                <div class="header"> <span class="name">{{ commentaire.user.username }}</span><span class=" badge"><i class="fa fa-clock-o"></i>{{ commentaire.dateCreation|localizeddate("medium","none") }}</span> </div>
+                                <p>{{ commentaire.comment }}</p>
+                            </div>
+                        </li>
+                        {% set flag = flag - 1 %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="chat-message-form">
+            <div class="row">
+                <div class="col-md-12">
+                    <textarea placeholder="Ecriver votre commentaire" class="form-control margin-bottom" rows="2"></textarea>
+                </div>
+                <div class="col-md-8 col-sm-8 col-xs-8">
+                    <!--
+                    <div class="btn-group">
+                        <button class="btn btn-default tooltiped" data-toggle="tooltip" data-placement="top" title="Add Location"><i class="fa fa-location-arrow"></i></button>
+                        <button class="btn btn-default tooltiped" data-toggle="tooltip" data-placement="top" title="Add Photo"><i class="fa fa-camera"></i></button>
+                        <button class="btn btn-default tooltiped" data-toggle="tooltip" data-placement="top" title="Add Music"><i class="fa fa-music"></i></button>
+                        <button class="btn btn-default tooltiped" data-toggle="tooltip" data-placement="top" title="Add File"><i class="fa fa-file"></i></button>
+                    </div>-->
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <button class="btn btn-default pull-right" type="button">Envoyer!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="tab-pane" id="news">
+        <div class="profile-header">NEWS</div>
+
+        {% for news in personne.listNews %}
+            <div class="user-blog-entry">
+                <h2><a href="#">{{ news.titre }}</a></h2>
+                <div class="info">
+                    <p class="month">{{ news.dateCreation|localizeddate("medium","none",null,null,"MMM") }}</p>
+                    <p class="day">{{ news.dateCreation|localizeddate("medium","none",null,null,"dd") }}</p>
+                    <p class="time">{{ news.dateCreation|localizeddate("none","medium") }}</p>
+                </div>
+                {{ news.description|raw }}
+                <div class="blog-tags padding"> <a href="#" rel="tag">Sex</a> <a href="#" rel="tag">Envato</a> <a href="#" rel="tag">Modern Design</a> <a href="#" rel="tag">SEO Optimization</a> <a href="#" rel="tag">Big Money Deal</a> <a href="#" rel="tag">Hipsta</a></div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <!--/Profile-->
+    </div>
+    </div>
+    <!-- End .powerwidget -->
+
+    </div>
+    <!-- /Inner Row Col-md-12 -->
+    </div>
+    <!-- /Widgets Row End Grid-->
+    </div>
+    <!-- / Content Wrapper -->
+    </div>
+    <!--/MainWrapper-->
+    </div>
+    <!--/Smooth Scroll-->
+
+
+    <!-- scroll top -->
+    <div class="scroll-top-wrapper hidden-xs">
+        <i class="fa fa-angle-up"></i>
+    </div>
+    <!-- /scroll top -->
+
+
+
+    <!--Modals-->
+
+    <!--Power Widgets Modal-->
+    <div class="modal" id="delete-widget">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <i class="fa fa-lock"></i> </div>
+                <div class="modal-body text-center">
+                    <p>Are you sure to delete this widget?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="trigger-deletewidget-reset">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="trigger-deletewidget">Delete</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!--Sign Out Dialog Modal-->
+    <div class="modal" id="signout">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <i class="fa fa-lock"></i> </div>
+                <div class="modal-body text-center">Are You Sure Want To Sign Out?</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="yesigo">Ok</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!--Lock Screen Dialog Modal-->
+    <div class="modal" id="lockscreen">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <i class="fa fa-lock"></i> </div>
+                <div class="modal-body text-center">Are You Sure Want To Lock Screen?</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="yesilock">Ok</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+{% endblock %}

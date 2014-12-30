@@ -1,0 +1,40 @@
+movibe_backend_societe:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:Societe:index }
+
+
+movibe_backend_societe_new:
+    path:     /societe_new
+    defaults: { _controller: MovibeBackendBundle:Societe:new }
+
+movibe_backend_societe_create:
+    path:     /societe_create
+    defaults: { _controller: MovibeBackendBundle:Societe:create }
+    requirements:
+        _method: POST
+
+movibe_backend_societe_show:
+    path:     /societe_show/{id}
+    defaults: { _controller: MovibeBackendBundle:Societe:show }
+    requirements:
+        id: \d+
+
+movibe_backend_societe_edit:
+    path:     /societe_edit/{id}
+    defaults: { _controller: MovibeBackendBundle:Societe:edit }
+    requirements:
+        id: \d+
+
+movibe_backend_societe_update:
+    path:     /societe_update/{id}
+    defaults: { _controller: MovibeBackendBundle:Societe:update }
+    requirements:
+        _method: POST
+        id: \d+
+
+movibe_backend_societe_delete:
+    path:     /societe_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:Societe:delete }
+    requirements:
+        _method: GET|DELETE
+        id: \d+

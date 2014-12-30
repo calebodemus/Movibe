@@ -1,0 +1,6 @@
+movibe_backend_boxOffice_delete:
+    path:     /boxOffice_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:BoxOffice:delete }
+    requirements:
+        _method: GET|DELETE
+        id: \d+

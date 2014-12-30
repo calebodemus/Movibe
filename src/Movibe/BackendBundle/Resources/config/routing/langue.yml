@@ -1,0 +1,40 @@
+movibe_backend_langue:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:Langue:index }
+
+
+movibe_backend_langue_new:
+    path:     /langue_new
+    defaults: { _controller: MovibeBackendBundle:Langue:new }
+
+movibe_backend_langue_create:
+    path:     /langue_create
+    defaults: { _controller: MovibeBackendBundle:Langue:create }
+    requirements:
+        _method: POST
+
+movibe_backend_langue_show:
+    path:     /langue_show/{id}
+    defaults: { _controller: MovibeBackendBundle:Langue:show }
+    requirements:
+        id: \d+
+
+movibe_backend_langue_edit:
+    path:     /langue_edit/{id}
+    defaults: { _controller: MovibeBackendBundle:Langue:edit }
+    requirements:
+        id: \d+
+
+movibe_backend_langue_update:
+    path:     /langue_update/{id}
+    defaults: { _controller: MovibeBackendBundle:Langue:update }
+    requirements:
+        _method: POST
+        id: \d+
+
+movibe_backend_langue_delete:
+    path:     /langue_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:Langue:delete }
+    requirements:
+        _method: GET|DELETE
+        id: \d+

@@ -1,0 +1,15 @@
+movibe_backend_homepage_stat_genre:
+    path:     /statGenre
+    defaults: { _controller: MovibeBackendBundle:Home:statGenre }
+
+movibe_backend_homepage_stat:
+    path:     /stat
+    defaults: { _controller: MovibeBackendBundle:Home:statHome }
+
+movibe_backend_homepage_set_page:
+    path:     /setPage
+    defaults: { _controller: MovibeBackendBundle:Home:setPage }
+
+movibe_backend_homepage_get_page:
+    path:     /getPage
+    defaults: { _controller: MovibeBackendBundle:Home:getPage }

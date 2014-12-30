@@ -1,0 +1,40 @@
+movibe_backend_horaire:
+    path:     /
+    defaults: { _controller: MovibeBackendBundle:Horaire:index }
+
+
+movibe_backend_horaire_new:
+    path:     /horaire_new
+    defaults: { _controller: MovibeBackendBundle:Horaire:new }
+
+movibe_backend_horaire_create:
+    path:     /horaire_create
+    defaults: { _controller: MovibeBackendBundle:Horaire:create }
+    requirements:
+        _method: POST
+
+movibe_backend_horaire_show:
+    path:     /horaire_show/{id}
+    defaults: { _controller: MovibeBackendBundle:Horaire:show }
+    requirements:
+        id: \d+
+
+movibe_backend_horaire_edit:
+    path:     /horaire_edit/{id}
+    defaults: { _controller: MovibeBackendBundle:Horaire:edit }
+    requirements:
+        id: \d+
+
+movibe_backend_horaire_update:
+    path:     /horaire_update/{id}
+    defaults: { _controller: MovibeBackendBundle:Horaire:update }
+    requirements:
+        _method: POST
+        id: \d+
+
+movibe_backend_horaire_delete:
+    path:     /horaire_delete/{id}
+    defaults: { _controller: MovibeBackendBundle:Horaire:delete }
+    requirements:
+        _method: GET|DELETE
+        id: \d+
